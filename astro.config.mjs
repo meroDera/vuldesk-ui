@@ -26,7 +26,7 @@ const whenExternalScripts = (items = []) =>
 
 export default defineConfig({
   output: 'static',
-
+  site: "https://www.vuldesk.com",
   integrations: [
     tailwind({
       applyBaseStyles: false,
