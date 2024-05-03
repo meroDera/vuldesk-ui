@@ -26,7 +26,7 @@ const whenExternalScripts = (items = []) =>
 
 export default defineConfig({
   output: 'static',
-  site: "https://www.vuldesk.com",
+  site: 'https://www.vuldesk.com',
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -37,15 +37,16 @@ export default defineConfig({
       include: {
         tabler: ['*'],
         'flat-color-icons': [
-          'template',
           'gallery',
-          'approval',
-          'document',
-          'advertising',
-          'currency-exchange',
           'voice-presentation',
           'business-contact',
           'database',
+          'support',
+          'self-service-kiosk',
+          'two-smartphones',
+          'edit-image',
+          'services',
+          'synchronize',
         ],
       },
     }),
