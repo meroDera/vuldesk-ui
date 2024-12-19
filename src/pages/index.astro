@@ -180,6 +180,42 @@ const metadata = {
     </Fragment>
   </Content>
 
+  <!-- Content Widget **************** -->
+  <Content
+    isReversed
+    items={[
+      {
+        title: 'About',
+        description:
+          'IVF Center website with booking, contacts and gallery features. Integrated with cosmos API, partners can manage their IVF center information and bookings.',
+      },
+      {
+        title: 'Deliverables',
+        description: `Design, development, and deployment of a web application and API integration.`,
+      },
+    ]}
+    image={{
+      src: 'https://images.unsplash.com/photo-1501516834911-269dbce099a0?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3',
+      alt: 'Art and Music Poster Image',
+    }}
+    callToAction={{
+      target: '_blank',
+      text: 'Go to the project',
+      icon: 'tabler:chevron-right',
+      href: 'https://ivf.vuldesk.com/',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Gamma IVF<br /><span class="text-2xl">IVF Center website with booking and gallery</span>
+      </h3>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-white dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
   <!-- Steps2 Widget ****************** -->
   <Steps2
     id="contact"
