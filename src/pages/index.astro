@@ -9,7 +9,7 @@ import Steps2 from '~/components/widgets/Steps2.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Build your next venture | Vuldesk Technology Private Limited',
+  title: 'Vulnerabilities at Your Desk | Vuldesk Technology Private Limited',
   ignoreTitleTemplate: true,
 };
 ---
@@ -22,7 +22,6 @@ const metadata = {
       links={[
         { text: 'Home', href: '#' },
         { text: 'Services', href: '#services' },
-        { text: 'Porfolio', href: '#porfolio' },
         { text: 'Contact', href: '#contact' },
       ]}
       actions={[
@@ -40,20 +39,19 @@ const metadata = {
   <!-- Hero Widget ******************* -->
   <Hero
     tagline="vuldesk"
-    actions={[{ variant: 'primary', text: 'Start building', href: 'mailto:contact@vuldesk.com' }]}
+    actions={[{ variant: 'primary', text: 'Book a Pentest', href: 'mailto:contact@vuldesk.com' }]}
     image={{
       src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
       alt: 'AstroWind Hero Image',
     }}
   >
     <Fragment slot="title">
-      Your <span class="hidden sm:inline">Premier</span>
-      <span class="text-accent dark:text-white highlight">Destination</span> for Cutting-Edge Software Solutions
+      <span class="text-accent dark:text-white highlight">Vulnerabilities</span> at Your Desk
     </Fragment>
 
     <Fragment slot="subtitle">
-      At <span class="font-semibold">Vuldesk</span>, we're dedicated to bringing your ideas to life through cutting-edge
-      software development solutions. Trust us to be your partner in excellence.
+      We help businesses stay one step ahead of <span class="font-semibold">cyber threats</span> with world-class penetration
+      testing.
     </Fragment>
   </Hero>
 
@@ -61,40 +59,37 @@ const metadata = {
   <Features2
     id="services"
     title="What services do we provide?"
-    subtitle="comprehensive range of software development services to propel your business forward"
     tagline="our services"
     items={[
       {
-        title: 'Custom Software Development',
-        description: 'Tailored solutions designed to address your specific business challenges and opportunities.',
+        title: 'Web & Mobile Pentesting',
+        description: 'Stop attackers at the application level.',
         icon: 'flat-color-icons:support',
       },
       {
-        title: 'Web Application Development',
-        description: 'Engaging and responsive web applications that captivate your audience and drive results.',
+        title: 'Network & Infrastructure Security',
+        description: 'Harden your firewalls, servers, and endpoints.',
         icon: 'flat-color-icons:self-service-kiosk',
       },
       {
-        title: 'Mobile App Development',
-        description:
-          'Innovative mobile applications built for iOS and Android platforms to reach your customers wherever they are.',
+        title: 'Cloud Security Reviews',
+        description: 'AWS, Azure, and GCP risk assessments.',
         icon: 'flat-color-icons:two-smartphones',
       },
       {
-        title: 'UI/UX Design',
-        description:
-          'Intuitive and visually appealing user interfaces crafted to deliver exceptional user experiences.',
+        title: 'Red Teaming & Social Engineering',
+        description: 'Realistic attack simulations.',
         icon: 'flat-color-icons:edit-image',
       },
       {
-        title: 'Enterprise Solutions',
+        title: 'Risk Assessment',
         description:
-          'Scalable and robust enterprise solutions to streamline your business processes and enhance productivity.',
+          'Gather and identify information and information systems, analyze it, and assign risk ratings to your information systems.',
         icon: 'flat-color-icons:services',
       },
       {
-        title: 'Maintenance and Support',
-        description: 'Ongoing maintenance and support services to keep your software running smoothly and efficiently.',
+        title: 'Incident Response',
+        description: 'Prepare for, manage, and recover from data breaches and network attacks.',
         icon: 'flat-color-icons:synchronize',
       },
     ]}
@@ -104,123 +99,11 @@ const metadata = {
     </Fragment>
   </Features2>
 
-  <!-- Content Widget **************** -->
-  <Content
-    id="porfolio"
-    title="From Concept To Market"
-    subtitle="We sprint from proof of concept to minimum viable product to production-ready release, focusing on the components with the highest value and biggest impact."
-    isReversed
-    items={[
-      {
-        title: 'About',
-        description:
-          'use dharke to manage #NEPSE stock price alerts, manage portfolios and integrate messaging platforms for notifications.',
-      },
-      {
-        title: 'Deliverables',
-        description:
-          'Design, development, and deployment of a web application for managing #NEPSE stock price alerts and portfolios. Integration with messaging platforms for notifications.',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1648275913341-7973ae7bc9b3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Tech Design Image',
-    }}
-    callToAction={{
-      target: '_blank',
-      text: 'Go to the project',
-      icon: 'tabler:chevron-right',
-      href: 'https://dharke.com/',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Dharke.com<br /><span class="text-2xl">Manage #NEPSE portfolio and create alerts</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-white dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-  <Content
-    isAfterContent={true}
-    items={[
-      {
-        title: 'About',
-        description:
-          'Cosmos is a platform for managing posts and feedback for Vuldesk. Partners can create blog posts, integrate APIs with their websites, and manage feedback from their customers.',
-      },
-      {
-        title: 'Deliverables',
-        description: `Design, development, and deployment of a web application and APIs. Expose APIs for partners to integrate with their websites.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-      alt: 'Art and Music Poster Image',
-    }}
-    callToAction={{
-      target: '_blank',
-      text: 'Go to the project',
-      icon: 'tabler:chevron-right',
-      href: 'https://cosmos.vuldesk.com/',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Vuldesk Cosmos<br /><span class="text-2xl">CRM for posts and feedback management</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-white dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
-  <!-- Content Widget **************** -->
-  <Content
-    isReversed
-    items={[
-      {
-        title: 'About',
-        description:
-          'IVF Center website with booking, contacts and gallery features. Integrated with cosmos API, partners can manage their IVF center information and bookings.',
-      },
-      {
-        title: 'Deliverables',
-        description: `Design, development, and deployment of a web application and API integration.`,
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1501516834911-269dbce099a0?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3',
-      alt: 'Art and Music Poster Image',
-    }}
-    callToAction={{
-      target: '_blank',
-      text: 'Go to the project',
-      icon: 'tabler:chevron-right',
-      href: 'https://ivf.vuldesk.com/',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Gamma IVF<br /><span class="text-2xl">IVF Center website with booking and gallery</span>
-      </h3>
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-white dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
   <!-- Steps2 Widget ****************** -->
   <Steps2
     id="contact"
-    title="Reach out to us"
-    subtitle="Have questions? Feel free to contact us. We're here to help!"
+    title="Don’t wait for a breach."
+    subtitle="Hackers are already scanning your business."
     callToAction={{
       text: 'Contact us',
       href: 'https://calendar.app.google/Qf3Lw4ekSRZw9mwv9',
@@ -246,8 +129,8 @@ const metadata = {
 
   <!-- CallToAction Widget *********** -->
   <CallToAction
-    title="Ready to boost your projects?"
-    subtitle="Connect with us to build your new venture."
+    title="Ready to outsmart hackers?"
+    subtitle="Let’s secure your business before they strike."
     actions={[
       {
         variant: 'primary',
