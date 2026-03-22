@@ -1,0 +1,291 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Header from '~/components/widgets/Header.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Pricing from '~/components/widgets/Pricing.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Free External Recon Report — Vuldesk',
+  description:
+    'See your SaaS attack surface in 24 hours — subdomains, DNS, SSL, security headers, tech fingerprinting. Free, no sales call required.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header">
+    <Header
+      links={[
+        { text: 'Home', href: '/' },
+        { text: 'How it works', href: '#how-it-works' },
+        { text: "What's included", href: '#whats-included' },
+        { text: 'Pricing', href: '#pricing' },
+        { text: 'FAQ', href: '#faq' },
+      ]}
+      actions={[
+        {
+          text: 'Get my free report',
+          href: 'mailto:contact@vuldesk.com?subject=Free Recon Report Request&body=Hi Vuldesk team,%0D%0A%0D%0APlease run a free recon report on my domain:%0D%0A%0D%0ADomain: %0D%0ACompany: %0D%0A%0D%0AThanks',
+          target: '_blank',
+        },
+      ]}
+      isSticky
+      showToggleTheme
+    />
+  </Fragment>
+
+  <!-- Hero -->
+  <Hero
+    tagline="Free · No call required · 24-hour delivery"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Get my free recon report',
+        href: 'mailto:contact@vuldesk.com?subject=Free Recon Report Request&body=Hi Vuldesk team,%0D%0A%0D%0APlease run a free recon report on my domain:%0D%0A%0D%0ADomain: %0D%0ACompany: %0D%0A%0D%0AThanks',
+        target: '_blank',
+        icon: 'tabler:mail',
+      },
+      {
+        variant: 'secondary',
+        text: 'Book a call instead',
+        href: 'https://calendar.app.google/Qf3Lw4ekSRZw9mwv9',
+        target: '_blank',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      See your attack surface<br />
+      <span class="text-accent dark:text-white highlight">before attackers do</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Email us your domain. We'll send you a free external recon report within <strong>24 hours</strong> — subdomains,
+      DNS config, SSL, security headers, exposed paths, and tech fingerprinting. No sales call, no form, no strings.
+    </Fragment>
+  </Hero>
+
+  <!-- What you get -->
+  <Features2
+    id="whats-included"
+    title="What's in the free report"
+    tagline="what's included"
+    subtitle="The same first step we run before every paid engagement — your full external attack surface, packaged into a clean PDF."
+    items={[
+      {
+        title: 'Subdomain Enumeration',
+        description:
+          'Discover staging, dev, admin, and API subdomains exposed publicly via certificate transparency logs. Risky subdomains flagged separately.',
+        icon: 'tabler:world',
+      },
+      {
+        title: 'DNS Configuration Audit',
+        description:
+          'A, MX, NS, TXT, and CAA records reviewed. Dangling DNS entries and zone transfer misconfigurations flagged.',
+        icon: 'tabler:antenna',
+      },
+      {
+        title: 'SSL / TLS Analysis',
+        description:
+          'Certificate validity, expiry, issuer, HSTS, protocol version, and cipher suite reviewed. Weak or expired configs highlighted.',
+        icon: 'tabler:lock',
+      },
+      {
+        title: 'HTTP Security Headers',
+        description:
+          'CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy checked. Missing headers are the most common quick win.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Email Security (SPF / DMARC / DKIM)',
+        description:
+          'Missing or misconfigured SPF and DMARC means your domain can be spoofed in phishing emails. We check and flag gaps immediately.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Technology Fingerprinting',
+        description:
+          'Detect your web server, frameworks, CDN, and CMS via response headers and meta tags. Outdated versions with known CVEs are highlighted.',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'Sensitive Path Probes',
+        description:
+          'HEAD requests to common sensitive paths: /.env, /admin, /.git, /api/v1, /phpinfo.php, /wp-admin. Exposed paths flagged with severity.',
+        icon: 'tabler:folder-search',
+      },
+      {
+        title: 'Clean PDF Report',
+        description:
+          'Every finding packaged into a professionally formatted PDF — Executive Summary, severity-rated findings table, and specific recommendations.',
+        icon: 'tabler:file-text',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Features2>
+
+  <!-- How it works -->
+  <Steps
+    id="how-it-works"
+    title="How it works"
+    tagline="three steps"
+    subtitle="No meetings, no lengthy intake forms. Just email us your domain."
+    items={[
+      {
+        title: 'Step 1: <span class="font-medium">Email us your domain</span>',
+        description:
+          'Send an email to contact@vuldesk.com with your domain. That\'s it. No form to fill, no call to book, no credit card.',
+        icon: 'tabler:mail',
+      },
+      {
+        title: 'Step 2: <span class="font-medium">We run the recon</span>',
+        description:
+          'We run our full external reconnaissance toolchain against your domain — passive only, no active exploitation, completely safe. Takes about 30 minutes.',
+        icon: 'tabler:search',
+      },
+      {
+        title: 'Step 3: <span class="font-medium">Receive your PDF report within 24 hours</span>',
+        description:
+          'We review the findings, remove false positives, and send you a clean PDF with an Executive Summary and prioritized recommendations. Yours to keep.',
+        icon: 'tabler:file-download',
+      },
+    ]}
+    image={{
+      src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80',
+      alt: 'Security analysis process',
+    }}
+  />
+
+  <!-- Pricing -->
+  <Pricing
+    id="pricing"
+    title="Simple, fixed pricing"
+    tagline="no hourly rates"
+    subtitle="Know the exact cost before we start. No overruns, no surprises — built for founders who run lean."
+    prices={[
+      {
+        title: 'Bootstrap Pentest',
+        subtitle: 'For SaaS teams handling user accounts and payment data',
+        price: '3,500',
+        period: 'fixed price',
+        items: [
+          { description: 'Web application pentest (OWASP Top 10 + business logic)' },
+          { description: '1 application, up to 10 API endpoints' },
+          { description: '10 business day turnaround' },
+          { description: 'Executive summary + technical findings report' },
+          { description: 'Remediation guidance per finding' },
+          { description: '30-day async remediation support' },
+          { description: 'Certificate of completion' },
+        ],
+        callToAction: {
+          text: 'Get started',
+          href: 'mailto:contact@vuldesk.com?subject=Bootstrap Pentest Enquiry',
+        },
+      },
+      {
+        title: 'Growth Pentest',
+        subtitle: 'For teams with OAuth integrations, APIs, and enterprise customers asking questions',
+        price: '7,500',
+        period: 'fixed price',
+        hasRibbon: true,
+        ribbonTitle: 'Most popular',
+        items: [
+          { description: 'Web app + API penetration test' },
+          { description: 'Up to 25 API endpoints, authenticated + unauthenticated' },
+          { description: 'Authentication and authorization deep-dive' },
+          { description: '10 business day turnaround' },
+          { description: 'Full technical report + executive summary' },
+          { description: '60-day async remediation support' },
+          { description: 'Retest of critical findings included' },
+          { description: 'SOC 2 readiness callouts' },
+        ],
+        callToAction: {
+          text: 'Get started',
+          href: 'mailto:contact@vuldesk.com?subject=Growth Pentest Enquiry',
+        },
+      },
+      {
+        title: 'Compliance Pentest',
+        subtitle: 'For teams in regulated niches — telehealth, fintech, edtech, HR tech',
+        price: '15,000',
+        period: 'fixed price',
+        items: [
+          { description: 'Everything in Growth Pentest' },
+          { description: 'HIPAA / GDPR technical safeguards assessment' },
+          { description: 'Report structured for audit defensibility' },
+          { description: 'Written attestation letter for partners' },
+          { description: 'Priority 7 business day turnaround' },
+          { description: 'Compliance gap analysis vs relevant framework' },
+        ],
+        callToAction: {
+          text: 'Get started',
+          href: 'mailto:contact@vuldesk.com?subject=Compliance Pentest Enquiry',
+        },
+      },
+    ]}
+  />
+
+  <!-- FAQ -->
+  <FAQs
+    id="faq"
+    title="Common questions"
+    tagline="faq"
+    columns={1}
+    items={[
+      {
+        title: 'Is the free recon report actually free? What\'s the catch?',
+        description:
+          'Yes, fully free. No credit card, no trial period. We run this as a goodwill offer — the report is useful to you regardless of whether you become a customer. If it surfaces something serious, you\'ll likely want to talk to us. If it doesn\'t, you still got a useful snapshot of your attack surface.',
+      },
+      {
+        title: 'Is it safe? Will you break anything on my site?',
+        description:
+          'Completely safe. The free recon report is entirely passive — we use certificate transparency logs, DNS lookups, and HTTP header checks. We do not exploit anything, run automated attack tools, or touch your application in any intrusive way. It\'s the same as what any researcher could do from a browser.',
+      },
+      {
+        title: 'How is this different from a full penetration test?',
+        description:
+          'The free recon covers your external attack surface only — what\'s visible from the outside without any credentials. A full pentest goes much deeper: authenticated user flows, business logic flaws, IDOR/BOLA in your API, authorization bypass, injection vulnerabilities in your application code. The recon is a starting point, not a substitute.',
+      },
+      {
+        title: 'Who is this for?',
+        description:
+          'Bootstrapped and growth-stage SaaS founders who handle real customer data but haven\'t had a formal security review done. If you\'re between $30K and $500K MRR, managing user accounts or payment data, and the thought "we should probably get our security tested" has crossed your mind — this is for you.',
+      },
+      {
+        title: 'How long does delivery take?',
+        description:
+          'Within 24 hours of receiving your domain. Usually faster. We\'ll reply to confirm receipt, and you\'ll have the PDF in your inbox the same day or next morning.',
+      },
+      {
+        title: 'Can I use the report with customers or investors?',
+        description:
+          'The free recon report is a diagnostic, not a formal audit. For a document you can share in an enterprise sales process, due diligence data room, or compliance questionnaire, you need a full pentest report. Our paid packages include a certificate of completion and a formatted report built for exactly that purpose.',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CTA -->
+  <CallToAction
+    title="Get your free recon report"
+    subtitle="Email us your domain. We'll have your external attack surface report in your inbox within 24 hours."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Email us your domain',
+        href: 'mailto:contact@vuldesk.com?subject=Free Recon Report Request&body=Hi Vuldesk team,%0D%0A%0D%0APlease run a free recon report on my domain:%0D%0A%0D%0ADomain: %0D%0ACompany: %0D%0A%0D%0AThanks',
+        target: '_blank',
+        icon: 'tabler:mail',
+      },
+    ]}
+  />
+</Layout>

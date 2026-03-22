@@ -11,7 +11,7 @@ metadata:
   title:
     default: Vuldesk
     template: '%s — Vuldesk'
-  description: "At Vuldesk, we're dedicated to bringing your ideas to life through cutting-edge software development solutions. Trust us to be your partner in excellence."
+  description: "Vuldesk helps SaaS companies find and fix security vulnerabilities before attackers do — web app pentesting, API security, and cloud security reviews for bootstrapped and growth-stage teams."
   robots:
     index: true
     follow: true
@@ -33,7 +33,7 @@ i18n:
 
 apps:
   blog:
-    isEnabled: false
+    isEnabled: true
     postsPerPage: 6
 
     post:

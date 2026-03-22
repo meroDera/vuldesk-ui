@@ -136,6 +136,6 @@ export const footerData = {
     },
   ],
   footNote: `
-    © 2024 Vuldesk Technologies Private Limited. All rights reserved.
+    © 2026 Vuldesk Technologies Private Limited. All rights reserved.
   `,
 };
