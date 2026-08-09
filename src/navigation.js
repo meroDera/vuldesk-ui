@@ -4,12 +4,12 @@ import { getPermalink, getBlogPermalink } from './utils/permalinks';
 // `header` slot — currently /terms, /privacy and /404.
 export const headerData = {
   links: [
-    { text: 'What I test', href: getPermalink('/#what-i-test') },
+    { text: 'What I built', href: getPermalink('/#proof') },
     { text: 'How it works', href: getPermalink('/#how-it-works') },
     { text: 'Price', href: getPermalink('/#price') },
     { text: 'Writing', href: getBlogPermalink() },
   ],
-  actions: [{ text: 'Book a review', href: 'mailto:contact@vuldesk.com?subject=AI Feature Security Review' }],
+  actions: [{ text: 'Describe your feature', href: 'mailto:contact@vuldesk.com?subject=AI feature build' }],
 };
 
 export const footerData = {

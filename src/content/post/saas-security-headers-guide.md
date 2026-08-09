@@ -152,7 +152,7 @@ For most bootstrapped SaaS apps, adding the missing headers takes less than an h
 
 Headers are the layer buyers can check themselves. The layer they now ask about, and usually cannot check, is what your AI feature sends to a model provider.
 
-**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
+**[Need an AI feature built? Describe it in an email →](mailto:contact@vuldesk.com?subject=AI feature build)**
 
 ---
 

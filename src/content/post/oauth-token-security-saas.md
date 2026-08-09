@@ -109,7 +109,7 @@ A free external recon report does not test your OAuth implementation directly �
 
 The same question applies one layer over: if you have shipped an AI feature, those tokens and the data they reach may now be flowing somewhere your subprocessor list does not mention.
 
-**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
+**[Need an AI feature built? Describe it in an email →](mailto:contact@vuldesk.com?subject=AI feature build)**
 
 ---
 

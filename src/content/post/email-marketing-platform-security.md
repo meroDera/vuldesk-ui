@@ -118,7 +118,7 @@ A full pentest of the findings above requires authenticated access to your appli
 
 If you have since added AI features on top of this data, subscriber PII is now reaching a model provider too, and your trust page probably has not caught up.
 
-**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
+**[Need an AI feature built? Describe it in an email →](mailto:contact@vuldesk.com?subject=AI feature build)**
 
 ---
 

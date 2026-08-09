@@ -11,7 +11,7 @@ metadata:
   title:
     default: Vuldesk
     template: '%s — Vuldesk'
-  description: "AI feature security reviews for B2B SaaS. Prompt injection, retrieval permission boundaries, and data flow to model providers — tested in five days for a fixed $3,500, with no access to your production system. You get the report your enterprise buyers ask for."
+  description: "I build AI agent features into existing B2B SaaS products. One feature, fixed price, delivered as a pull request against your branch — no production access needed. Security engineer by background, so the data-flow question has an answer."
   robots:
     index: true
     follow: true

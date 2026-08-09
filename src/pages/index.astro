@@ -11,77 +11,95 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'AI Feature Security Review — prompt injection, retrieval leakage, data flow | Vuldesk',
+  title: 'I build the AI feature your roadmap keeps deprioritising | Vuldesk',
   ignoreTitleTemplate: true,
 };
 
-const REVIEW_MAILTO =
-  'mailto:contact@vuldesk.com?subject=AI Feature Security Review&body=Hi Himal,%0D%0A%0D%0AWe shipped an AI feature and want it reviewed.%0D%0A%0D%0AProduct: %0D%0AThe AI feature: %0D%0AWhere it lives (URL or docs): %0D%0A%0D%0AThanks';
-
+const BUILD_MAILTO =
+  'mailto:contact@vuldesk.com?subject=AI feature build&body=Hi Himal,%0D%0A%0D%0AThe feature we want built:%0D%0A%0D%0AProduct: %0D%0AWhat it should do: %0D%0AWhat it reads (docs, tickets, filings, transcripts, records): %0D%0AStack: %0D%0A%0D%0AThanks';
 ---
 
 <Layout metadata={metadata}>
   <Fragment slot="header">
     <Header
       links={[
-        { text: 'What I test', href: '#what-i-test' },
+        { text: 'What I built', href: '#proof' },
+        { text: 'What transfers', href: '#transfers' },
         { text: 'How it works', href: '#how-it-works' },
         { text: 'Price', href: '#price' },
-        { text: 'Questions', href: '#faq' },
         { text: 'Writing', href: '/blog' },
       ]}
-      actions={[
-        {
-          text: 'Book a review',
-          href: REVIEW_MAILTO,
-        },
-      ]}
+      actions={[{ text: 'Describe your feature', href: BUILD_MAILTO }]}
       isSticky
       showToggleTheme
     />
   </Fragment>
 
-  <!-- Hero ************************** -->
+  <!-- Hero: lead with the agent, not the offer -->
   <Hero
-    tagline="Fixed price · Five days · No production access"
+    tagline="AI agent features, built and handed over"
     actions={[
-      { variant: 'primary', text: 'Book a review', href: REVIEW_MAILTO, icon: 'tabler:mail' },
-      { variant: 'secondary', text: 'What I test', href: '#what-i-test' },
+      { variant: 'primary', text: 'Describe your feature', href: BUILD_MAILTO, icon: 'tabler:mail' },
+      { variant: 'secondary', text: 'See what I built', href: '#proof' },
     ]}
   >
     <Fragment slot="title">
-      I test AI features for<br />
-      <span class="text-accent dark:text-white highlight">the things that leak</span>
+      An agent read 118 foreclosure filings.<br />
+      <span class="text-accent dark:text-white highlight">57 of them were already dead.</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Prompt injection, retrieval permission boundaries, and where your data actually goes when it reaches a model
-      provider. Five days, <strong>$3,500 fixed</strong>, read only. I never touch your production system. You get the
-      report your enterprise buyers keep asking for.
+      The county publishes the list. It does not tell you which cases are still going to sale. I built an agent that
+      reads each filing, checks its current status, and returns an answer in about 37 seconds per case.
+      <strong>61 of 118 were still live. The rest were withdrawn, in bankruptcy, cured, or set aside.</strong>
+      <br /><br />
+      I build that kind of feature into other companies' products.
     </Fragment>
   </Hero>
 
-  <!-- Why this exists **************** -->
+  <!-- Proof 1: the agent itself -->
   <Features2
-    id="why"
-    title="Your AI feature is in someone's security questionnaire right now"
-    tagline="why this exists"
+    id="proof"
+    title="What the agent actually does"
+    tagline="built, not proposed"
+    subtitle="This one is my own project, not a client engagement, and you should discount it accordingly. What it demonstrates is the mechanics, and the mechanics are the part that transfers."
     columns={3}
     items={[
       {
-        title: 'The questionnaire arrived and the answer is missing',
+        title: 'Reads an unstructured public source',
         description:
-          'You shipped the AI feature. Now an enterprise prospect wants to know what the model receives, who can read the retrieved documents, and what the provider retains. Your SOC 2 report predates the feature and does not mention it.',
+          'County foreclosure records: inconsistent formats, missing fields, status buried in prose. No API, no schema, no cooperation from the source.',
+        icon: 'tabler:file-search',
       },
       {
-        title: 'Your last pentest tested a product that no longer exists',
+        title: 'Reasons across multiple calls',
         description:
-          'Application pentests check auth, injection, and access control at the app layer. An AI feature adds a retrieval step and an external inference call after that layer. Tenancy does not automatically survive the hop, and it is usually nobody job to check.',
+          'Each case takes around 37 seconds because the agent makes several tool calls and thinks between them. A bare scrape is 8 to 15 seconds. The extra time is the judgement.',
+        icon: 'tabler:brain',
       },
       {
-        title: 'The deal is what is actually stuck',
+        title: 'Returns a decision, not a summary',
         description:
-          'This is not a breach-prevention purchase. It is a sales-blocker purchase. The deliverable is a document you hand to a prospect security team so the contract moves.',
+          'Live or not live, and which lien sits in first position. Something a person can act on, rather than a paragraph they still have to read.',
+        icon: 'tabler:checkbox',
+      },
+      {
+        title: 'Says when it does not know',
+        description:
+          'Cases with no assessor match cannot reach a confident verdict, so they come back marked uncertain instead of guessed. This is the part most first attempts skip.',
+        icon: 'tabler:help-octagon',
+      },
+      {
+        title: '186 tests, three engineering reviews',
+        description:
+          'Agents fail quietly. Without a test suite you find out from a customer. This is the difference between a demo and something you can leave running.',
+        icon: 'tabler:test-pipe',
+      },
+      {
+        title: 'Runtime measured, not estimated',
+        description:
+          'That 37 seconds is an observed cadence across real runs, not a happy-path extrapolation. You get the real number before you commit to it.',
+        icon: 'tabler:gauge',
       },
     ]}
   >
@@ -90,109 +108,70 @@ const REVIEW_MAILTO =
     </Fragment>
   </Features2>
 
-  <!-- What I test ******************** -->
-  <Features2
-    id="what-i-test"
-    title="What I test"
-    tagline="scope"
-    subtitle="Six failure classes specific to AI features. Each finding comes with a reproduction, an impact statement, and a fix."
+  <!-- What transfers -->
+  <Features
+    id="transfers"
+    title="What transfers to your product"
+    tagline="the general shape"
+    subtitle="Nothing about foreclosure is useful to you. This is the pattern underneath it: an agent that reads a messy source, reasons across several steps, and returns something a person or a system can act on."
+    columns={2}
     items={[
       {
-        title: 'Prompt injection, direct and indirect',
+        title: 'Documents your customers upload',
         description:
-          'Whether instructions inside user content, uploaded documents, or retrieved pages can redirect the model. Document ingestion pipelines are the common blind spot: the file came from someone your customer does not control.',
-        icon: 'tabler:message-code',
+          'Leases, invoices, contracts, intake forms, lab results. Extract the fields, flag what is missing, refuse when the document is not what it claims to be.',
+        icon: 'tabler:file-upload',
       },
       {
-        title: 'Retrieval permission boundaries',
+        title: 'Records your product already holds',
         description:
-          'Whether the retrieval step honours your tenancy and role model. The frequent failure is an index built once, over everything, then queried by users who should only reach part of it.',
-        icon: 'tabler:lock-access',
+          'Tickets, transcripts, case files, submissions. Classify, route, summarise, or surface the three that need a human today.',
+        icon: 'tabler:database-search',
       },
       {
-        title: 'Data flow to the model provider',
+        title: 'Sources outside your walls',
         description:
-          'What actually leaves your network on each call, which fields ride along that nobody intended, and what the provider terms say about retention and training on that payload.',
-        icon: 'tabler:cloud-data-connection',
+          'Public registries, competitor pricing, regulatory filings, supplier catalogues. The data exists and nobody on your team has time to read it.',
+        icon: 'tabler:world-search',
       },
       {
-        title: 'Output handling',
+        title: 'Work a person repeats every week',
         description:
-          'What happens downstream when generated text is rendered, stored, logged, or passed to another system. Model output is untrusted input, and it is rarely treated that way.',
-        icon: 'tabler:code',
-      },
-      {
-        title: 'Logging and retention',
-        description:
-          'Where prompts and completions land. Support transcripts and debug logs routinely accumulate the sensitive fields your main database is careful about.',
-        icon: 'tabler:database',
-      },
-      {
-        title: 'Questionnaire readiness',
-        description:
-          'The gap between what your AI feature does and what your trust page, DPA, and subprocessor list currently claim. This is the section your buyer reads first.',
-        icon: 'tabler:file-check',
+          'If someone opens the same five tabs and applies the same judgement every Monday, that judgement is usually specifiable.',
+        icon: 'tabler:repeat',
       },
     ]}
   />
 
-  <!-- How it works ******************* -->
-  <Steps
-    id="how-it-works"
-    title="How it works"
-    tagline="five days"
-    subtitle="No production credentials, no VPN, no BAA, no vendor onboarding. That is the design, not a limitation."
-    items={[
-      {
-        title: 'Day 0: <span class="font-medium">You send a link</span>',
-        description:
-          'Your public product or a trial account, your docs, and your trust page. If you have a data-flow diagram, send it. If you do not, that is part of what you get back.',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Days 1 to 4: <span class="font-medium">I test what is reachable</span>',
-        description:
-          'Read only, against surfaces you have pointed me at, within the scope we agree in writing first. Nothing destructive, no attempt to reach other tenants data, no load testing. Same discipline as an authorised pentest, narrower blast radius.',
-        icon: 'tabler:search',
-      },
-      {
-        title: 'Day 5: <span class="font-medium">You get two documents</span>',
-        description:
-          'A findings report with reproductions and fixes, and a data-flow summary written for a buyer security team rather than for your engineers. The second one is the one that unblocks contracts.',
-        icon: 'tabler:file-text',
-      },
-    ]}
-  />
-
-  <!-- Proof ************************** -->
+  <!-- Proof 2: delivery that survives handover -->
   <Steps2
-    id="proof"
-    tagline="who you are dealing with"
-    title="One person, and a system still running after twenty months"
-    subtitle="I would rather show you something verifiable than tell you about capabilities. This is the honest version of what I have and what I do not."
+    id="delivery"
+    tagline="the other half"
+    title="Building it is not the hard part. Handing it over is."
+    subtitle="Plenty of people can get an agent working on their own machine. Fewer hand you something that still runs after they have gone."
     callToAction={{
       target: '_blank',
-      text: 'See Gamma IVF running',
+      text: 'Gamma IVF, still running',
       href: 'https://ivf.vuldesk.com/',
     }}
     items={[
       {
-        title: 'Gamma IVF',
+        title: 'Delivered December 2024. Still serving traffic.',
         description:
-          'A clinic booking platform I designed, built, deployed, and still host. Booking, contacts, gallery, and a third-party API integration. Delivered December 2024 and serving live traffic ever since.',
+          'A clinic booking platform with contacts, gallery, and a third-party API integration. Design, build, deploy. Twenty months later it still answers. To be exact about what that proves: the system stays up. It is hosting, not a maintenance contract.',
         icon: 'tabler:server-bolt',
       },
       {
-        title: 'What that proves, and what it does not',
+        title: 'You get the code, not a dependency on me',
         description:
-          'It proves I ship production systems for real businesses and keep them up. It is not an AI security engagement, and I am not going to imply otherwise. This offer is new and the price reflects that.',
-        icon: 'tabler:scale',
+          'I work against a branch and a staging environment. You review the pull request and you deploy it. No production credentials, no BAA, no vendor onboarding, and nothing of mine running inside your stack afterwards.',
+        icon: 'tabler:git-pull-request',
       },
       {
-        title: 'Why one person is the right shape',
+        title: 'I am a security engineer, which matters here',
         description:
-          'No account manager, no bench, no handoff. You get the person doing the testing, which is also why the scope is deliberately narrow. One thing you can verify beats six you take on faith.',
-        icon: 'tabler:user-check',
+          'AI features move customer data to places your architecture diagram does not show. I can tell you what leaves your network, what the provider retains, and which fields ride along that nobody intended. That is not the product. It is why you can let me near the thing that touches your customers.',
+        icon: 'tabler:shield-lock',
       },
     ]}
   >
@@ -201,101 +180,133 @@ const REVIEW_MAILTO =
     </Fragment>
   </Steps2>
 
-  <!-- Price ************************** -->
-  <Features
-    id="price"
-    title="$3,500 fixed, per feature"
-    tagline="price"
-    subtitle="One AI feature, five business days, one number. No discovery call required to see it. If the scope does not fit, I will say so and tell you what would."
-    columns={2}
+  <!-- How an engagement runs -->
+  <Steps
+    id="how-it-works"
+    title="How an engagement runs"
+    tagline="one feature at a time"
+    subtitle="Fixed scope, agreed in writing before anything starts. If what you want is bigger than one feature, I will say so and we can cut it down or not work together."
     items={[
       {
-        title: 'All six failure classes',
-        description: 'Tested against the surfaces you point me at, in a scope agreed in writing before I start.',
-        icon: 'tabler:list-check',
-      },
-      {
-        title: 'Findings report',
-        description: 'Reproduction, impact statement, and a fix for each issue. Written so an engineer can act on it.',
-        icon: 'tabler:file-text',
-      },
-      {
-        title: 'Data-flow summary',
+        title: 'Step 1: <span class="font-medium">You describe the feature in an email</span>',
         description:
-          'Written for a buyer security team rather than for your engineers. This is the document that unblocks contracts.',
-        icon: 'tabler:sitemap',
+          'What it should do, what it reads, and what your stack is. No call needed to start. I reply within a day with whether it fits, what I would build first, and a fixed price.',
+        icon: 'tabler:mail',
       },
       {
-        title: 'Provider-terms review',
-        description: 'What your model provider retains, what it may train on, and which subprocessors are involved.',
-        icon: 'tabler:file-search',
-      },
-      {
-        title: 'Free re-test',
-        description: 'Once you have fixed the findings, I verify the fixes at no extra cost.',
-        icon: 'tabler:refresh',
-      },
-      {
-        title: 'No onboarding overhead',
+        title: 'Step 2: <span class="font-medium">Scope in writing, then a branch</span>',
         description:
-          'No production access, no credentials to provision, no BAA to negotiate, no vendor security review of me.',
-        icon: 'tabler:shield-check',
+          'One page: what is in, what is out, what done looks like, and how many revisions are included. Then a repo branch and a staging environment. Never production.',
+        icon: 'tabler:file-description',
+      },
+      {
+        title: 'Step 3: <span class="font-medium">You review a pull request</span>',
+        description:
+          'Working code, a test suite, an eval set covering the cases it is expected to get right, and a written note on what the feature sends to the model provider and what comes back.',
+        icon: 'tabler:git-merge',
+      },
+      {
+        title: 'Step 4: <span class="font-medium">You deploy it, and I am done</span>',
+        description:
+          'Your team owns it. I answer questions for 30 days at no extra cost. If you want the next feature, that is a new fixed price, not a retainer that quietly renews.',
+        icon: 'tabler:rocket',
       },
     ]}
   />
 
-  <!-- FAQs *************************** -->
-  <FAQs
-    id="faq"
-    title="The questions I actually get"
-    tagline="straight answers"
+  <!-- Price -->
+  <Features
+    id="price"
+    title="Fixed price per feature"
+    tagline="price"
+    subtitle="Quoted in one email once you describe the feature. Not an hourly rate, not a retainer, and not a range that gets resolved later. I would rather lose the deal on the number than discover the scope halfway through."
+    columns={2}
     items={[
       {
-        title: 'Our team built it. Why would they not find this themselves?',
+        title: 'One number, before you commit',
         description:
-          'They might. The same reason code review exists applies here: the person who designed the retrieval logic is the worst-placed person to notice what it assumes. I am not better than your engineers, I am just not the one who wrote it.',
+          'Priced from the written scope, not from a spread. If the scope changes, the number is requoted in writing before any more work happens.',
+        icon: 'tabler:currency-dollar',
       },
       {
-        title: 'We already have SOC 2 and a recent pentest.',
+        title: 'Written scope, with a revision limit',
         description:
-          'Both good, neither sufficient. SOC 2 audits your controls, not your prompt-handling. A pentest scoped before you shipped the AI feature did not test the AI feature. Your buyer will notice the dates.',
+          'What is in, what is out, what done means, and how many rounds of changes are included. Agreed before I start, not negotiated at the end.',
+        icon: 'tabler:file-check',
       },
       {
-        title: 'Do you need access to our production system?',
+        title: 'An eval set you keep',
         description:
-          'No. Public product or a trial account, your documentation, and your trust page. That is the whole point: no credentials to provision, no BAA to negotiate, no security review of me before you can buy a security review from me.',
+          'The cases the feature is expected to get right, as a test your team can run themselves long after I have gone.',
+        icon: 'tabler:list-check',
       },
       {
-        title: 'Who are you, and where are you?',
+        title: '30 days of questions answered',
         description:
-          'I am Himal, a security engineer working from Kathmandu. Nothing leaves your environment, because I am never in it. Everything I test is reachable from the public internet, in writing-agreed scope, and you can revoke a trial account whenever you like.',
-      },
-      {
-        title: 'What if you find nothing?',
-        description:
-          'Then you get the data-flow summary and a report saying the six classes came back clean, which is a document worth having when the questionnaire lands. I have never seen a first review return nothing, but if it does, you keep the deliverable and the price stands.',
-      },
-      {
-        title: 'Is this a scan?',
-        description:
-          'No. Scanners do not test whether a retrieved document can rewrite the instructions, and they do not read your provider terms. This is manual work, which is why it takes five days and why the scope is one feature.',
+          'After handover, at no extra cost. Not a support contract. Just not disappearing the moment it merges.',
+        icon: 'tabler:message-2',
       },
     ]}
   >
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
     </Fragment>
-  </FAQs>
+  </Features>
 
-  <!-- CTA **************************** -->
+  <!-- FAQ -->
+  <FAQs
+    id="faq"
+    title="The questions I actually get"
+    tagline="straight answers"
+    columns={1}
+    items={[
+      {
+        title: 'Our engineers could build this.',
+        description:
+          'They could. The honest reasons not to have them do it: they are booked, the AI feature has slid down the roadmap for two quarters, and shipping an agent that stays reliable is a different skill from shipping CRUD. A first attempt usually has no eval set, no plan for what happens when the model is confidently wrong, and no cost ceiling. If your team has already shipped one that works, hire me for something else, or not at all.',
+      },
+      {
+        title: 'What counts as one feature?',
+        description:
+          'One job, with one input shape and one output shape. Extracting fields from uploaded documents is one feature. Extracting fields, then routing to a reviewer, then emailing the customer is three. I will tell you which one you have described before quoting, not after.',
+      },
+      {
+        title: 'Do you need access to our production system?',
+        description:
+          'No. A repo branch and a staging environment with representative data, scrubbed or synthetic. You review the pull request and deploy it yourself. That means no BAA, no vendor security review, and no credentials to revoke when we are done.',
+      },
+      {
+        title: 'What happens when the model gets it wrong?',
+        description:
+          'It will. The question is whether the feature notices. Everything I build has an explicit uncertain path, so cases it cannot decide come back flagged rather than guessed, and the eval set tells you the rate before you ship. On the foreclosure agent, cases with no assessor match return uncertain by design.',
+      },
+      {
+        title: 'Who are you, and where are you?',
+        description:
+          'Himal, working from Kathmandu. Vuldesk Technologies Private Limited is the company and I am the one doing the work today. Security engineer by background, which is why I can answer the data-flow question rather than promising to look into it.',
+      },
+      {
+        title: 'Can we see the foreclosure agent?',
+        description:
+          'Not publicly, it runs against a live data source. I will walk through the code, the test suite, and a real run on a call. Gamma IVF is public and you can open it right now.',
+      },
+      {
+        title: 'We already shipped an AI feature and it is not good.',
+        description:
+          'Normal starting point, and often an easier engagement, because the hard part, deciding what it should do, is already settled. Send me what it does now and what it should do instead.',
+      },
+    ]}
+  />
+
+  <!-- CTA -->
   <CallToAction
-    title="Send me the feature and the docs"
-    subtitle="One email. No call, no form, no intake deck. I will tell you within a day whether the scope fits and what I would look at first."
+    title="Describe the feature in an email"
+    subtitle="What it should do, what it reads, and your stack. No call, no form, no discovery deck. I will tell you within a day whether it fits, what I would build first, and the price."
     actions={[
       {
         variant: 'primary',
-        text: 'Book a review',
-        href: REVIEW_MAILTO,
+        text: 'Describe your feature',
+        href: BUILD_MAILTO,
         icon: 'tabler:mail',
       },
     ]}
