@@ -116,9 +116,9 @@ A full pentest of the findings above requires authenticated access to your appli
 - **Technology fingerprinting:** Outdated versions of frameworks with known XSS or injection CVEs
 - **Security headers:** Missing CSP is a strong predictor of unaddressed XSS risk in the application
 
-If the external recon surfaces gaps, the authenticated testing almost always surfaces more.
+If you have since added AI features on top of this data, subscriber PII is now reaching a model provider too, and your trust page probably has not caught up.
 
-**[Get your free external recon report →](/free-recon)**
+**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
 
 ---
 

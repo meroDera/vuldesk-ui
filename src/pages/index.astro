@@ -3,37 +3,37 @@ import Layout from '~/layouts/PageLayout.astro';
 
 import Header from '~/components/widgets/Header.astro';
 import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
-import Content from '~/components/widgets/Content.astro';
+import Steps from '~/components/widgets/Steps.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Vulnerabilities at Your Desk | Vuldesk Technology Private Limited',
+  title: 'AI Feature Security Review — prompt injection, retrieval leakage, data flow | Vuldesk',
   ignoreTitleTemplate: true,
 };
+
+const REVIEW_MAILTO =
+  'mailto:contact@vuldesk.com?subject=AI Feature Security Review&body=Hi Himal,%0D%0A%0D%0AWe shipped an AI feature and want it reviewed.%0D%0A%0D%0AProduct: %0D%0AThe AI feature: %0D%0AWhere it lives (URL or docs): %0D%0A%0D%0AThanks';
+
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="announcement"></Fragment>
-
   <Fragment slot="header">
     <Header
       links={[
-        { text: 'Home', href: '#' },
-        { text: 'Services', href: '#services' },
-        { text: 'Blog', href: '/blog' },
-        { text: 'Contact', href: '#contact' },
+        { text: 'What I test', href: '#what-i-test' },
+        { text: 'How it works', href: '#how-it-works' },
+        { text: 'Price', href: '#price' },
+        { text: 'Questions', href: '#faq' },
+        { text: 'Writing', href: '/blog' },
       ]}
       actions={[
         {
-          text: 'Free Recon Report',
-          href: '/free-recon',
-        },
-        {
-          text: 'Schedule a call',
-          href: 'https://calendar.app.google/Qf3Lw4ekSRZw9mwv9',
-          target: '_blank',
+          text: 'Book a review',
+          href: REVIEW_MAILTO,
         },
       ]}
       isSticky
@@ -41,64 +41,47 @@ const metadata = {
     />
   </Fragment>
 
-  <!-- Hero Widget ******************* -->
+  <!-- Hero ************************** -->
   <Hero
-    tagline="vuldesk"
+    tagline="Fixed price · Five days · No production access"
     actions={[
-      { variant: 'primary', text: 'Get Free Recon Report', href: '/free-recon' },
-      { variant: 'secondary', text: 'Book a Pentest', href: 'mailto:contact@vuldesk.com' },
+      { variant: 'primary', text: 'Book a review', href: REVIEW_MAILTO, icon: 'tabler:mail' },
+      { variant: 'secondary', text: 'What I test', href: '#what-i-test' },
     ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'AstroWind Hero Image',
-    }}
   >
     <Fragment slot="title">
-      <span class="text-accent dark:text-white highlight">Vulnerabilities</span> at Your Desk
+      I test AI features for<br />
+      <span class="text-accent dark:text-white highlight">the things that leak</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      We help businesses stay one step ahead of <span class="font-semibold">cyber threats</span> with world-class penetration
-      testing.
+      Prompt injection, retrieval permission boundaries, and where your data actually goes when it reaches a model
+      provider. Five days, <strong>$3,500 fixed</strong>, read only. I never touch your production system. You get the
+      report your enterprise buyers keep asking for.
     </Fragment>
   </Hero>
 
-  <!-- Features2 Widget ************** -->
+  <!-- Why this exists **************** -->
   <Features2
-    id="services"
-    title="What services do we provide?"
-    tagline="our services"
+    id="why"
+    title="Your AI feature is in someone's security questionnaire right now"
+    tagline="why this exists"
+    columns={3}
     items={[
       {
-        title: 'Web & Mobile Pentesting',
-        description: 'Stop attackers at the application level.',
-        icon: 'flat-color-icons:support',
-      },
-      {
-        title: 'Network & Infrastructure Security',
-        description: 'Harden your firewalls, servers, and endpoints.',
-        icon: 'flat-color-icons:self-service-kiosk',
-      },
-      {
-        title: 'Cloud Security Reviews',
-        description: 'AWS, Azure, and GCP risk assessments.',
-        icon: 'flat-color-icons:two-smartphones',
-      },
-      {
-        title: 'Red Teaming & Social Engineering',
-        description: 'Realistic attack simulations.',
-        icon: 'flat-color-icons:edit-image',
-      },
-      {
-        title: 'Risk Assessment',
+        title: 'The questionnaire arrived and the answer is missing',
         description:
-          'Gather and identify information and information systems, analyze it, and assign risk ratings to your information systems.',
-        icon: 'flat-color-icons:services',
+          'You shipped the AI feature. Now an enterprise prospect wants to know what the model receives, who can read the retrieved documents, and what the provider retains. Your SOC 2 report predates the feature and does not mention it.',
       },
       {
-        title: 'Incident Response',
-        description: 'Prepare for, manage, and recover from data breaches and network attacks.',
-        icon: 'flat-color-icons:synchronize',
+        title: 'Your last pentest tested a product that no longer exists',
+        description:
+          'Application pentests check auth, injection, and access control at the app layer. An AI feature adds a retrieval step and an external inference call after that layer. Tenancy does not automatically survive the hop, and it is usually nobody job to check.',
+      },
+      {
+        title: 'The deal is what is actually stuck',
+        description:
+          'This is not a breach-prevention purchase. It is a sales-blocker purchase. The deliverable is a document you hand to a prospect security team so the contract moves.',
       },
     ]}
   >
@@ -107,26 +90,109 @@ const metadata = {
     </Fragment>
   </Features2>
 
-  <!-- Steps2 Widget ****************** -->
-  <Steps2
-    id="contact"
-    title="Don’t wait for a breach."
-    subtitle="Hackers are already scanning your business."
-    callToAction={{
-      text: 'Contact us',
-      href: 'https://calendar.app.google/Qf3Lw4ekSRZw9mwv9',
-      target: '_blank',
-    }}
+  <!-- What I test ******************** -->
+  <Features2
+    id="what-i-test"
+    title="What I test"
+    tagline="scope"
+    subtitle="Six failure classes specific to AI features. Each finding comes with a reproduction, an impact statement, and a fix."
     items={[
       {
-        title: 'Email us',
-        description: 'contact@vuldesk.com',
+        title: 'Prompt injection, direct and indirect',
+        description:
+          'Whether instructions inside user content, uploaded documents, or retrieved pages can redirect the model. Document ingestion pipelines are the common blind spot: the file came from someone your customer does not control.',
+        icon: 'tabler:message-code',
+      },
+      {
+        title: 'Retrieval permission boundaries',
+        description:
+          'Whether the retrieval step honours your tenancy and role model. The frequent failure is an index built once, over everything, then queried by users who should only reach part of it.',
+        icon: 'tabler:lock-access',
+      },
+      {
+        title: 'Data flow to the model provider',
+        description:
+          'What actually leaves your network on each call, which fields ride along that nobody intended, and what the provider terms say about retention and training on that payload.',
+        icon: 'tabler:cloud-data-connection',
+      },
+      {
+        title: 'Output handling',
+        description:
+          'What happens downstream when generated text is rendered, stored, logged, or passed to another system. Model output is untrusted input, and it is rarely treated that way.',
+        icon: 'tabler:code',
+      },
+      {
+        title: 'Logging and retention',
+        description:
+          'Where prompts and completions land. Support transcripts and debug logs routinely accumulate the sensitive fields your main database is careful about.',
+        icon: 'tabler:database',
+      },
+      {
+        title: 'Questionnaire readiness',
+        description:
+          'The gap between what your AI feature does and what your trust page, DPA, and subprocessor list currently claim. This is the section your buyer reads first.',
+        icon: 'tabler:file-check',
+      },
+    ]}
+  />
+
+  <!-- How it works ******************* -->
+  <Steps
+    id="how-it-works"
+    title="How it works"
+    tagline="five days"
+    subtitle="No production credentials, no VPN, no BAA, no vendor onboarding. That is the design, not a limitation."
+    items={[
+      {
+        title: 'Day 0: <span class="font-medium">You send a link</span>',
+        description:
+          'Your public product or a trial account, your docs, and your trust page. If you have a data-flow diagram, send it. If you do not, that is part of what you get back.',
         icon: 'tabler:mail',
       },
       {
-        title: 'Follow us',
-        description: '@vuldesk-technology',
-        icon: 'tabler:brand-linkedin',
+        title: 'Days 1 to 4: <span class="font-medium">I test what is reachable</span>',
+        description:
+          'Read only, against surfaces you have pointed me at, within the scope we agree in writing first. Nothing destructive, no attempt to reach other tenants data, no load testing. Same discipline as an authorised pentest, narrower blast radius.',
+        icon: 'tabler:search',
+      },
+      {
+        title: 'Day 5: <span class="font-medium">You get two documents</span>',
+        description:
+          'A findings report with reproductions and fixes, and a data-flow summary written for a buyer security team rather than for your engineers. The second one is the one that unblocks contracts.',
+        icon: 'tabler:file-text',
+      },
+    ]}
+  />
+
+  <!-- Proof ************************** -->
+  <Steps2
+    id="proof"
+    tagline="who you are dealing with"
+    title="One person, and a system still running after twenty months"
+    subtitle="I would rather show you something verifiable than tell you about capabilities. This is the honest version of what I have and what I do not."
+    callToAction={{
+      target: '_blank',
+      text: 'See Gamma IVF running',
+      href: 'https://ivf.vuldesk.com/',
+    }}
+    items={[
+      {
+        title: 'Gamma IVF',
+        description:
+          'A clinic booking platform I designed, built, deployed, and still host. Booking, contacts, gallery, and a third-party API integration. Delivered December 2024 and serving live traffic ever since.',
+        icon: 'tabler:server-bolt',
+      },
+      {
+        title: 'What that proves, and what it does not',
+        description:
+          'It proves I ship production systems for real businesses and keep them up. It is not an AI security engagement, and I am not going to imply otherwise. This offer is new and the price reflects that.',
+        icon: 'tabler:scale',
+      },
+      {
+        title: 'Why one person is the right shape',
+        description:
+          'No account manager, no bench, no handoff. You get the person doing the testing, which is also why the scope is deliberately narrow. One thing you can verify beats six you take on faith.',
+        icon: 'tabler:user-check',
       },
     ]}
   >
@@ -135,16 +201,102 @@ const metadata = {
     </Fragment>
   </Steps2>
 
-  <!-- CallToAction Widget *********** -->
+  <!-- Price ************************** -->
+  <Features
+    id="price"
+    title="$3,500 fixed, per feature"
+    tagline="price"
+    subtitle="One AI feature, five business days, one number. No discovery call required to see it. If the scope does not fit, I will say so and tell you what would."
+    columns={2}
+    items={[
+      {
+        title: 'All six failure classes',
+        description: 'Tested against the surfaces you point me at, in a scope agreed in writing before I start.',
+        icon: 'tabler:list-check',
+      },
+      {
+        title: 'Findings report',
+        description: 'Reproduction, impact statement, and a fix for each issue. Written so an engineer can act on it.',
+        icon: 'tabler:file-text',
+      },
+      {
+        title: 'Data-flow summary',
+        description:
+          'Written for a buyer security team rather than for your engineers. This is the document that unblocks contracts.',
+        icon: 'tabler:sitemap',
+      },
+      {
+        title: 'Provider-terms review',
+        description: 'What your model provider retains, what it may train on, and which subprocessors are involved.',
+        icon: 'tabler:file-search',
+      },
+      {
+        title: 'Free re-test',
+        description: 'Once you have fixed the findings, I verify the fixes at no extra cost.',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: 'No onboarding overhead',
+        description:
+          'No production access, no credentials to provision, no BAA to negotiate, no vendor security review of me.',
+        icon: 'tabler:shield-check',
+      },
+    ]}
+  />
+
+  <!-- FAQs *************************** -->
+  <FAQs
+    id="faq"
+    title="The questions I actually get"
+    tagline="straight answers"
+    items={[
+      {
+        title: 'Our team built it. Why would they not find this themselves?',
+        description:
+          'They might. The same reason code review exists applies here: the person who designed the retrieval logic is the worst-placed person to notice what it assumes. I am not better than your engineers, I am just not the one who wrote it.',
+      },
+      {
+        title: 'We already have SOC 2 and a recent pentest.',
+        description:
+          'Both good, neither sufficient. SOC 2 audits your controls, not your prompt-handling. A pentest scoped before you shipped the AI feature did not test the AI feature. Your buyer will notice the dates.',
+      },
+      {
+        title: 'Do you need access to our production system?',
+        description:
+          'No. Public product or a trial account, your documentation, and your trust page. That is the whole point: no credentials to provision, no BAA to negotiate, no security review of me before you can buy a security review from me.',
+      },
+      {
+        title: 'Who are you, and where are you?',
+        description:
+          'I am Himal, a security engineer working from Kathmandu. Nothing leaves your environment, because I am never in it. Everything I test is reachable from the public internet, in writing-agreed scope, and you can revoke a trial account whenever you like.',
+      },
+      {
+        title: 'What if you find nothing?',
+        description:
+          'Then you get the data-flow summary and a report saying the six classes came back clean, which is a document worth having when the questionnaire lands. I have never seen a first review return nothing, but if it does, you keep the deliverable and the price stands.',
+      },
+      {
+        title: 'Is this a scan?',
+        description:
+          'No. Scanners do not test whether a retrieved document can rewrite the instructions, and they do not read your provider terms. This is manual work, which is why it takes five days and why the scope is one feature.',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CTA **************************** -->
   <CallToAction
-    title="Ready to outsmart hackers?"
-    subtitle="Let’s secure your business before they strike."
+    title="Send me the feature and the docs"
+    subtitle="One email. No call, no form, no intake deck. I will tell you within a day whether the scope fits and what I would look at first."
     actions={[
       {
         variant: 'primary',
-        text: 'Get started now',
-        href: 'https://calendar.app.google/Qf3Lw4ekSRZw9mwv9',
-        target: '_blank',
+        text: 'Book a review',
+        href: REVIEW_MAILTO,
+        icon: 'tabler:mail',
       },
     ]}
   />

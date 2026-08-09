@@ -98,7 +98,7 @@ If your product is in any of these categories and you have not had a formal secu
 
 ---
 
-## What a free recon report tells you
+## What an external review tells you
 
 A free external recon report does not test your OAuth implementation directly — that requires authenticated access to your API. What it does tell you:
 
@@ -107,9 +107,9 @@ A free external recon report does not test your OAuth implementation directly �
 - Whether your subdomains expose staging or dev environments with weaker security controls
 - Whether your SSL and security header configuration meets baseline standards
 
-If the recon surfaces gaps at the external layer, the internal OAuth implementation almost certainly has not been reviewed either.
+The same question applies one layer over: if you have shipped an AI feature, those tokens and the data they reach may now be flowing somewhere your subprocessor list does not mention.
 
-**[Get your free recon report →](/free-recon)**
+**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
 
 ---
 

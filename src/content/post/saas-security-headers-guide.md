@@ -144,15 +144,15 @@ ServerSignature Off
 
 ---
 
-## How we check these in the free recon report
+## How I check these
 
 Every external recon report we run includes a full security header audit — all seven headers above, with a pass/fail verdict and the actual header value (or its absence) documented.
 
 For most bootstrapped SaaS apps, adding the missing headers takes less than an hour and closes a meaningful slice of the external attack surface immediately.
 
-If you want to know which of these your app is missing right now:
+Headers are the layer buyers can check themselves. The layer they now ask about, and usually cannot check, is what your AI feature sends to a model provider.
 
-**[Get your free recon report — delivered in 24 hours →](/free-recon)**
+**[Get your AI feature reviewed →](mailto:contact@vuldesk.com?subject=AI Feature Security Review)**
 
 ---
 

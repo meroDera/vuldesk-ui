@@ -35,14 +35,14 @@ const metadata = {
     <Header
       links={[
         { text: 'Home', href: '/' },
-        { text: 'Services', href: '/#services' },
+        { text: 'What I test', href: '/#what-i-test' },
         { text: 'Blog', href: '/blog' },
-        { text: 'Contact', href: '/#contact' },
+        { text: 'Price', href: '/#price' },
       ]}
       actions={[
         {
-          text: 'Free Recon Report',
-          href: '/free-recon',
+          text: 'Book a review',
+          href: 'mailto:contact@vuldesk.com?subject=AI Feature Security Review',
         },
       ]}
       isSticky
@@ -61,13 +61,13 @@ const metadata = {
   </section>
 
   <CallToAction
-    title="Free external recon report"
-    subtitle="Email us your domain — we'll send your attack surface report within 24 hours."
+    title="Shipped an AI feature?"
+    subtitle="I test AI features for prompt injection, retrieval leakage and data-flow exposure. Five days, fixed price, no production access."
     actions={[
       {
         variant: 'primary',
-        text: 'Get your free report',
-        href: '/free-recon',
+        text: 'Email me',
+        href: 'mailto:contact@vuldesk.com?subject=AI Feature Security Review',
       },
     ]}
   />

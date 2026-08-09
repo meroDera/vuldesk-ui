@@ -11,7 +11,7 @@ metadata:
   title:
     default: Vuldesk
     template: '%s — Vuldesk'
-  description: "Vuldesk helps SaaS companies find and fix security vulnerabilities before attackers do — web app pentesting, API security, and cloud security reviews for bootstrapped and growth-stage teams."
+  description: "AI feature security reviews for B2B SaaS. Prompt injection, retrieval permission boundaries, and data flow to model providers — tested in five days for a fixed $3,500, with no access to your production system. You get the report your enterprise buyers ask for."
   robots:
     index: true
     follow: true
@@ -48,14 +48,17 @@ apps:
       robots:
         index: true
 
+    # Disabled: the [category] and [tag] route files were deleted in d0b2a55,
+    # so these only rendered links to pages that 404. Re-enable together with
+    # src/pages/[...blog]/[category]/ and [tag]/ if the blog outgrows a flat list.
     category:
-      isEnabled: true
+      isEnabled: false
       pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
       robots:
         index: true
 
     tag:
-      isEnabled: true
+      isEnabled: false
       pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
       robots:
         index: false

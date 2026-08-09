@@ -27,6 +27,12 @@ const whenExternalScripts = (items = []) =>
 export default defineConfig({
   output: 'static',
   site: 'https://www.vuldesk.com',
+
+  redirects: {
+    // Pentest-era lead magnet, retired. Nothing replaces it yet.
+    '/free-recon': '/',
+  },
+
   integrations: [
     tailwind({
       applyBaseStyles: false,

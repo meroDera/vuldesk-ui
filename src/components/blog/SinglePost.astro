@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { APP_BLOG } from 'astrowind:config';
 
 import Image from '~/components/common/Image.astro';
 import PostTags from '~/components/blog/Tags.astro';
@@ -39,9 +40,13 @@ const { post, url } = Astro.props;
               <>
                 {' '}
                 ·{' '}
-                <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
-                  {post.category.title}
-                </a>
+                {!APP_BLOG?.category?.isEnabled ? (
+                  <span class="inline-block">{post.category.title}</span>
+                ) : (
+                  <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
+                    {post.category.title}
+                  </a>
+                )}
               </>
             )
           }
