@@ -1,7 +1,7 @@
 {
-  "name": "@onwidget/astrowind",
-  "version": "1.0.0-beta.33",
-  "description": "AstroWind: A free template using Astro 4.0 and Tailwind CSS. Astro starter theme.",
+  "name": "vuldesk-ui",
+  "version": "1.0.0",
+  "description": "Vuldesk — AI agent features built into existing B2B SaaS products.",
   "type": "module",
   "private": true,
   "engines": {
@@ -14,7 +14,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier -w .",
-    "lint:eslint": "eslint ."
+    "lint:eslint": "eslint .",
+    "check:integrity": "node scripts/check-integrity.mjs",
+    "test": "npm run build && npm run check:integrity"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.5",

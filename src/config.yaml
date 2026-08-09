@@ -23,8 +23,8 @@ metadata:
         height: 628
     type: website
   twitter:
-    handle: '@vuldesk'
-    site: '@vuldesk'
+    handle: '@vuldesk_tech'
+    site: '@vuldesk_tech'
     cardType: summary_large_image
 
 i18n:

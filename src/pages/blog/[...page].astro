@@ -1,11 +1,10 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 import Layout from '~/layouts/PageLayout.astro';
-import Header from '~/components/widgets/Header.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import BlogCTA from '~/components/blog/BlogCTA.astro';
 
 import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
 
@@ -21,8 +20,9 @@ const { page } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
 
 const metadata = {
-  title: `Security Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''} — Vuldesk`,
-  description: 'Web application security research, penetration testing findings, and practical guides for SaaS founders.',
+  title: `Writing${currentPage > 1 ? ` — Page ${currentPage}` : ''} — Vuldesk`,
+  description:
+    'Notes on AI feature security, application security, and building agents that stay reliable in production.',
   robots: blogListRobots,
   openGraph: {
     type: 'blog',
@@ -31,44 +31,15 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="header">
-    <Header
-      links={[
-        { text: 'Home', href: '/' },
-        { text: 'What I built', href: '/#proof' },
-        { text: 'Blog', href: '/blog' },
-        { text: 'Price', href: '/#price' },
-      ]}
-      actions={[
-        {
-          text: 'Describe your feature',
-          href: 'mailto:contact@vuldesk.com?subject=AI feature build',
-        },
-      ]}
-      isSticky
-      showToggleTheme
-    />
-  </Fragment>
-
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
     <Headline
-      subtitle="Penetration testing findings, API security research, and practical security guides for SaaS founders."
+      subtitle="Notes on AI feature security, application security, and building agents that hold up once they are handed over."
     >
-      Security Blog
+      Writing
     </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
   </section>
 
-  <CallToAction
-    title="Need an AI feature built?"
-    subtitle="I build AI agent features into existing products. One feature, fixed price, delivered as a pull request you review and deploy."
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Describe your feature',
-        href: 'mailto:contact@vuldesk.com?subject=AI feature build',
-      },
-    ]}
-  />
+  <BlogCTA />
 </Layout>

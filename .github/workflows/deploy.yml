@@ -1,7 +1,18 @@
 name: Deploy to GitHub Pages
 
+# Every push to main deploys. The integrity check below runs BEFORE the deploy
+# job and blocks it on failure, so a broken contact link or template residue
+# cannot reach production the way it did on 2026-08-09.
+#
+# This is not a substitute for branch protection. Enable "Require a pull request
+# before merging" and "Require status checks to pass" on main in repo settings,
+# with `verify` as the required check. Until then a direct push to main still
+# ships without human review — it just cannot ship a broken link.
+
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -10,17 +21,44 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  build:
+  verify:
+    name: Build and verify
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
-        uses: actions/checkout@v4
-      - name: Install, build, and upload your site
-        uses: withastro/action@v2
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint:eslint
+
+      - name: Build
+        run: npm run build
+
+      - name: Site integrity
+        run: npm run check:integrity
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
-    needs: build
+    name: Deploy
+    # Blocked by verify. A failing lint, build or integrity check stops the deploy.
+    needs: verify
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

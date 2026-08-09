@@ -1,0 +1,20 @@
+---
+// Shared call to action for the blog list and blog post templates.
+// Previously duplicated in both; the two copies drifted on 2026-08-09 and
+// both kept pointing at a page that had already been deleted.
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { CONTACT_MAILTO } from '~/navigation';
+---
+
+<CallToAction
+  title="Need an AI feature built?"
+  subtitle="I build AI agent features into existing products. One feature, fixed price, delivered as a pull request you review and deploy."
+  actions={[
+    {
+      variant: 'primary',
+      text: 'Describe your feature',
+      href: CONTACT_MAILTO,
+      icon: 'tabler:mail',
+    },
+  ]}
+/>

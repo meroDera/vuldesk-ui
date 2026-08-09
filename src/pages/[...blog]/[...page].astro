@@ -1,11 +1,10 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 import Layout from '~/layouts/PageLayout.astro';
-import Header from '~/components/widgets/Header.astro';
 import SinglePost from '~/components/blog/SinglePost.astro';
 import ToBlogLink from '~/components/blog/ToBlogLink.astro';
 import RelatedPosts from '~/components/blog/RelatedPosts.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import BlogCTA from '~/components/blog/BlogCTA.astro';
 
 import { blogPostRobots, getStaticPathsBlogPost } from '~/utils/blog';
 
@@ -31,25 +30,6 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="header">
-    <Header
-      links={[
-        { text: 'Home', href: '/' },
-        { text: 'What I built', href: '/#proof' },
-        { text: 'Blog', href: '/blog' },
-        { text: 'Price', href: '/#price' },
-      ]}
-      actions={[
-        {
-          text: 'Describe your feature',
-          href: 'mailto:contact@vuldesk.com?subject=AI feature build',
-        },
-      ]}
-      isSticky
-      showToggleTheme
-    />
-  </Fragment>
-
   <SinglePost post={{ ...post, image: post?.image || '' } as Parameters<typeof SinglePost>[0]['post']} url={Astro.url}>
     {post.Content ? <post.Content /> : ''}
   </SinglePost>
@@ -57,15 +37,5 @@ const metadata = {
   <ToBlogLink />
   <RelatedPosts post={post} />
 
-  <CallToAction
-    title="Need an AI feature built?"
-    subtitle="I build AI agent features into existing products. One feature, fixed price, delivered as a pull request you review and deploy."
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Describe your feature',
-        href: 'mailto:contact@vuldesk.com?subject=AI feature build',
-      },
-    ]}
-  />
+  <BlogCTA />
 </Layout>

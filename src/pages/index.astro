@@ -1,7 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Header from '~/components/widgets/Header.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
@@ -9,37 +8,21 @@ import Steps from '~/components/widgets/Steps.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import { CONTACT_MAILTO } from '~/navigation';
 
 const metadata = {
   title: 'I build the AI feature your roadmap keeps deprioritising | Vuldesk',
   ignoreTitleTemplate: true,
 };
 
-const BUILD_MAILTO =
-  'mailto:contact@vuldesk.com?subject=AI feature build&body=Hi Himal,%0D%0A%0D%0AThe feature we want built:%0D%0A%0D%0AProduct: %0D%0AWhat it should do: %0D%0AWhat it reads (docs, tickets, filings, transcripts, records): %0D%0AStack: %0D%0A%0D%0AThanks';
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="header">
-    <Header
-      links={[
-        { text: 'What I built', href: '#proof' },
-        { text: 'What transfers', href: '#transfers' },
-        { text: 'How it works', href: '#how-it-works' },
-        { text: 'Price', href: '#price' },
-        { text: 'Writing', href: '/blog' },
-      ]}
-      actions={[{ text: 'Describe your feature', href: BUILD_MAILTO }]}
-      isSticky
-      showToggleTheme
-    />
-  </Fragment>
-
   <!-- Hero: lead with the agent, not the offer -->
   <Hero
     tagline="AI agent features, built and handed over"
     actions={[
-      { variant: 'primary', text: 'Describe your feature', href: BUILD_MAILTO, icon: 'tabler:mail' },
+      { variant: 'primary', text: 'Describe your feature', href: CONTACT_MAILTO, icon: 'tabler:mail' },
       { variant: 'secondary', text: 'See what I built', href: '#proof' },
     ]}
   >
@@ -164,7 +147,7 @@ const BUILD_MAILTO =
       {
         title: 'You get the code, not a dependency on me',
         description:
-          'I work against a branch and a staging environment. You review the pull request and you deploy it. No production credentials, no BAA, no vendor onboarding, and nothing of mine running inside your stack afterwards.',
+          'I work against a branch and a staging environment, never production. You keep your own model provider keys, so the account, the bill and the data flow stay yours. You review the pull request and you deploy it, and nothing of mine runs inside your stack afterwards.',
         icon: 'tabler:git-pull-request',
       },
       {
@@ -217,7 +200,7 @@ const BUILD_MAILTO =
   <!-- Price -->
   <Features
     id="price"
-    title="Fixed price per feature"
+    title="Fixed price, quoted in one email"
     tagline="price"
     subtitle="Quoted in one email once you describe the feature. Not an hourly rate, not a retainer, and not a range that gets resolved later. I would rather lose the deal on the number than discover the scope halfway through."
     columns={2}
@@ -271,9 +254,9 @@ const BUILD_MAILTO =
           'One job, with one input shape and one output shape. Extracting fields from uploaded documents is one feature. Extracting fields, then routing to a reviewer, then emailing the customer is three. I will tell you which one you have described before quoting, not after.',
       },
       {
-        title: 'Do you need access to our production system?',
+        title: 'What access do you actually need?',
         description:
-          'No. A repo branch and a staging environment with representative data, scrubbed or synthetic. You review the pull request and deploy it yourself. That means no BAA, no vendor security review, and no credentials to revoke when we are done.',
+          'A repo branch and a staging environment with scrubbed or synthetic data. Never production, and never your customers\' real records. You keep your own model provider keys. Whether that clears your vendor review is your call, not mine to promise: send me the questionnaire and I will fill it in. Being able to answer it precisely is most of what you are hiring me for.',
       },
       {
         title: 'What happens when the model gets it wrong?',
@@ -306,7 +289,7 @@ const BUILD_MAILTO =
       {
         variant: 'primary',
         text: 'Describe your feature',
-        href: BUILD_MAILTO,
+        href: CONTACT_MAILTO,
         icon: 'tabler:mail',
       },
     ]}
