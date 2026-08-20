@@ -18,10 +18,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: proof-links
+  cancel-in-progress: true
+
 jobs:
   check:
     name: External proof links
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

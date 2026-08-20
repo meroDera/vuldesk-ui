@@ -39,6 +39,14 @@ if (!existsSync(DIST)) {
 const pages = walk(DIST);
 const rel = (p) => p.slice(DIST.length);
 
+function statSafeIsDir(p) {
+  try {
+    return statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
 // ── CHECK 1: internal links resolve ─────────────────────────────────────────
 // Fragments are stripped; an anchor to a missing id is a softer failure than a
 // 404 and is not worth blocking a deploy over.
@@ -51,10 +59,14 @@ for (const page of pages) {
     if (IGNORE_PREFIX.some((p) => href.startsWith(p))) continue;
     linkCount++;
     const bare = href.replace(/\/$/, '') || '/';
+    // "/" must resolve to a real homepage, not to the dist directory itself
+    // (existsSync(dist) is trivially true and hid a missing index.html).
     const resolves =
-      existsSync(join(DIST, href)) ||
-      existsSync(join(DIST, bare)) ||
-      existsSync(join(DIST, bare, 'index.html'));
+      bare === '/'
+        ? existsSync(join(DIST, 'index.html'))
+        : existsSync(join(DIST, href)) && !statSafeIsDir(join(DIST, href)) ||
+          existsSync(join(DIST, bare)) && !statSafeIsDir(join(DIST, bare)) ||
+          existsSync(join(DIST, bare, 'index.html'));
     if (!resolves) failures.push(`[link] ${rel(page)} -> ${href} does not resolve`);
   }
 }
@@ -86,6 +98,8 @@ const BANNED = [
   ['Cupertino', 'template placeholder address'],
   ['is a Demo', 'template demo disclaimer'],
   ['just a Demo', 'template demo disclaimer (wording variant that evaded "is a Demo")'],
+  ['[photo', 'unshipped placeholder (ship-floor item D7 must never reach production)'],
+  ['[todo', 'unshipped placeholder'],
   ['somecoolemail@domain.com', 'placeholder contact address'],
   ['lorem ipsum', 'placeholder copy'],
   ['AstroWind LLC', 'template company name'],
@@ -144,10 +158,13 @@ function visibleText(html) {
 }
 
 const indexPath = join(DIST, 'index.html');
+// Missing inputs FAIL — a gate that silently skips is not a gate.
+if (!existsSync(indexPath)) failures.push('[copy] dist/index.html is missing — homepage did not build');
+if (!existsSync(INVENTORY)) failures.push(`[copy] ${INVENTORY} is missing — jargon gate cannot run`);
 if (existsSync(indexPath) && existsSync(INVENTORY)) {
   const indexHtml = readFileSync(indexPath, 'utf8');
   const metaBits = [];
-  for (const attr of ['og:title', 'og:description', 'twitter:title', 'twitter:description']) {
+  for (const attr of ['og:title', 'og:description', 'og:image:alt', 'twitter:title', 'twitter:description']) {
     const m = indexHtml.match(new RegExp(`<meta[^>]+property="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+property="${attr}"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+name="${attr}"[^>]+content="([^"]*)"`, 'i'));
@@ -158,6 +175,19 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
     indexHtml.match(/<meta[^>]+content="([^"]*)"[^>]+name="description"/i);
   if (descM) metaBits.push(descM[1]);
 
+  // Attribute-carried copy the tag-stripper would miss: alt text, aria-labels,
+  // and the pre-filled mailto drafts (the buyer reads that text one click in).
+  for (const [, alt] of indexHtml.matchAll(/\b(?:alt|aria-label)="([^"]*)"/gi)) {
+    if (alt) metaBits.push(alt);
+  }
+  for (const [, mail] of indexHtml.matchAll(/href="(mailto:[^"]*)"/gi)) {
+    try {
+      metaBits.push(decodeURIComponent(mail.replace(/&amp;/g, '&')));
+    } catch {
+      metaBits.push(mail);
+    }
+  }
+
   const text = visibleText(indexHtml);
   const words = text.split(' ').filter((w) => w && !['—', '·'].includes(w));
   if (words.length > WORD_BUDGET) {
@@ -166,6 +196,8 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
 
   // Parse inventory terms from the markdown table: "| term | where | alt |".
   // Entries like "agent / AI agent" split into separate terms.
+  // KNOWN LIMIT: the "Missed items" bullet section of the inventory is prose
+  // and is NOT machine-parsed; its items are enforced by review, not this gate.
   const invRaw = readFileSync(INVENTORY, 'utf8');
   const terms = new Set();
   for (const line of invRaw.split('\n')) {
@@ -181,7 +213,7 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
     // whole-word/phrase match to avoid substring hits ("live" inside "deliver")
     const re = new RegExp(`(^|[^a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^a-z])`);
     if (re.test(haystack)) {
-      failures.push(`[jargon] index.html (or its meta strings) contains inventory term "${term}"`);
+      failures.push(`[jargon] index.html (or its meta/attribute strings) contains inventory term "${term}"`);
     }
   }
 }
@@ -189,12 +221,22 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
 // ── CHECK 6: blog teardown is complete ──────────────────────────────────────
 // Blog disabled + posts drafted (design doc route table). None of it may leak
 // into the built output — no routes, no feed, no RSS chrome.
-const blogEnabled = /blog:[\s\S]{0,200}?isEnabled:\s*true/.test(configRaw);
+// Lazy unbounded match: the first isEnabled after the blog: label, however many
+// comment lines sit between them (a 200-char window silently broke on comments).
+const blogEnabledMatch = configRaw.match(/\bblog:\s*[\s\S]*?\bisEnabled:\s*(\S+)/);
+const blogEnabled = blogEnabledMatch ? blogEnabledMatch[1] === 'true' : true; // unparseable => assume enabled, checks stay quiet rather than wrong
 if (!blogEnabled) {
   if (existsSync(join(DIST, 'blog'))) failures.push('[teardown] dist/blog/ exists while blog is disabled');
   if (existsSync(join(DIST, 'rss.xml'))) failures.push('[teardown] dist/rss.xml exists while blog is disabled');
+  // Old post URLs must survive as redirect tombstones (astro.config redirects
+  // build meta-refresh pages) — a hard 404 breaks every old backlink/bookmark.
   for (const old of ['email-marketing-platform-security', 'oauth-token-security-saas', 'saas-security-headers-guide']) {
-    if (existsSync(join(DIST, old))) failures.push(`[teardown] dist/${old}/ still builds a drafted post`);
+    const tomb = join(DIST, old, 'index.html');
+    if (!existsSync(tomb)) {
+      failures.push(`[teardown] dist/${old}/ has no redirect tombstone — old links hard-404`);
+    } else if (!/http-equiv="refresh"/i.test(readFileSync(tomb, 'utf8'))) {
+      failures.push(`[teardown] dist/${old}/ builds real content instead of a redirect while the post is drafted`);
+    }
   }
   for (const page of pages) {
     const html = readFileSync(page, 'utf8');
@@ -206,9 +248,18 @@ if (!blogEnabled) {
 // The chat-link preview is the buyer's step zero (design review D8).
 if (existsSync(indexPath)) {
   const indexHtml = readFileSync(indexPath, 'utf8');
-  if (!/<meta[^>]+(property="og:image"|name="twitter:image")[^>]+content="[^"]+"/i.test(indexHtml) &&
-      !/<meta[^>]+content="[^"]+"[^>]+property="og:image"/i.test(indexHtml)) {
+  const ogImg =
+    indexHtml.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i) ||
+    indexHtml.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i);
+  if (!ogImg) {
     failures.push('[meta] index.html has no og:image');
+  } else {
+    // The declared image must actually exist in the build — a preview card
+    // with a dead image URL passes a presence check and fails in every chat app.
+    const imgPath = ogImg[1].replace(/^https?:\/\/[^/]+/, '');
+    if (imgPath.startsWith('/') && !existsSync(join(DIST, imgPath))) {
+      failures.push(`[meta] og:image points at ${imgPath} which is not in the build`);
+    }
   }
   if (
     !/<meta[^>]+name="description"[^>]+content="[^"]+"/i.test(indexHtml) &&
@@ -224,25 +275,58 @@ if (existsSync(indexPath)) {
 // blocks a deploy; the weekly proof-links.yml workflow sets
 // EXTERNAL_LINKS=fail and fails loud. HEAD request with one retry.
 const EXTERNAL_MODE = process.env.EXTERNAL_LINKS || 'warn';
-const PROOF_URLS = ['https://ivf.vuldesk.com'];
 
-async function headOk(url) {
-  for (let attempt = 0; attempt < 2; attempt++) {
+// The URLs under check are EXTRACTED from the built homepage, not hardcoded —
+// a typo'd or swapped link on the page is checked as-published, and a link
+// removed from the page stops being checked (adversarial review P2).
+function externalLinks() {
+  if (!existsSync(indexPath)) return [];
+  const html = readFileSync(indexPath, 'utf8');
+  const urls = new Set();
+  for (const [, href] of html.matchAll(/href="(https?:\/\/[^"]+)"/g)) {
     try {
-      const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(10000) });
-      if (res.ok || res.status === 405) return true; // some hosts reject HEAD
+      const u = new URL(href);
+      // Scope: our own non-www subdomains — the proof links whose health the
+      // page stakes claims on (ivf.vuldesk.com today). Third-party socials are
+      // deliberately excluded: twitter/linkedin 403 bot-blocks from CI would
+      // make the weekly cron cry wolf.
+      if (u.hostname.endsWith('.vuldesk.com') && u.hostname !== 'www.vuldesk.com') {
+        urls.add(href);
+      }
     } catch {
-      /* retry once */
+      failures.push(`[external] unparseable external href on homepage: ${href}`);
     }
   }
-  return false;
+  return [...urls];
+}
+
+async function linkOk(url) {
+  const wantHost = new URL(url).hostname;
+  for (const method of ['HEAD', 'GET']) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch(url, { method, redirect: 'follow', signal: AbortSignal.timeout(10000) });
+        // A redirect that lands on a DIFFERENT host is a failure even with a
+        // 200: a hijacked/parked destination must not certify as healthy.
+        const finalHost = new URL(res.url || url).hostname;
+        if (finalHost !== wantHost) {
+          return { ok: false, why: `redirected off-host to ${finalHost}` };
+        }
+        if (res.ok) return { ok: true };
+        if (res.status === 405 && method === 'HEAD') break; // host rejects HEAD — try GET
+      } catch {
+        /* retry, then fall through to GET */
+      }
+    }
+  }
+  return { ok: false, why: 'did not respond with a success status' };
 }
 
 if (EXTERNAL_MODE !== 'skip') {
-  for (const url of PROOF_URLS) {
-    const ok = await headOk(url);
-    if (!ok) {
-      const msg = `[external] proof link ${url} did not respond`;
+  for (const url of externalLinks()) {
+    const res = await linkOk(url);
+    if (!res.ok) {
+      const msg = `[external] homepage link ${url} failed: ${res.why}`;
       if (EXTERNAL_MODE === 'fail') failures.push(msg);
       else console.warn(`  WARN ${msg} (push mode: not blocking the deploy)`);
     }

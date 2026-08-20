@@ -31,6 +31,12 @@ export default defineConfig({
   redirects: {
     // Pentest-era lead magnet, retired. Nothing replaces it yet.
     '/free-recon': '/',
+    // Pentest-era blog posts, drafted 2026-08-20 (blog disabled). Static
+    // meta-refresh tombstones keep old backlinks/bookmarks from hard-404ing;
+    // CHECK 6 in scripts/check-integrity.mjs asserts these stay redirects.
+    '/email-marketing-platform-security': '/',
+    '/oauth-token-security-saas': '/',
+    '/saas-security-headers-guide': '/',
   },
 
   integrations: [
