@@ -308,3 +308,104 @@ The Aug 9 cadence rule stands unchanged: **five outbound messages every weekday 
   named human keeps being the missing ingredient, and it is again Open Question 1.
 - *"Nothing more."* Your instinct to subtract was the correct call this session, and
   the evidence lined up behind it: 8 sections to 5 blocks, 212 terms to zero.
+
+## Engineering Review Amendments (2026-08-20, /plan-eng-review)
+
+Ten findings, all resolved with the founder. These amend the plan above; where they
+conflict, the amendment wins.
+
+**CI and gates**
+
+- **A1 (from 1A+8A).** Extend `scripts/check-integrity.mjs` with a HEAD check (one
+  retry) for the two external proof URLs. New workflow
+  `.github/workflows/proof-links.yml` (schedule weekly + workflow_dispatch, one job,
+  fails loud) — NOT in deploy.yml, whose upload/deploy jobs are gated only on
+  `!= pull_request` and would redeploy on a schedule event. Push-triggered verify
+  treats external failures as warn-only.
+- **A2 (from 4A).** Extend `scripts/check-integrity.mjs`: CHECK 5 — index.html
+  visible text ≤450 words and zero terms from
+  `docs/designs/assets/jargon-inventory.md` (match whole terms, split entries on
+  " / ", per-term allowlist in the script for legitimate uses, e.g. "See it live");
+  CHECK 6 — no `dist/blog/`, no `rss.xml`, old post URLs absent, no RSS
+  link/button in built HTML; CHECK 7 — `og:image` and meta description present.
+  Verify the gates by planting a banned term locally and watching the build fail.
+- **A3 (from 5A).** Commit `docs/designs/assets/cold-read-harness.md`: the three
+  persona definitions verbatim, the 5-second protocol, the answer schema, pass bar
+  3/3 at ≥7/10. Success criterion 3 references this file.
+
+**Copy honesty pass (amends the punch list; from 9A)**
+
+- Data Q&A becomes: "Your records go into your tool and the AI service it runs
+  on — under your account, not mine. I never use them for anything else."
+- Ownership Q&A: "the accounts move to your name" replaces "every password".
+- Maintenance tier gains a stated boundary (response time + monthly hour cap;
+  founder sets the numbers with OQ3).
+- Close line: "I will reply within one business day, with a price — or the
+  questions I need answered first."
+- Both CTA buttons get a visible plain-text `contact@vuldesk.com` beside them
+  (mailto fails silently on machines with no mail client).
+- The wrong-answer Q&A names the mechanism: what the tool flags as unsure goes to
+  a person; nothing irreversible happens automatically.
+
+**Teardown completeness (from 7A)**
+
+- Remove `showRssFeed` from `src/layouts/PageLayout.astro:19`.
+- Verify the Header renders the single action visibly on mobile — no empty
+  hamburger; check /terms and /privacy after the change.
+- Correction: `/free-recon` is not "gone" — `astro.config.mjs:31` keeps a
+  deliberate redirect to `/`. Keep it.
+- Correction: the footer already carries "© 2026 Vuldesk Technologies Private
+  Limited" (navigation.js footNote) — that task is already done.
+
+**Share card (from 2A)**
+
+- Replace `src/assets/images/default.png` with a 1200×628 card carrying the H1
+  offer line in plain type, wordmark small; keep under ~200KB.
+
+**Offer-line drift checklist (from 3A) — any future copy change walks all five:**
+
+1. `src/pages/index.astro` H1 + hero sub
+2. `src/config.yaml` metadata description
+3. OG card image (`default.png`)
+4. `CONTACT_MAILTO` subject/body in `src/navigation.js`
+5. Outbound message templates
+
+**Ship floor (from 10A) — required, not removable:** real price numbers, founder
+photo, and the "still running" proof card with its working link (Gamma may stay
+unnamed while OQ2 is open). Removable stays removable: the sample-report card
+(OQ4), naming Gamma (OQ2).
+
+**Already fixed during review (6B, deployed):** privacy.md's live "is just a Demo"
+sentence deleted; `'just a Demo'` added to the integrity check's banned strings.
+
+**CI gate flow after amendments:**
+
+```
+push/PR ──► verify: lint ─ build ─ check-integrity
+                             ├─ CHECK 1-4 (existing: links, mailto, banned, category)
+                             ├─ CHECK 5 word count + jargon gate   [blocks deploy]
+                             ├─ CHECK 6 blog/rss teardown          [blocks deploy]
+                             ├─ CHECK 7 og:image + description     [blocks deploy]
+                             └─ external proof links               [warn only]
+             └──► deploy (push to main only)
+
+weekly cron ──► proof-links.yml ──► external proof links [fails loud → email]
+```
+
+## GSTACK REVIEW REPORT
+
+| Review | Trigger | Why | Runs | Status | Findings |
+|--------|---------|-----|------|--------|----------|
+| CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
+| Codex Review | `/codex review` | Independent 2nd opinion | 1 | ISSUES FOUND (absorbed) | 14 points; 4 verified repo defects, all resolved via D6-D10 |
+| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | CLEAR (PLAN) | 10 issues, 0 critical gaps, all folded as amendments A1-A3 + copy/teardown/floor |
+| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
+| DX Review | `/plan-devex-review` | Developer experience gaps | 0 | — | — |
+
+**CODEX:** Outside voice verified four repo-level defects (live "just a Demo" privacy line — hotfixed and deployed during review; RSS button hardcoded in layout; schedule-trigger would redeploy; mobile empty-hamburger risk) and forced the copy honesty pass.
+
+**CROSS-MODEL:** Claude review and Codex converged on mechanizing the ship gates and completing the teardown; Codex's strategic re-arguments (wedge breadth, comprehension vs demand) were settled office-hours decisions and were not reopened.
+
+**VERDICT:** ENG CLEARED — ready to implement. Ship gate: `verify` job green (CHECK 1-7 after A2 lands) + ship floor from 10A.
+
+NO UNRESOLVED DECISIONS
