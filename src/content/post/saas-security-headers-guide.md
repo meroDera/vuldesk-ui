@@ -1,4 +1,5 @@
 ---
+draft: true
 publishDate: 2026-03-20T00:00:00Z
 title: 'The 7 HTTP Security Headers Every SaaS App Is Missing (And What Happens When They Are Gone)'
 excerpt: 'Security headers are the fastest, cheapest wins in web application security. Yet in our external recon reports, we find at least three missing on almost every bootstrapped SaaS we check. Here is what each one does and what attackers can do without it.'

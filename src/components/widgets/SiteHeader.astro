@@ -1,0 +1,62 @@
+---
+// Minimal site header (design review D3, 2026-08-20): wordmark + one action,
+// visible at every viewport, non-sticky, no menu, no toggle, no JS.
+// Replaces the AstroWind Header, whose actions render inside a hamburger on
+// mobile — an empty menu when links=[] (eng review 7A / outside voice P10).
+import { getHomePermalink } from '~/utils/permalinks';
+import { CONTACT_MAILTO } from '~/navigation';
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="wordmark" href={getHomePermalink()} aria-label="Vuldesk — home">VULDESK</a>
+    <a class="header-action" href={CONTACT_MAILTO}>Email me</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .site-header-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--aw-font-heading), serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 1.0625rem; /* 17px */
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .header-action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px; /* touch target (D15) */
+    border: 2px solid var(--ink);
+    padding: 0.5rem 1.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .header-action:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  a:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  @media (max-width: 640px) {
+    .site-header-inner {
+      padding: 14px 20px;
+    }
+  }
+</style>

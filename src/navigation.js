@@ -1,28 +1,24 @@
-import { getPermalink, getBlogPermalink } from './utils/permalinks';
+import { getPermalink } from './utils/permalinks';
 
 // Single source of truth for the contact link. Every Astro page imports this.
 // It was previously hardcoded in 7 files; a find-and-replace across them ate the
 // `@` and shipped `mailto:contact.com` to three pages, so it lives here now.
 export const CONTACT_EMAIL = 'contact@vuldesk.com';
 
+// Plain-English draft (design doc D8/9A): the buyer meets this text one click
+// after the hero, so it obeys the same jargon gate as the page copy.
+// Fully RFC 6068-encoded (raw spaces truncate the subject in some clients).
 export const CONTACT_MAILTO =
-  `mailto:${CONTACT_EMAIL}?subject=AI feature build` +
-  `&body=Hi Himal,%0D%0A%0D%0AThe feature we want built:%0D%0A%0D%0A` +
-  `Product: %0D%0AWhat it should do: %0D%0A` +
-  `What it reads (docs, tickets, filings, transcripts, records): %0D%0A` +
-  `Stack: %0D%0A%0D%0AThanks`;
+  `mailto:${CONTACT_EMAIL}` +
+  `?subject=${encodeURIComponent('My pile of records')}` +
+  `&body=${encodeURIComponent(
+    'Hi Himal,\r\n\r\nWhat the pile is: \r\nWhat I want to know from it: \r\nRoughly how many per week: \r\n\r\nThanks'
+  )}`;
 
-// Site navigation. Rendered by PageLayout for every page — pages no longer
-// override the header slot, so this is the only place the nav is defined.
-export const headerData = {
-  links: [
-    { text: 'What I built', href: getPermalink('/#proof') },
-    { text: 'How it works', href: getPermalink('/#how-it-works') },
-    { text: 'Price', href: getPermalink('/#price') },
-    { text: 'Writing', href: getBlogPermalink() },
-  ],
-  actions: [{ text: 'Describe your feature', href: CONTACT_MAILTO }],
-};
+// The header is SiteHeader.astro (wordmark + one action, design review D3) —
+// it imports CONTACT_MAILTO directly. There is deliberately no headerData
+// export any more: the old AstroWind Header widget is unused, and a config
+// object nothing consumes is a drift trap.
 
 export const footerData = {
   secondaryLinks: [

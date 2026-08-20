@@ -9,9 +9,9 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Vuldesk
+    default: Vuldesk — AI tools that read your records and give you answers
     template: '%s — Vuldesk'
-  description: "I build AI agent features into existing B2B SaaS products. One feature, fixed price, delivered as a pull request against your branch — no production access needed. Security engineer by background, so the data-flow question has an answer."
+  description: "Every business has a pile of records that someone reads by hand. I build a tool that reads yours and tells you what matters. A price fixed before we start."
   robots:
     index: true
     follow: true
@@ -33,17 +33,20 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
+    # Disabled 2026-08-20 (design doc route table): the three pentest-era posts
+    # described a different business than the homepage sells. Files kept as
+    # draft: true; re-enable only with posts that match the positioning.
+    isEnabled: false
     postsPerPage: 6
 
     post:
-      isEnabled: true
+      isEnabled: false
       permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
       robots:
         index: true
 
     list:
-      isEnabled: true
+      isEnabled: false
       pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
       robots:
         index: true
@@ -72,4 +75,4 @@ analytics:
       id: null # or "G-XXXXXXXXXX"
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'light:only' # D5 (design review 2026-08-20): the page is a light-paper artifact; one render to design and test

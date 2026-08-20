@@ -1,297 +1,325 @@
 ---
+// vuldesk.com — one-page plain-English site ("set letter" direction).
+// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v3.html
+// Plan of record: docs/designs/plain-english-one-page-site.md
+//
+// Page structure (design doc, five blocks, one action):
+//
+//   HEADER  wordmark + "Email me"            (SiteHeader.astro, D3)
+//   HERO    H1 offer → sub → evidence line → CTA + visible email
+//   PROOF   single durability band           (D6 removed-element state:
+//            the sample-report entry joins it when OQ4 resolves)
+//   PRICES  ruled typographic table          (amounts = ship-floor item, OQ3)
+//   TRUST   photo + five plain Q&As          (photo = ship-floor item, D7)
+//   CLOSE   one question, one button
+//
+// Gates that police this file: scripts/check-integrity.mjs CHECK 5 (<=450
+// visible words, zero jargon-inventory terms, incl. og/meta strings), CHECK 6
+// (blog teardown), CHECK 7 (metadata present). Cold-read harness:
+// docs/designs/assets/cold-read-harness.md (3/3 at >=7 on desktop AND mobile).
 import Layout from '~/layouts/PageLayout.astro';
-
-import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import { CONTACT_MAILTO } from '~/navigation';
+import { CONTACT_MAILTO, CONTACT_EMAIL } from '~/navigation';
+import founderPhoto from '~/assets/images/himal.jpg';
 
 const metadata = {
-  title: 'I build the AI feature your roadmap keeps deprioritising | Vuldesk',
+  title: 'Vuldesk — AI tools that read your records and give you answers',
   ignoreTitleTemplate: true,
 };
-
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero: lead with the agent, not the offer -->
-  <Hero
-    tagline="AI agent features, built and handed over"
-    actions={[
-      { variant: 'primary', text: 'Describe your feature', href: CONTACT_MAILTO, icon: 'tabler:mail' },
-      { variant: 'secondary', text: 'See what I built', href: '#proof' },
-    ]}
-  >
-    <Fragment slot="title">
-      An agent read 118 foreclosure filings.<br />
-      <span class="text-accent dark:text-white highlight">57 of them were already dead.</span>
-    </Fragment>
+  <!-- HERO -->
+  <section class="letter">
+    <div class="measure">
+      <h1>I build AI tools that read your records and give you answers.</h1>
+      <p>
+        Orders, cases, claims, forms &mdash; every business has a pile that someone reads
+        by hand. I build a tool that reads yours and tells you what matters. You open it
+        in your web browser. A price fixed before we start. No programmers needed on
+        your side.
+      </p>
+      <p class="example">
+        <strong>Real example:</strong> one of my tools read 118 foreclosure court cases
+        and found the 57 that no longer mattered. 37 seconds per case.
+      </p>
+      <div class="cta-row">
+        <a class="btn" href={CONTACT_MAILTO}>Tell me about your pile &rarr;</a>
+        <span class="cta-alt">or write to {CONTACT_EMAIL}</span>
+      </div>
+    </div>
+  </section>
 
-    <Fragment slot="subtitle">
-      The county publishes the list. It does not tell you which cases are still going to sale. I built an agent that
-      reads each filing, checks its current status, and returns an answer in about 37 seconds per case.
-      <strong>61 of 118 were still live. The rest were withdrawn, in bankruptcy, cured, or set aside.</strong>
-      <br /><br />
-      I build that kind of feature into other companies' products.
-    </Fragment>
-  </Hero>
+  <!-- PROOF — single-band state (D6). When the sample report exists and passes
+       the jargon gate (OQ4/D10), it returns as the primary entry beside this. -->
+  <section class="letter ruled">
+    <div class="measure">
+      <h2>Proof you can check</h2>
+      <p>
+        <strong>Still running after 20 months.</strong> I built a booking system for a
+        fertility clinic in 2024. It runs today.<br />
+        <a href="https://ivf.vuldesk.com" target="_blank" rel="noopener">See it live</a>
+        <span class="cta-alt">(the clinic&rsquo;s real booking page opens in a new tab)</span>
+      </p>
+    </div>
+  </section>
 
-  <!-- Proof 1: the agent itself -->
-  <Features2
-    id="proof"
-    title="What the agent actually does"
-    tagline="built, not proposed"
-    subtitle="This one is my own project, not a client engagement, and you should discount it accordingly. What it demonstrates is the mechanics, and the mechanics are the part that transfers."
-    columns={3}
-    items={[
-      {
-        title: 'Reads an unstructured public source',
-        description:
-          'County foreclosure records: inconsistent formats, missing fields, status buried in prose. No API, no schema, no cooperation from the source.',
-        icon: 'tabler:file-search',
-      },
-      {
-        title: 'Reasons across multiple calls',
-        description:
-          'Each case takes around 37 seconds because the agent makes several tool calls and thinks between them. A bare scrape is 8 to 15 seconds. The extra time is the judgement.',
-        icon: 'tabler:brain',
-      },
-      {
-        title: 'Returns a decision, not a summary',
-        description:
-          'Live or not live, and which lien sits in first position. Something a person can act on, rather than a paragraph they still have to read.',
-        icon: 'tabler:checkbox',
-      },
-      {
-        title: 'Says when it does not know',
-        description:
-          'Cases with no assessor match cannot reach a confident verdict, so they come back marked uncertain instead of guessed. This is the part most first attempts skip.',
-        icon: 'tabler:help-octagon',
-      },
-      {
-        title: '186 tests, three engineering reviews',
-        description:
-          'Agents fail quietly. Without a test suite you find out from a customer. This is the difference between a demo and something you can leave running.',
-        icon: 'tabler:test-pipe',
-      },
-      {
-        title: 'Runtime measured, not estimated',
-        description:
-          'That 37 seconds is an observed cadence across real runs, not a happy-path extrapolation. You get the real number before you commit to it.',
-        icon: 'tabler:gauge',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
+  <!-- PRICES — amounts are the founder's ship-floor item (OQ3). -->
+  <section class="letter ruled">
+    <div class="measure">
+      <h2>What it costs</h2>
+      <table class="prices">
+        <tbody>
+          <tr>
+            <td><strong>One small tool</strong><br />Reads one kind of record. Ready in weeks.</td>
+            <td class="amount">$7,500</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>A bigger tool</strong><br />Reads several kinds of records and does
+              more with them. Fixed quote before we start.
+            </td>
+            <td class="amount">from $15,000</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Keep it healthy</strong> (optional)<br />I watch it and fix it. I
+              reply within one business day.
+            </td>
+            <td class="amount">$500 / month</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="after-table">The price I quote is the price you pay. No hourly billing. No surprises.</p>
+    </div>
+  </section>
 
-  <!-- What transfers -->
-  <Features
-    id="transfers"
-    title="What transfers to your product"
-    tagline="the general shape"
-    subtitle="Nothing about foreclosure is useful to you. This is the pattern underneath it: an agent that reads a messy source, reasons across several steps, and returns something a person or a system can act on."
-    columns={2}
-    items={[
-      {
-        title: 'Documents your customers upload',
-        description:
-          'Leases, invoices, contracts, intake forms, lab results. Extract the fields, flag what is missing, refuse when the document is not what it claims to be.',
-        icon: 'tabler:file-upload',
-      },
-      {
-        title: 'Records your product already holds',
-        description:
-          'Tickets, transcripts, case files, submissions. Classify, route, summarise, or surface the three that need a human today.',
-        icon: 'tabler:database-search',
-      },
-      {
-        title: 'Sources outside your walls',
-        description:
-          'Public registries, competitor pricing, regulatory filings, supplier catalogues. The data exists and nobody on your team has time to read it.',
-        icon: 'tabler:world-search',
-      },
-      {
-        title: 'Work a person repeats every week',
-        description:
-          'If someone opens the same five tabs and applies the same judgement every Monday, that judgement is usually specifiable.',
-        icon: 'tabler:repeat',
-      },
-    ]}
-  />
+  <!-- TRUST -->
+  <section class="letter ruled">
+    <div class="measure">
+      <h2>Questions a careful buyer asks</h2>
+      <div class="founder">
+        <!-- Ship-floor item D7, closed 2026-08-20: real photograph, 640px
+             source, EXIF stripped. CHECK 3 bans "[PHOTO]" so a placeholder
+             can never reach production again. -->
+        <img class="photo" src={founderPhoto.src} alt="Himal, founder of Vuldesk" width="112" height="112" />
+        <p>I am Himal. I run Vuldesk from Kathmandu, and I build every tool myself.</p>
+      </div>
+      <div class="qa">
+        <p>Who owns the tool?</p>
+        <p>You do. When you pay the final bill, the tool and its accounts move to your name.</p>
+      </div>
+      <div class="qa">
+        <p>What if you disappear?</p>
+        <p>
+          You lose nothing. The tool keeps running as it is, and everything it is
+          built from is already yours.
+        </p>
+      </div>
+      <div class="qa">
+        <p>What happens to my data?</p>
+        <p>
+          Your records go into your tool and the AI service it runs on &mdash; under your
+          account, not mine. I never use them for anything else.
+        </p>
+      </div>
+      <div class="qa">
+        <p>What happens when the tool is wrong?</p>
+        <p>
+          The tool marks what it is not sure about, and a person checks those. Nothing
+          happens automatically that you cannot undo.
+        </p>
+      </div>
+      <div class="qa">
+        <p>How do we talk?</p>
+        <p>Email, plus one call a week if you want it. I overlap with US business hours every day.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- Proof 2: delivery that survives handover -->
-  <Steps2
-    id="delivery"
-    tagline="the other half"
-    title="Building it is not the hard part. Handing it over is."
-    subtitle="Plenty of people can get an agent working on their own machine. Fewer hand you something that still runs after they have gone."
-    callToAction={{
-      target: '_blank',
-      text: 'Gamma IVF, still running',
-      href: 'https://ivf.vuldesk.com/',
-    }}
-    items={[
-      {
-        title: 'Delivered December 2024. Still serving traffic.',
-        description:
-          'A clinic booking platform with contacts, gallery, and a third-party API integration. Design, build, deploy. Twenty months later it still answers. To be exact about what that proves: the system stays up. It is hosting, not a maintenance contract.',
-        icon: 'tabler:server-bolt',
-      },
-      {
-        title: 'You get the code, not a dependency on me',
-        description:
-          'I work against a branch and a staging environment, never production. You keep your own model provider keys, so the account, the bill and the data flow stay yours. You review the pull request and you deploy it, and nothing of mine runs inside your stack afterwards.',
-        icon: 'tabler:git-pull-request',
-      },
-      {
-        title: 'I am a security engineer, which matters here',
-        description:
-          'AI features move customer data to places your architecture diagram does not show. I can tell you what leaves your network, what the provider retains, and which fields ride along that nobody intended. That is not the product. It is why you can let me near the thing that touches your customers.',
-        icon: 'tabler:shield-lock',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Steps2>
-
-  <!-- How an engagement runs -->
-  <Steps
-    id="how-it-works"
-    title="How an engagement runs"
-    tagline="one feature at a time"
-    subtitle="Fixed scope, agreed in writing before anything starts. If what you want is bigger than one feature, I will say so and we can cut it down or not work together."
-    items={[
-      {
-        title: 'Step 1: <span class="font-medium">You describe the feature in an email</span>',
-        description:
-          'What it should do, what it reads, and what your stack is. No call needed to start. I reply within a day with whether it fits, what I would build first, and a fixed price.',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Step 2: <span class="font-medium">Scope in writing, then a branch</span>',
-        description:
-          'One page: what is in, what is out, what done looks like, and how many revisions are included. Then a repo branch and a staging environment. Never production.',
-        icon: 'tabler:file-description',
-      },
-      {
-        title: 'Step 3: <span class="font-medium">You review a pull request</span>',
-        description:
-          'Working code, a test suite, an eval set covering the cases it is expected to get right, and a written note on what the feature sends to the model provider and what comes back.',
-        icon: 'tabler:git-merge',
-      },
-      {
-        title: 'Step 4: <span class="font-medium">You deploy it, and I am done</span>',
-        description:
-          'Your team owns it. I answer questions for 30 days at no extra cost. If you want the next feature, that is a new fixed price, not a retainer that quietly renews.',
-        icon: 'tabler:rocket',
-      },
-    ]}
-  />
-
-  <!-- Price -->
-  <Features
-    id="price"
-    title="Fixed price, quoted in one email"
-    tagline="price"
-    subtitle="Quoted in one email once you describe the feature. Not an hourly rate, not a retainer, and not a range that gets resolved later. I would rather lose the deal on the number than discover the scope halfway through."
-    columns={2}
-    items={[
-      {
-        title: 'One number, before you commit',
-        description:
-          'Priced from the written scope, not from a spread. If the scope changes, the number is requoted in writing before any more work happens.',
-        icon: 'tabler:currency-dollar',
-      },
-      {
-        title: 'Written scope, with a revision limit',
-        description:
-          'What is in, what is out, what done means, and how many rounds of changes are included. Agreed before I start, not negotiated at the end.',
-        icon: 'tabler:file-check',
-      },
-      {
-        title: 'An eval set you keep',
-        description:
-          'The cases the feature is expected to get right, as a test your team can run themselves long after I have gone.',
-        icon: 'tabler:list-check',
-      },
-      {
-        title: '30 days of questions answered',
-        description:
-          'After handover, at no extra cost. Not a support contract. Just not disappearing the moment it merges.',
-        icon: 'tabler:message-2',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features>
-
-  <!-- FAQ -->
-  <FAQs
-    id="faq"
-    title="The questions I actually get"
-    tagline="straight answers"
-    columns={1}
-    items={[
-      {
-        title: 'Our engineers could build this.',
-        description:
-          'They could. The honest reasons not to have them do it: they are booked, the AI feature has slid down the roadmap for two quarters, and shipping an agent that stays reliable is a different skill from shipping CRUD. A first attempt usually has no eval set, no plan for what happens when the model is confidently wrong, and no cost ceiling. If your team has already shipped one that works, hire me for something else, or not at all.',
-      },
-      {
-        title: 'What counts as one feature?',
-        description:
-          'One job, with one input shape and one output shape. Extracting fields from uploaded documents is one feature. Extracting fields, then routing to a reviewer, then emailing the customer is three. I will tell you which one you have described before quoting, not after.',
-      },
-      {
-        title: 'What access do you actually need?',
-        description:
-          'A repo branch and a staging environment with scrubbed or synthetic data. Never production, and never your customers\' real records. You keep your own model provider keys. Whether that clears your vendor review is your call, not mine to promise: send me the questionnaire and I will fill it in. Being able to answer it precisely is most of what you are hiring me for.',
-      },
-      {
-        title: 'What happens when the model gets it wrong?',
-        description:
-          'It will. The question is whether the feature notices. Everything I build has an explicit uncertain path, so cases it cannot decide come back flagged rather than guessed, and the eval set tells you the rate before you ship. On the foreclosure agent, cases with no assessor match return uncertain by design.',
-      },
-      {
-        title: 'Who are you, and where are you?',
-        description:
-          'Himal, working from Kathmandu. Vuldesk Technologies Private Limited is the company and I am the one doing the work today. Security engineer by background, which is why I can answer the data-flow question rather than promising to look into it.',
-      },
-      {
-        title: 'Can we see the foreclosure agent?',
-        description:
-          'Not publicly, it runs against a live data source. I will walk through the code, the test suite, and a real run on a call. Gamma IVF is public and you can open it right now.',
-      },
-      {
-        title: 'We already shipped an AI feature and it is not good.',
-        description:
-          'Normal starting point, and often an easier engagement, because the hard part, deciding what it should do, is already settled. Send me what it does now and what it should do instead.',
-      },
-    ]}
-  />
-
-  <!-- CTA -->
-  <CallToAction
-    title="Describe the feature in an email"
-    subtitle="What it should do, what it reads, and your stack. No call, no form, no discovery deck. I will tell you within a day whether it fits, what I would build first, and the price."
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Describe your feature',
-        href: CONTACT_MAILTO,
-        icon: 'tabler:mail',
-      },
-    ]}
-  />
+  <!-- CLOSE -->
+  <section class="letter ruled">
+    <div class="measure">
+      <h2>Have a pile of records that eats your team&rsquo;s time?</h2>
+      <p>
+        Tell me about it in plain words. I will reply within one business day, with a
+        price &mdash; or the questions I need answered first.
+      </p>
+      <div class="cta-row">
+        <a class="btn" href={CONTACT_MAILTO}>Email me</a>
+        <span class="cta-alt">{CONTACT_EMAIL}</span>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  /* Set-letter system (DESIGN.md). Tokens from CustomStyles.astro. */
+  .letter {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--aw-font-sans), sans-serif;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.55;
+    padding: 56px 0;
+  }
+  .measure {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .ruled .measure {
+    border-top: 1px solid var(--rule);
+    padding-top: 56px;
+  }
+  .ruled {
+    padding-top: 0;
+  }
+  h1,
+  h2,
+  .amount,
+  .example {
+    font-family: var(--aw-font-heading), serif; /* .example per DESIGN.md: the evidence line is display type */
+  }
+  h1 {
+    font-size: 2.125rem; /* 34px */
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  h2 {
+    font-size: 1.375rem; /* 22px */
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  p {
+    margin-bottom: 12px;
+  }
+  .example {
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+    margin: 18px 0;
+  }
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .btn {
+    border-radius: 0;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px; /* touch target (D15) */
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    padding: 10px 22px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .cta-alt {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  a:visited:not(.btn) {
+    color: #5b3a29;
+  }
+  a:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .prices {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  .prices td {
+    vertical-align: top;
+    padding: 12px 16px 12px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 1rem;
+  }
+  .prices .amount {
+    font-size: 1.3125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .after-table {
+    margin-top: 12px;
+  }
+  .founder {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .photo {
+    width: 112px;
+    height: 112px;
+    flex: 0 0 112px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .qa {
+    border-top: 1px solid var(--rule);
+    padding: 14px 0;
+  }
+  .qa p:first-child {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* One quiet entrance (design review D12): hero children fade/rise once. */
+  @media (prefers-reduced-motion: no-preference) {
+    .letter:first-of-type .measure > * {
+      animation: rise 0.2s ease-out both;
+    }
+    .letter:first-of-type .measure > *:nth-child(2) {
+      animation-delay: 60ms;
+    }
+    .letter:first-of-type .measure > *:nth-child(3) {
+      animation-delay: 120ms;
+    }
+    .letter:first-of-type .measure > *:nth-child(4) {
+      animation-delay: 180ms;
+    }
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 1.75rem; /* 28px (D14) */
+    }
+    .letter {
+      padding: 40px 0;
+    }
+    .ruled .measure {
+      padding-top: 40px;
+    }
+    .measure {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .founder {
+      flex-direction: column;
+    }
+  }
+</style>

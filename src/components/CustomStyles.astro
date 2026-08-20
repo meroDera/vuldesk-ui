@@ -1,63 +1,39 @@
 ---
-import '@fontsource-variable/inter';
-
-// 'DM Sans'
-// Nunito
-// Dosis
-// Outfit
-// Roboto
-// Literata
-// 'IBM Plex Sans'
-// Karla
-// Poppins
-// 'Fira Sans'
-// 'Libre Franklin'
-// Inconsolata
-// Raleway
-// Oswald
-// 'Space Grotesk'
-// Urbanist
+// Set-letter design system — see DESIGN.md. Decided in /plan-design-review
+// 2026-08-20 (D12/D13): Source Serif 4 for display, Source Sans 3 for body,
+// warm paper / ink / one terracotta accent. Light-only (D5).
+import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/source-sans-3';
 ---
 
 <style is:inline>
   :root {
-    --aw-font-sans: 'InterVariable';
-    --aw-font-serif: 'InterVariable';
-    --aw-font-heading: 'InterVariable';
+    --aw-font-sans: 'Source Sans 3 Variable';
+    --aw-font-serif: 'Source Serif 4 Variable';
+    --aw-font-heading: 'Source Serif 4 Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    /* Letter palette (DESIGN.md) */
+    --paper: #faf8f4;
+    --ink: #211c16;
+    --muted: #5a544c; /* AA on --paper at 16px */
+    --rule: #d8d2c8;
+    --accent: #b5502f; /* terracotta — evidence rule + small emphasis only */
+    --focus: #1a56db;
 
-    --aw-color-text-heading: 'InterVariable';
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
-    --aw-color-bg-page: rgb(255 255 255);
+    /* AstroWind token mapping so Header/Footer inherit the letter look */
+    --aw-color-primary: var(--ink);
+    --aw-color-secondary: var(--ink);
+    --aw-color-accent: var(--accent);
 
-    --aw-color-bg-page-dark: rgb(3 6 32);
+    --aw-color-text-heading: var(--ink);
+    --aw-color-text-default: var(--ink);
+    --aw-color-text-muted: var(--muted);
+    --aw-color-bg-page: var(--paper);
 
-    ::selection {
-      background-color: lavender;
-    }
-  }
-
-  .dark {
-    --aw-font-sans: 'InterVariable';
-    --aw-font-serif: 'InterVariable';
-    --aw-font-heading: 'InterVariable';
-
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
-
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgb(229 236 246);
-    --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(3 6 32);
+    --aw-color-bg-page-dark: var(--paper); /* light-only site (D5) */
 
     ::selection {
-      background-color: black;
-      color: snow;
+      background-color: #efe7d8;
     }
   }
 </style>

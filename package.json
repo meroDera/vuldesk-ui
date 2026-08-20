@@ -1,7 +1,7 @@
 {
   "name": "vuldesk-ui",
   "version": "1.0.0",
-  "description": "Vuldesk — AI agent features built into existing B2B SaaS products.",
+  "description": "Vuldesk — AI tools that read your records and give you answers.",
   "type": "module",
   "private": true,
   "engines": {
@@ -24,6 +24,8 @@
     "@astrolib/analytics": "^0.5.0",
     "@astrolib/seo": "^1.0.0-beta.5",
     "@fontsource-variable/inter": "^5.0.18",
+    "@fontsource-variable/source-sans-3": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.0",
     "astro": "^4.7.0",
     "astro-embed": "^0.7.1",
     "astro-icon": "^1.1.0",

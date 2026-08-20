@@ -1,0 +1,51 @@
+# Weekly proof-link check (eng review 1A + 8A, 2026-08-20).
+#
+# The homepage's strongest claims are links to systems outside this repo
+# ("See it live" -> ivf.vuldesk.com). A dead proof link is worse than no
+# claim, and this repo can go weeks between pushes — so a timer checks
+# between deploys and fails LOUD (GitHub emails on workflow failure).
+#
+# Deliberately a SEPARATE workflow: deploy.yml gates its upload/deploy jobs
+# only on `!= pull_request`, so adding `schedule:` there would redeploy the
+# site every week (verified against deploy.yml:52,61).
+#
+# KNOWN LIMITS (adversarial review F2/F3):
+# - GitHub auto-disables scheduled workflows after ~60 days without repo
+#   activity. If commits stop, this monitor stops WITH them — re-enable it
+#   from the Actions tab, or push anything.
+# - Failure email goes to the last committer of this file, subject to their
+#   notification settings. After the first merge, trigger one deliberate
+#   failure via workflow_dispatch (EXTERNAL_LINKS=fail with wifi off is not
+#   possible in CI — temporarily add a bogus URL to PROOF_MARKERS' host list)
+#   and confirm the email actually arrives.
+name: Proof links
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proof-links
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: External proof links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Site integrity with external links required
+        run: npm run check:integrity
+        env:
+          EXTERNAL_LINKS: fail

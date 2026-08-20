@@ -1,24 +1,73 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+// 404 — singular voice (design review D11, 2026-08-20). This page receives
+// real traffic by design: the drafted blog posts' old URLs land here.
+import Layout from '~/layouts/PageLayout.astro';
 import { getHomePermalink } from '~/utils/permalinks';
 
-const title = `Error 404`;
+const title = 'Page not found';
 ---
 
 <Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
-    <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary">404</span>
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But dont worry, you can find plenty of other things on our homepage.
-        </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
-      </div>
+  <section class="letter">
+    <div class="measure">
+      <h1>I could not find that page.</h1>
+      <p>It may have moved, or the link may be old. The one page that exists is the homepage.</p>
+      <a class="btn" href={getHomePermalink()}>Go to the homepage &rarr;</a>
     </div>
   </section>
 </Layout>
+
+<style>
+  .letter {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--aw-font-sans), sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    padding: 72px 0;
+    min-height: 50vh;
+  }
+  .measure {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  h1 {
+    font-family: var(--aw-font-heading), serif;
+    font-size: 2.125rem;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  p {
+    margin-bottom: 20px;
+  }
+  .btn {
+    border-radius: 0;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    padding: 10px 22px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  a:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 1.75rem;
+    }
+    .measure {
+      padding: 0 20px;
+    }
+  }
+</style>
