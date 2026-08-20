@@ -46,7 +46,7 @@ question.
 | 2026-08-20 | wireframe v2 (desktop) | 8/10, 8/10, 8/10 — PASS |
 | 2026-08-20 | wireframe v3 (desktop) | 8/10, 9/10, 9/10 — PASS |
 | 2026-08-20 | wireframe v3 (mobile first screen) | ~7/10 ×3 — at bar; example line below fold costs proof, not comprehension |
-| 2026-08-20 | built page (dist/index.html, pre-push) | 8/10, 9/10, 9/10 — PASS; all flagged the [PHOTO] placeholder (ship-floor item) and "the AI service it runs on" (founder wording call) |
+| 2026-08-20 | built page (dist/index.html, pre-push) | 8/10, 9/10, 9/10 — PASS; mobile-first-screen probe held at ~7/10 ×3 (at bar); all flagged the [PHOTO] placeholder (since removed per D6 — real photo is a merge gate) and "the AI service it runs on" (founder wording call) |
 
 Personas may be refreshed when the target market sharpens — update this file
 and note the change here, or historical scores stop being comparable.

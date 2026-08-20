@@ -152,7 +152,10 @@ function visibleText(html) {
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&[a-z]+;|&#\d+;/gi, ' ')
+    // Separator entities become spaces; in-word entities (rsquo, amp) vanish
+    // so "team&rsquo;s" counts as one word, not two. Hex entities included.
+    .replace(/&(?:nbsp|mdash|ndash|middot|bull);/gi, ' ')
+    .replace(/&[a-z]+\d*;|&#x[0-9a-f]+;|&#\d+;/gi, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -167,7 +170,8 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
   for (const attr of ['og:title', 'og:description', 'og:image:alt', 'twitter:title', 'twitter:description']) {
     const m = indexHtml.match(new RegExp(`<meta[^>]+property="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+property="${attr}"`, 'i')) ||
-      indexHtml.match(new RegExp(`<meta[^>]+name="${attr}"[^>]+content="([^"]*)"`, 'i'));
+      indexHtml.match(new RegExp(`<meta[^>]+name="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
+      indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+name="${attr}"`, 'i'));
     if (m) metaBits.push(m[1]);
   }
   const descM =
@@ -203,15 +207,21 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
   for (const line of invRaw.split('\n')) {
     const m = line.match(/^\|\s*([^|]+?)\s*\|/);
     if (!m || /^Term$|^---/.test(m[1])) continue;
-    for (const t of m[1].split('/')) {
-      const term = t.trim().toLowerCase();
+    // Strip parentheticals and quotes BEFORE splitting: entries like
+    // 'surface (as a verb)' or 'dead (of a filing)' must yield the bare term,
+    // not unmatched debris (adversarial review F5).
+    const cleaned = m[1].replace(/\([^)]*\)/g, ' ').replace(/["'“”‘’]/g, ' ');
+    for (const t of cleaned.split('/')) {
+      const term = t.trim().toLowerCase().replace(/\s+/g, ' ');
       if (term.length >= 3 && !JARGON_ALLOW.has(term)) terms.add(term);
     }
   }
   const haystack = ` ${(text + ' ' + metaBits.join(' ')).toLowerCase()} `;
   for (const term of terms) {
-    // whole-word/phrase match to avoid substring hits ("live" inside "deliver")
-    const re = new RegExp(`(^|[^a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^a-z])`);
+    // Whole-word/phrase match ("live" must not hit inside "deliver"); inner
+    // spaces match hyphens too, so "data flow" catches "data-flow".
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '[\\s-]+');
+    const re = new RegExp(`(^|[^a-z])${escaped}($|[^a-z])`);
     if (re.test(haystack)) {
       failures.push(`[jargon] index.html (or its meta/attribute strings) contains inventory term "${term}"`);
     }
@@ -224,7 +234,11 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
 // Lazy unbounded match: the first isEnabled after the blog: label, however many
 // comment lines sit between them (a 200-char window silently broke on comments).
 const blogEnabledMatch = configRaw.match(/\bblog:\s*[\s\S]*?\bisEnabled:\s*(\S+)/);
-const blogEnabled = blogEnabledMatch ? blogEnabledMatch[1] === 'true' : true; // unparseable => assume enabled, checks stay quiet rather than wrong
+if (!blogEnabledMatch) {
+  // A gate that silently skips is not a gate (same rule as CHECK 5).
+  failures.push('[teardown] config.yaml blog.isEnabled could not be parsed — teardown checks cannot run');
+}
+const blogEnabled = blogEnabledMatch ? blogEnabledMatch[1] === 'true' : true;
 if (!blogEnabled) {
   if (existsSync(join(DIST, 'blog'))) failures.push('[teardown] dist/blog/ exists while blog is disabled');
   if (existsSync(join(DIST, 'rss.xml'))) failures.push('[teardown] dist/rss.xml exists while blog is disabled');
@@ -256,9 +270,16 @@ if (existsSync(indexPath)) {
   } else {
     // The declared image must actually exist in the build — a preview card
     // with a dead image URL passes a presence check and fails in every chat app.
-    const imgPath = ogImg[1].replace(/^https?:\/\/[^/]+/, '');
-    if (imgPath.startsWith('/') && !existsSync(join(DIST, imgPath))) {
-      failures.push(`[meta] og:image points at ${imgPath} which is not in the build`);
+    // Existence check applies only to our own origin — an external-CDN
+    // og:image (if ever used) cannot be resolved against dist/.
+    let imgUrl;
+    try {
+      imgUrl = new URL(ogImg[1], 'https://www.vuldesk.com');
+    } catch {
+      failures.push(`[meta] og:image URL is unparseable: ${ogImg[1]}`);
+    }
+    if (imgUrl && imgUrl.hostname === 'www.vuldesk.com' && !existsSync(join(DIST, imgUrl.pathname))) {
+      failures.push(`[meta] og:image points at ${imgUrl.pathname} which is not in the build`);
     }
   }
   if (
@@ -300,9 +321,19 @@ function externalLinks() {
   return [...urls];
 }
 
+// Known content fingerprints: a 200 from a parked page, expired hosting, or a
+// dangling-CNAME takeover must not certify the proof link (adversarial F4).
+// Marker observed live 2026-08-20; update if the client rebrands their page.
+const PROOF_MARKERS = {
+  'ivf.vuldesk.com': 'Gamma IVF',
+};
+
 async function linkOk(url) {
   const wantHost = new URL(url).hostname;
-  for (const method of ['HEAD', 'GET']) {
+  const marker = PROOF_MARKERS[wantHost];
+  let lastWhy = 'no response (network error or timeout on every attempt)';
+  const methods = marker ? ['GET'] : ['HEAD', 'GET'];
+  for (const method of methods) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const res = await fetch(url, { method, redirect: 'follow', signal: AbortSignal.timeout(10000) });
@@ -310,16 +341,29 @@ async function linkOk(url) {
         // 200: a hijacked/parked destination must not certify as healthy.
         const finalHost = new URL(res.url || url).hostname;
         if (finalHost !== wantHost) {
+          res.body?.cancel?.().catch(() => {});
           return { ok: false, why: `redirected off-host to ${finalHost}` };
         }
-        if (res.ok) return { ok: true };
+        if (res.ok) {
+          if (marker && method === 'GET') {
+            const body = await res.text();
+            if (!body.includes(marker)) {
+              return { ok: false, why: `responded 200 but expected content marker "${marker}" is missing (parked/hijacked?)` };
+            }
+          } else {
+            res.body?.cancel?.().catch(() => {});
+          }
+          return { ok: true };
+        }
+        lastWhy = `HTTP ${res.status} via ${method}`;
+        res.body?.cancel?.().catch(() => {});
         if (res.status === 405 && method === 'HEAD') break; // host rejects HEAD — try GET
-      } catch {
-        /* retry, then fall through to GET */
+      } catch (err) {
+        lastWhy = `${err?.name || 'error'}: ${err?.message || 'fetch failed'} via ${method}`;
       }
     }
   }
-  return { ok: false, why: 'did not respond with a success status' };
+  return { ok: false, why: lastWhy };
 }
 
 if (EXTERNAL_MODE !== 'skip') {

@@ -7,20 +7,18 @@ export const CONTACT_EMAIL = 'contact@vuldesk.com';
 
 // Plain-English draft (design doc D8/9A): the buyer meets this text one click
 // after the hero, so it obeys the same jargon gate as the page copy.
+// Fully RFC 6068-encoded (raw spaces truncate the subject in some clients).
 export const CONTACT_MAILTO =
-  `mailto:${CONTACT_EMAIL}?subject=My pile of records` +
-  `&body=Hi Himal,%0D%0A%0D%0A` +
-  `What the pile is: %0D%0A` +
-  `What I want to know from it: %0D%0A` +
-  `Roughly how many per week: %0D%0A%0D%0AThanks`;
+  `mailto:${CONTACT_EMAIL}` +
+  `?subject=${encodeURIComponent('My pile of records')}` +
+  `&body=${encodeURIComponent(
+    'Hi Himal,\r\n\r\nWhat the pile is: \r\nWhat I want to know from it: \r\nRoughly how many per week: \r\n\r\nThanks'
+  )}`;
 
-// Site navigation (design review D3, 2026-08-20): the header carries the
-// wordmark and ONE action — nothing else. The page is one screen-flow; a
-// 420-word letter needs no menu. Rendered by PageLayout for every page.
-export const headerData = {
-  links: [],
-  actions: [{ text: 'Email me', href: CONTACT_MAILTO }],
-};
+// The header is SiteHeader.astro (wordmark + one action, design review D3) —
+// it imports CONTACT_MAILTO directly. There is deliberately no headerData
+// export any more: the old AstroWind Header widget is unused, and a config
+// object nothing consumes is a drift trap.
 
 export const footerData = {
   secondaryLinks: [
