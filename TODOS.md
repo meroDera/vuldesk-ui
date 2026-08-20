@@ -1,7 +1,9 @@
 # TODOS
 
-Deferred items from the engineering review on 2026-08-09. Everything actionable in
-code from that review has been done; these three cannot be closed by editing files.
+Deferred items. Items 1-3 come from the engineering review on 2026-08-09 —
+everything actionable in code from that review has been done, and those three
+cannot be closed by editing files. Item 4 comes from the plan review on
+2026-08-20 and was deferred as a real tradeoff, not forgotten.
 
 ---
 
@@ -82,8 +84,9 @@ restore and pin `tar` via an `overrides` block instead.
 
 ## 4. Measure CTA and proof-link clicks
 
-**What:** Count clicks on "Tell me about your pile", "Email me", and the two proof
-links on the rewritten homepage.
+**What:** Count clicks on "Tell me about your pile", "Email me", and the proof
+link on the rewritten homepage (a second proof link joins when the sample
+report ships — design doc OQ4).
 
 **Why:** Cloudflare Web Analytics counts page views only. The plain-English rewrite
 (docs/designs/plain-english-one-page-site.md) has post-ship success criteria that

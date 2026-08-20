@@ -5,8 +5,9 @@ site for Vuldesk: AI tools that read your records and give you answers.
 
 The site is a static Astro 4 + Tailwind CSS build, derived from the
 [AstroWind](https://github.com/onwidget/astrowind) template. Almost all template
-surface has been removed or rewritten; what remains is the build machinery and
-the MIT license.
+surface has been removed or rewritten; what remains is the build machinery, the
+MIT license, and the legal-page clause text (unreviewed template inheritance —
+see TODOS.md item 2).
 
 ## What the site is
 
@@ -24,6 +25,11 @@ Routes that ship:
 | `/404` | Plain-English not-found page that routes back to the letter |
 | `/terms`, `/privacy` | Legal pages (see TODOS.md item 2) |
 | `/sitemap-index.xml`, `robots.txt` | Generated |
+
+Retired routes redirect to `/` (see `redirects` in `astro.config.mjs`):
+`/free-recon` and the three drafted blog-post slugs, kept as meta-refresh
+tombstones so old backlinks do not hard-404. CHECK 6 asserts they stay
+redirects.
 
 The blog is **disabled** (`apps.blog.isEnabled: false` in `src/config.yaml`).
 The three pentest-era posts under `src/content/post/` are kept as `draft: true`
@@ -70,8 +76,9 @@ only with posts that match the positioning.
 
 ## Integrity checks
 
-`scripts/check-integrity.mjs` runs after every build (locally via `npm test`,
-in CI before any deploy). The checks:
+`scripts/check-integrity.mjs` runs against the built `./dist/` — locally via
+`npm test` (which builds first), and in CI before any deploy. A plain
+`npm run build` does not run it. The checks:
 
 1. **Internal links** resolve to built pages.
 2. **Mailto links** carry the real contact address.
@@ -79,8 +86,10 @@ in CI before any deploy). The checks:
 4. **Category-route regression** guard.
 5. **Copy gates** — the homepage's visible text stays under a 450-word budget
    and contains zero terms from `docs/designs/assets/jargon-inventory.md`.
-   Meta strings (og:title, description, twitter) are scanned too — the
-   chat-link preview is the buyer's first read.
+   Also scanned: meta strings (og:title, og:description, og:image:alt,
+   twitter, meta description), alt/aria-label attributes, and the decoded
+   mailto drafts — the chat-link preview and the pre-filled email are part
+   of the buyer's read.
 6. **Blog teardown** — with the blog disabled, no blog routes, RSS feed, or
    RSS chrome may appear in `dist/`.
 7. **Preview metadata** — `index.html` must carry an og:image and a meta

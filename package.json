@@ -1,7 +1,7 @@
 {
   "name": "vuldesk-ui",
   "version": "1.0.0",
-  "description": "Vuldesk — AI agent features built into existing B2B SaaS products.",
+  "description": "Vuldesk — AI tools that read your records and give you answers.",
   "type": "module",
   "private": true,
   "engines": {
