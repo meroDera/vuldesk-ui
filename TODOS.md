@@ -77,3 +77,27 @@ much narrower one than "112 vulnerabilities on a security company's site" implie
 restore and pin `tar` via an `overrides` block instead.
 
 **Depends on:** nothing, but do it on a branch now that `verify` runs on PRs.
+
+---
+
+## 4. Measure CTA and proof-link clicks
+
+**What:** Count clicks on "Tell me about your pile", "Email me", and the two proof
+links on the rewritten homepage.
+
+**Why:** Cloudflare Web Analytics counts page views only. The plain-English rewrite
+(docs/designs/plain-english-one-page-site.md) has post-ship success criteria that
+need conversion behavior, not traffic: did readers who understood the page act?
+
+**Pros:** Real numbers for the first copy iteration; tells you whether confusion or
+disinterest is the bottleneck.
+**Cons:** Needs client-side JS (Cloudflare custom events or a small beacon) on a
+page whose design goal is zero scripts beyond the analytics beacon. A real
+tradeoff — that is why it was deferred, not forgotten.
+
+**Context:** Decided in /plan-eng-review 2026-08-20 (finding D11). The mailto-only
+conversion path also got a visible plain-text address fallback in the same review;
+if a form ever replaces mailto, measurement comes free with the form handler and
+this item should be reconsidered in that shape.
+
+**Depends on:** the one-page rewrite being shipped.
