@@ -85,6 +85,7 @@ const BANNED = [
   ['onwidget', 'template author reference'],
   ['Cupertino', 'template placeholder address'],
   ['is a Demo', 'template demo disclaimer'],
+  ['just a Demo', 'template demo disclaimer (wording variant that evaded "is a Demo")'],
   ['somecoolemail@domain.com', 'placeholder contact address'],
   ['lorem ipsum', 'placeholder copy'],
   ['AstroWind LLC', 'template company name'],
