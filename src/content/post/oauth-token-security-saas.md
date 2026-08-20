@@ -1,4 +1,5 @@
 ---
+draft: true
 publishDate: 2026-03-22T00:00:00Z
 title: 'OAuth Token Security in SaaS Apps: The Breach Nobody Talks About'
 excerpt: 'Social schedulers, LinkedIn automation tools, and sales platforms all store OAuth tokens for their customers. Here is what happens when the token storage layer has gaps — and what we find when we test it.'

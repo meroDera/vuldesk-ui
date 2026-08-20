@@ -118,6 +118,137 @@ if (!categoryEnabled) {
   failures.push(...new Set(categoryLinks));
 }
 
+// ── CHECK 5: copy gates — word budget + jargon inventory ────────────────────
+// The design doc's primary language gate (eng review 4A, design review D8/D10).
+// Scans the homepage's VISIBLE text plus the invisible preview strings
+// (og:title, meta description, og:image alt) against the 212-term inventory.
+// The confused-client incident started in a chat preview, not on the page.
+const INVENTORY = 'docs/designs/assets/jargon-inventory.md';
+const WORD_BUDGET = 450;
+// Terms with a legitimate use in the new copy. Each entry is deliberate; add
+// here only with a comment saying where and why the term is fine.
+const JARGON_ALLOW = new Set([
+  'live', // "See it live" — plain verb use, not "serving traffic"
+  'fields', // rejected-terms list marks general form use as fine
+]);
+
+function visibleText(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;|&#\d+;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const indexPath = join(DIST, 'index.html');
+if (existsSync(indexPath) && existsSync(INVENTORY)) {
+  const indexHtml = readFileSync(indexPath, 'utf8');
+  const metaBits = [];
+  for (const attr of ['og:title', 'og:description', 'twitter:title', 'twitter:description']) {
+    const m = indexHtml.match(new RegExp(`<meta[^>]+property="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
+      indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+property="${attr}"`, 'i')) ||
+      indexHtml.match(new RegExp(`<meta[^>]+name="${attr}"[^>]+content="([^"]*)"`, 'i'));
+    if (m) metaBits.push(m[1]);
+  }
+  const descM =
+    indexHtml.match(/<meta[^>]+name="description"[^>]+content="([^"]*)"/i) ||
+    indexHtml.match(/<meta[^>]+content="([^"]*)"[^>]+name="description"/i);
+  if (descM) metaBits.push(descM[1]);
+
+  const text = visibleText(indexHtml);
+  const words = text.split(' ').filter((w) => w && !['—', '·'].includes(w));
+  if (words.length > WORD_BUDGET) {
+    failures.push(`[copy] index.html has ${words.length} visible words (budget ${WORD_BUDGET})`);
+  }
+
+  // Parse inventory terms from the markdown table: "| term | where | alt |".
+  // Entries like "agent / AI agent" split into separate terms.
+  const invRaw = readFileSync(INVENTORY, 'utf8');
+  const terms = new Set();
+  for (const line of invRaw.split('\n')) {
+    const m = line.match(/^\|\s*([^|]+?)\s*\|/);
+    if (!m || /^Term$|^---/.test(m[1])) continue;
+    for (const t of m[1].split('/')) {
+      const term = t.trim().toLowerCase();
+      if (term.length >= 3 && !JARGON_ALLOW.has(term)) terms.add(term);
+    }
+  }
+  const haystack = ` ${(text + ' ' + metaBits.join(' ')).toLowerCase()} `;
+  for (const term of terms) {
+    // whole-word/phrase match to avoid substring hits ("live" inside "deliver")
+    const re = new RegExp(`(^|[^a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^a-z])`);
+    if (re.test(haystack)) {
+      failures.push(`[jargon] index.html (or its meta strings) contains inventory term "${term}"`);
+    }
+  }
+}
+
+// ── CHECK 6: blog teardown is complete ──────────────────────────────────────
+// Blog disabled + posts drafted (design doc route table). None of it may leak
+// into the built output — no routes, no feed, no RSS chrome.
+const blogEnabled = /blog:[\s\S]{0,200}?isEnabled:\s*true/.test(configRaw);
+if (!blogEnabled) {
+  if (existsSync(join(DIST, 'blog'))) failures.push('[teardown] dist/blog/ exists while blog is disabled');
+  if (existsSync(join(DIST, 'rss.xml'))) failures.push('[teardown] dist/rss.xml exists while blog is disabled');
+  for (const old of ['email-marketing-platform-security', 'oauth-token-security-saas', 'saas-security-headers-guide']) {
+    if (existsSync(join(DIST, old))) failures.push(`[teardown] dist/${old}/ still builds a drafted post`);
+  }
+  for (const page of pages) {
+    const html = readFileSync(page, 'utf8');
+    if (/href="[^"]*rss\.xml"/.test(html)) failures.push(`[teardown] ${rel(page)} links rss.xml while blog is disabled`);
+  }
+}
+
+// ── CHECK 7: preview metadata present ───────────────────────────────────────
+// The chat-link preview is the buyer's step zero (design review D8).
+if (existsSync(indexPath)) {
+  const indexHtml = readFileSync(indexPath, 'utf8');
+  if (!/<meta[^>]+(property="og:image"|name="twitter:image")[^>]+content="[^"]+"/i.test(indexHtml) &&
+      !/<meta[^>]+content="[^"]+"[^>]+property="og:image"/i.test(indexHtml)) {
+    failures.push('[meta] index.html has no og:image');
+  }
+  if (
+    !/<meta[^>]+name="description"[^>]+content="[^"]+"/i.test(indexHtml) &&
+    !/<meta[^>]+content="[^"]+"[^>]+name="description"/i.test(indexHtml)
+  ) {
+    failures.push('[meta] index.html has no meta description');
+  }
+}
+
+// ── CHECK 8: external proof links (warn on push, fail on schedule) ──────────
+// The page's load-bearing claims are links to systems outside this repo
+// (eng review 1A). Push-triggered runs warn so a third-party outage never
+// blocks a deploy; the weekly proof-links.yml workflow sets
+// EXTERNAL_LINKS=fail and fails loud. HEAD request with one retry.
+const EXTERNAL_MODE = process.env.EXTERNAL_LINKS || 'warn';
+const PROOF_URLS = ['https://ivf.vuldesk.com'];
+
+async function headOk(url) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(10000) });
+      if (res.ok || res.status === 405) return true; // some hosts reject HEAD
+    } catch {
+      /* retry once */
+    }
+  }
+  return false;
+}
+
+if (EXTERNAL_MODE !== 'skip') {
+  for (const url of PROOF_URLS) {
+    const ok = await headOk(url);
+    if (!ok) {
+      const msg = `[external] proof link ${url} did not respond`;
+      if (EXTERNAL_MODE === 'fail') failures.push(msg);
+      else console.warn(`  WARN ${msg} (push mode: not blocking the deploy)`);
+    }
+  }
+}
+
 // ── report ──────────────────────────────────────────────────────────────────
 const checked = `${pages.length} pages, ${linkCount} internal links, ${mailtoCount} mailtos`;
 

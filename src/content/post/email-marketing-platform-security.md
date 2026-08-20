@@ -1,4 +1,5 @@
 ---
+draft: true
 publishDate: 2026-03-18T00:00:00Z
 title: 'Email and Marketing Platform Security: What We Find When We Test Them'
 excerpt: 'Email platforms manage subscriber lists, sending infrastructure, and customer PII at scale. Here are the five most common vulnerabilities we find — and why a breach here is worse than most founders expect.'
