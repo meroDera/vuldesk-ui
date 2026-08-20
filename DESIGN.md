@@ -7,7 +7,7 @@ sites, plainness is the differentiated composition.
 
 ## Voice
 
-Person voice, company wrapper: copy speaks as "I" (Himal); Vuldesk Technologies
+Person voice, company wrapper: copy speaks as "I" (Kushal); Vuldesk Technologies
 Private Limited appears in the footer, legal pages, and contracts. Grade 5-7
 plain English; zero terms from docs/designs/assets/jargon-inventory.md
 (mechanically enforced by CHECK 5 in scripts/check-integrity.mjs).

@@ -467,6 +467,11 @@ a landing page. Production tokens (also to be written into a new `DESIGN.md`):
   distinct visited color; photo has alt + intrinsic dimensions; motion respects
   `prefers-reduced-motion`.
 
+**Correction (2026-08-20, post-launch):** the founder's name is **Kushal**, not
+"Himal" — earlier session records carried the machine username as the founder's
+name and it reached the shipped copy unverified. Fixed on production the same
+day. Where this document says "Himal" in copy drafts, read "Kushal".
+
 **Post-retest notes (v3 scored 8/9/9 desktop, ~7×3 mobile-first-screen; 3/3 PASS both):**
 
 - All three readers paused at "the AI service it runs on" — honest but

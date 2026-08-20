@@ -12,7 +12,7 @@ export const CONTACT_MAILTO =
   `mailto:${CONTACT_EMAIL}` +
   `?subject=${encodeURIComponent('My pile of records')}` +
   `&body=${encodeURIComponent(
-    'Hi Himal,\r\n\r\nWhat the pile is: \r\nWhat I want to know from it: \r\nRoughly how many per week: \r\n\r\nThanks'
+    'Hi Kushal,\r\n\r\nWhat the pile is: \r\nWhat I want to know from it: \r\nRoughly how many per week: \r\n\r\nThanks'
   )}`;
 
 // The header is SiteHeader.astro (wordmark + one action, design review D3) —
