@@ -140,12 +140,15 @@ fresh context). Steelman matched P4/P5 independently. Its two sharpest points:
 Five blocks, ~420 words, one action. Wireframe approved in session (v2, verified
 3/3 at 8/10 by fresh cold readers).
 
-**Tested artifacts, committed to the repo (the copy of record):**
+**Tested artifacts, committed to the repo:**
 
-- `docs/designs/assets/one-page-wireframe-v2.html` — the full v2 copy draft that
-  scored 3/3 at 8/10, including the approved trust-block answers. Copy from this
-  file, then apply the punch list below.
-- `docs/designs/assets/one-page-wireframe-v2.png` — the rendered wireframe.
+- **`docs/designs/assets/one-page-wireframe-v3.html` — THE copy and layout source
+  of record.** All eng-review and design-review decisions applied; 415 visible
+  words. Build from this file; the punch list below is already folded in.
+- `docs/designs/assets/cold-read-harness.md` — the committed comprehension gate
+  (3 personas, 5-second protocol, pass bar, history).
+- `docs/designs/assets/one-page-wireframe-v2.html` / `.png` — historical; the
+  version that first scored 3/3 at 8/10. Do not build from it.
 - `docs/designs/assets/jargon-inventory.md` — all 212 confirmed terms with plain
   replacements, plus 25 completeness-pass misses. Any of these appearing unglossed
   in new copy is a defect.
@@ -258,8 +261,9 @@ In-timebox gates (block the ship):
    secondary check only — the current failing page measures grade 5.5 on that
    metric, so sentence mechanics alone cannot detect the vocabulary failure.
 2. Homepage ≤ 450 words of user-visible copy.
-3. Synthetic 5-second retest (re-run the same 3-persona cold-read harness used on
-   v2) on the final copy: 3/3 state what the company does from the first screen.
+3. Synthetic 5-second retest (the committed harness at
+   docs/designs/assets/cold-read-harness.md) on the final copy, desktop AND
+   mobile renders: 3/3 state what the company does from the first screen.
 4. **Every proof link that appears on the shipped page resolves on production.** A
    proof element whose target is not ready (Open Questions 2-4) is removed before
    ship, never left dangling.
@@ -392,20 +396,103 @@ push/PR ──► verify: lint ─ build ─ check-integrity
 weekly cron ──► proof-links.yml ──► external proof links [fails loud → email]
 ```
 
+## Design Review Amendments (2026-08-20, /plan-design-review)
+
+Sixteen decisions (D1-D16 of the design review), all resolved with the founder.
+**The copy and layout source of truth is now
+`docs/designs/assets/one-page-wireframe-v3.html`** — every decision below and the
+eng review's honesty pass are already applied in it. v2 is history. v3 measures
+**415 visible words** against the 450 gate.
+
+**Direction (D12, D13): "set letter."** The page is a beautifully set letter, not
+a landing page. Production tokens (also to be written into a new `DESIGN.md`):
+
+- Faces: **Source Serif 4** (display: H1, H2, price amounts, evidence line) and
+  **Source Sans 3** (body, UI) via fontsource, replacing Inter.
+- Tokens: `--paper #faf8f4`, `--ink #211c16`, `--muted #5a544c`, `--rule #d8d2c8`,
+  `--accent #b5502f` (terracotta, used only for the evidence rule and small
+  emphasis), `--focus`.
+- 720px reading measure; near-zero radius; **no boxes** — hierarchy from type,
+  whitespace, and 1px rules. Proof is an asymmetric editorial band; prices are a
+  ruled typographic table, not cards.
+- Markup: custom sections inside the existing PageLayout; Header/Footer stay.
+- Motion: at most one quiet entrance stagger (200ms fade/rise), disabled under
+  `prefers-reduced-motion`. **Documented exceptions to marketing hard rules**
+  (full-bleed hero, 3 motions): declined deliberately — plainness is the brand
+  argument.
+
+**Structure and states:**
+
+- **D3:** header carries the wordmark (non-sticky) + one "Email me" action; the
+  hero brand line is deleted — the H1 opens the page.
+- **D4:** the "Real example: 118 cases…" line is body-size evidence with a
+  terracotta left rule — never small print.
+- **D5:** `theme: 'light:only'` in config.yaml; the theme toggle leaves the
+  header. One render to design and test.
+- **D6:** removed-element states: if the sample-report entry drops (OQ4), the
+  durability entry becomes the full-width single proof band; the hero example
+  line always survives (it asserts, it does not link).
+- **D7:** photo brief — real photograph, head and shoulders, plain light
+  background, source ≥640px, rendered ~112px with slight rounding,
+  alt "Himal, founder of Vuldesk", width/height set. **Taking it is a day-one
+  task** (ship floor item), no longer an open question.
+- **D9:** proof links open in a new tab (`rel="noopener"`) with framing words
+  ("the clinic's real booking page opens in a new tab"). Fallback if the clinic
+  objects to prospect traffic while unnamed: annotated screenshot as target.
+- **D11:** 404.astro joins the rewrite: singular voice ("I could not find that
+  page…"), typo fixed, new tokens; it receives real traffic from drafted blog
+  URLs by design.
+
+**Journey gates (extend eng amendment A2):**
+
+- **D8:** production preview strings are drafted and binding —
+  og:title "Vuldesk — AI tools that read your records and give you answers";
+  meta description = the hero sub's first two sentences; share-card alt drafted.
+  CHECK 5 also scans og:title, meta description, and og:image alt against the
+  jargon inventory.
+- **D10:** the sample-report page (when it exists) opens with one plain sentence
+  and passes the same CHECK 5 scan before it may be linked; genuinely needed
+  domain terms go in the allowlist deliberately.
+
+**Responsive and accessibility (D14, D15):**
+
+- Mobile (≤640px): H1 28px; the 375×667 first screen must contain H1 + the first
+  sub sentence + the CTA; evidence line directly after the CTA; proof then prices
+  stack as ruled full-width lists; photo un-floats above its paragraph; 20px
+  gutters. **The cold-read gate runs on desktop AND mobile renders**
+  (docs/designs/assets/cold-read-harness.md, committed).
+- Accessibility floor (also into DESIGN.md): all body copy ≥16px including the
+  footer (AA contrast — `--muted` on `--paper`); CTAs are real anchors with
+  `:focus-visible` rings; 44px minimum touch targets; links underlined with a
+  distinct visited color; photo has alt + intrinsic dimensions; motion respects
+  `prefers-reduced-motion`.
+
+**Post-retest notes (v3 scored 8/9/9 desktop, ~7×3 mobile-first-screen; 3/3 PASS both):**
+
+- All three readers paused at "the AI service it runs on" — honest but
+  under-explained. Founder's call on a four-word gloss (e.g. "a major AI service,
+  under your own account"); the data Q&A must stay true either way.
+- The president persona's first ask is a phone-able reference — more weight on
+  OQ2 (naming Gamma).
+- The ops persona asked what happens to the fee if the tool is wrong too often
+  on THEIR records — a guarantee/refund posture question for the first sales
+  call; relates to the market sweep's 30-day-guarantee bootstrap pattern. Not a
+  website change.
+
 ## GSTACK REVIEW REPORT
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
 | CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
-| Codex Review | `/codex review` | Independent 2nd opinion | 1 | ISSUES FOUND (absorbed) | 14 points; 4 verified repo defects, all resolved via D6-D10 |
+| Codex Review | `/codex review` | Independent 2nd opinion | 2 | ISSUES FOUND (absorbed) | Eng voice: 14 points, 4 verified repo defects. Design voice: NO-GO on visuals → set-letter spec |
 | Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | CLEAR (PLAN) | 10 issues, 0 critical gaps, all folded as amendments A1-A3 + copy/teardown/floor |
-| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
+| Design Review | `/plan-design-review` | UI/UX gaps | 1 | CLEAR (FULL) | score 6/10 → 9/10; 14 decisions (D3-D16); v3 artifact tested 8/9/9 |
 | DX Review | `/plan-devex-review` | Developer experience gaps | 0 | — | — |
 
-**CODEX:** Outside voice verified four repo-level defects (live "just a Demo" privacy line — hotfixed and deployed during review; RSS button hardcoded in layout; schedule-trigger would redeploy; mobile empty-hamburger risk) and forced the copy honesty pass.
+**CODEX:** Eng pass verified four repo defects (live "just a Demo" privacy line — hotfixed and deployed mid-review; RSS button hardcoded; schedule-trigger redeploy; mobile hamburger risk). Design pass rated visuals 3/10 and drove the set-letter direction, token set, and v3 rebuild.
 
-**CROSS-MODEL:** Claude review and Codex converged on mechanizing the ship gates and completing the teardown; Codex's strategic re-arguments (wedge breadth, comprehension vs demand) were settled office-hours decisions and were not reopened.
+**CROSS-MODEL:** Both models converged on mechanized gates, teardown completeness, and "copy approval is not visual approval." One design disagreement (brand louder vs deduplicated) resolved by founder: deduplicated (D3). Strategic re-arguments of settled office-hours decisions were not reopened.
 
-**VERDICT:** ENG CLEARED — ready to implement. Ship gate: `verify` job green (CHECK 1-7 after A2 lands) + ship floor from 10A.
+**VERDICT:** ENG + DESIGN CLEARED — ready to implement from `one-page-wireframe-v3.html`. Ship gate: `verify` green (CHECK 1-7 incl. meta scan) + ship floor (prices, photo, live proof) + cold-read 3/3 on desktop and mobile renders.
 
 NO UNRESOLVED DECISIONS

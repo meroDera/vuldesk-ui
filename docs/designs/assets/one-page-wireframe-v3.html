@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vuldesk — one-page wireframe v3</title>
+<!-- WIREFRAME v3 — the copy of record. Supersedes v2.
+     Every decision from /plan-eng-review (A1-A3, honesty pass 9A) and
+     /plan-design-review (D3-D15) is applied:
+       D3  masthead dedupe: header carries the name; hero opens with H1
+       D4  evidence line promoted to body size with left rule
+       D5  light-only theme
+       D6  removed-element states specified (see comments in PROOF)
+       D7  photo brief (112px, real photo, alt + dimensions)
+       D8  og:title/description drafted (see meta below)
+       D9  proof links framed + new tab
+       D12 set-letter direction: paper/ink/one accent, no boxes, thin rules
+       D13 tokens: production = Source Serif 4 display / Source Sans 3 body;
+           this wireframe uses Georgia/system stand-ins (self-contained file)
+       D14 mobile: H1 28px, first screen = H1 + first sub sentence + CTA
+       D15 a11y floor: >=16px, AA contrast, real anchors, focus ring,
+           44px targets, visited links, reduced-motion respected
+     Production og strings (D8):
+       og:title       = "Vuldesk — AI tools that read your records and give you answers"
+       og:description = "Every business has a pile of records that someone reads by
+                         hand. I build a tool that reads yours and tells you what
+                         matters. A price fixed before we start."
+       og:image alt   = "Vuldesk — I build AI tools that read your records and give
+                         you answers"
+-->
+<style>
+  :root {
+    --paper: #faf8f4;   /* warm paper */
+    --ink:   #211c16;   /* near-black ink */
+    --muted: #5a544c;   /* AA on paper at 16px */
+    --rule:  #d8d2c8;   /* thin rules */
+    --accent:#b5502f;   /* restrained terracotta */
+    --focus: #1a56db;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif; /* → Source Sans 3 body + Source Serif 4 display in production */
+    line-height: 1.55; font-size: 17px;
+  }
+  .measure { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  header.site { border-bottom: 1px solid var(--rule); }
+  header.site .measure { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; }
+  .wordmark { font-weight: 700; letter-spacing: 2px; font-size: 17px; text-decoration: none; color: var(--ink); }
+  a.btn {
+    display: inline-block; border: 2px solid var(--ink); color: var(--ink);
+    padding: 12px 22px; min-height: 44px; font-weight: 700; text-decoration: none;
+  }
+  a.btn:hover { background: var(--ink); color: var(--paper); }
+  a:focus-visible, .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  a { color: var(--ink); text-decoration: underline; }
+  a:visited { color: #5b3a29; }
+  section { padding: 56px 0; }
+  section + section .measure { border-top: 1px solid var(--rule); }
+  section .measure { padding-top: 56px; margin-top: -56px; }
+  h1 { font-size: 34px; line-height: 1.2; margin-bottom: 18px; font-weight: 700; }
+  h2 { font-size: 22px; margin-bottom: 14px; }
+  p { margin-bottom: 12px; }
+  .example {
+    border-left: 3px solid var(--accent); padding-left: 14px; margin: 18px 0;
+    font-size: 17px;
+  }
+  .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+  .cta-alt { color: var(--muted); font-size: 16px; }
+  .proof-band { display: flex; gap: 32px; }
+  .proof-primary { flex: 3; }
+  .proof-secondary { flex: 2; border-left: 1px solid var(--rule); padding-left: 24px; }
+  .prices { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .prices td { vertical-align: top; padding: 12px 16px 12px 0; border-top: 1px solid var(--rule); font-size: 16px; }
+  .prices .amount { font-size: 21px; font-weight: 700; white-space: nowrap; }
+  .qa { border-top: 1px solid var(--rule); padding: 14px 0; }
+  .qa p:first-child { font-weight: 700; margin-bottom: 4px; }
+  .founder { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 10px; }
+  .photo {
+    width: 112px; height: 112px; flex: 0 0 112px; border-radius: 8px;
+    border: 1px dashed var(--muted); display: flex; align-items: center;
+    justify-content: center; color: var(--muted); font-size: 13px;
+  } /* production: real photograph, head and shoulders, plain light background,
+       source >=640px, alt="Himal, founder of Vuldesk", width/height set */
+  footer { padding: 28px 0 48px; color: var(--muted); font-size: 16px; }
+  @media (max-width: 640px) {
+    h1 { font-size: 28px; }                 /* D14 */
+    .proof-band { flex-direction: column; gap: 20px; }
+    .proof-secondary { border-left: none; border-top: 1px solid var(--rule); padding: 16px 0 0; }
+    .founder { flex-direction: column; }
+    .measure { padding: 0 20px; }
+    section { padding: 40px 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    /* production: single quiet entrance — hero children fade/rise 200ms, staggered 60ms */
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="measure">
+    <a class="wordmark" href="/">VULDESK</a>
+    <a class="btn" href="mailto:contact@vuldesk.com?subject=My pile of records">Email me</a>
+  </div>
+</header>
+
+<section>
+  <div class="measure">
+    <h1>I build AI tools that read your records and give you answers.</h1>
+    <p>Orders, cases, claims, forms &mdash; every business has a pile that someone reads
+       by hand. I build a tool that reads yours and tells you what matters. You open it
+       in your web browser. A price fixed before we start. No programmers needed on
+       your side.</p>
+    <p class="example"><b>Real example:</b> one of my tools read 118 foreclosure court
+       cases and found the 57 that no longer mattered. 37 seconds per case.</p>
+    <div class="cta-row">
+      <a class="btn" href="mailto:contact@vuldesk.com?subject=My pile of records">Tell me about your pile &rarr;</a>
+      <span class="cta-alt">or write to contact@vuldesk.com</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Proof you can check</h2>
+    <div class="proof-band">
+      <div class="proof-primary">
+        <p><b>The foreclosure tool.</b> Read 118 court cases. Found the 57 that no
+           longer mattered. 37 seconds each.<br>
+           <a href="#" target="_blank" rel="noopener">See a sample report</a>
+           <span class="cta-alt">(opens in a new tab)</span></p>
+        <!-- D6: if the sample report is not ready, this entry is removed and the
+             durability entry below becomes the full-width single proof band. -->
+      </div>
+      <div class="proof-secondary">
+        <p><b>Still running after 20 months.</b> I built a booking system for a
+           fertility clinic in 2024. It runs today.<br>
+           <a href="https://ivf.vuldesk.com" target="_blank" rel="noopener">See it live</a>
+           <span class="cta-alt">(the clinic&rsquo;s real booking page opens in a new tab)</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>What it costs</h2>
+    <table class="prices">
+      <tr>
+        <td><b>One small tool</b><br>Reads one kind of record. Ready in weeks.</td>
+        <td class="amount">$7,500</td>
+      </tr>
+      <tr>
+        <td><b>A bigger tool</b><br>Reads several kinds of records and does more with
+            them. Fixed quote before we start.</td>
+        <td class="amount">from $15,000</td>
+      </tr>
+      <tr>
+        <td><b>Keep it healthy</b> (optional)<br>I watch it and fix it. I reply within
+            one business day.</td>
+        <td class="amount">$500 / month</td>
+      </tr>
+    </table>
+    <p style="margin-top:12px">The price I quote is the price you pay. No hourly
+       billing. No surprises.</p>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Questions a careful buyer asks</h2>
+    <div class="founder">
+      <div class="photo">[PHOTO]</div>
+      <p>I am Himal. I run Vuldesk from Kathmandu, and I build every tool myself.</p>
+    </div>
+    <div class="qa"><p>Who owns the tool?</p>
+      <p>You do. When you pay the final bill, the tool and its accounts move to your name.</p></div>
+    <div class="qa"><p>What if you disappear?</p>
+      <p>You lose nothing. The tool keeps running as it is, and the code and the
+         accounts are already yours.</p></div>
+    <div class="qa"><p>What happens to my data?</p>
+      <p>Your records go into your tool and the AI service it runs on &mdash; under
+         your account, not mine. I never use them for anything else.</p></div>
+    <div class="qa"><p>What happens when the tool is wrong?</p>
+      <p>The tool marks what it is not sure about, and a person checks those. Nothing
+         happens automatically that you cannot undo.</p></div>
+    <div class="qa"><p>How do we talk?</p>
+      <p>Email, plus one call a week if you want it. I overlap with US business hours
+         every day.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Have a pile of records that eats your team&rsquo;s time?</h2>
+    <p>Tell me about it in plain words. I will reply within one business day, with a
+       price &mdash; or the questions I need answered first.</p>
+    <div class="cta-row">
+      <a class="btn" href="mailto:contact@vuldesk.com?subject=My pile of records">Email me</a>
+      <span class="cta-alt">contact@vuldesk.com</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="measure">
+    Vuldesk Technologies Private Limited &middot; Kathmandu &middot;
+    <a href="/terms">Terms</a> &middot; <a href="/privacy">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>
