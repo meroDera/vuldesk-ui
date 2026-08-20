@@ -19,6 +19,7 @@
 // docs/designs/assets/cold-read-harness.md (3/3 at >=7 on desktop AND mobile).
 import Layout from '~/layouts/PageLayout.astro';
 import { CONTACT_MAILTO, CONTACT_EMAIL } from '~/navigation';
+import founderPhoto from '~/assets/images/himal.jpg';
 
 const metadata = {
   title: 'Vuldesk — AI tools that read your records and give you answers',
@@ -97,13 +98,10 @@ const metadata = {
     <div class="measure">
       <h2>Questions a careful buyer asks</h2>
       <div class="founder">
-        <!-- SHIP-FLOOR ITEM (D7): the founder photo is REQUIRED before merge.
-             Per the removal rule (D6) no placeholder ships — add the real
-             image here as:
-             <img class="photo" src={founderPhoto.src} alt="Himal, founder of Vuldesk" width="112" height="112" />
-             Brief: real photograph, head and shoulders, plain light
-             background, source >=640px. CHECK 3 bans "[PHOTO]" so a
-             placeholder can never reach production again. -->
+        <!-- Ship-floor item D7, closed 2026-08-20: real photograph, 640px
+             source, EXIF stripped. CHECK 3 bans "[PHOTO]" so a placeholder
+             can never reach production again. -->
+        <img class="photo" src={founderPhoto.src} alt="Himal, founder of Vuldesk" width="112" height="112" />
         <p>I am Himal. I run Vuldesk from Kathmandu, and I build every tool myself.</p>
       </div>
       <div class="qa">
