@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vuldesk — one-page wireframe</title>
+<!-- WIREFRAME: intentionally rough. Grayscale, system fonts, dashed borders.
+     This is Approach B: one page, ~400 words, grade 5-7 English, flagship-led.
+     Every block maps to a premise: P2 flagship hero, P4 published prices,
+     P5 trust/objection block. -->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #222; background: #fafafa; line-height: 1.5; }
+  .page { max-width: 720px; margin: 0 auto; padding: 24px; }
+  .block { border: 2px dashed #bbb; margin: 18px 0; padding: 28px; background: #fff; position: relative; }
+  .tag { position: absolute; top: -12px; left: 16px; background: #eee; border: 1px solid #999; font-size: 11px; padding: 1px 8px; color: #555; letter-spacing: 1px; }
+  h1 { font-size: 34px; line-height: 1.2; margin-bottom: 14px; font-weight: 700; }
+  h2 { font-size: 20px; margin-bottom: 10px; }
+  p { margin-bottom: 10px; font-size: 16px; }
+  .small { font-size: 13px; color: #666; }
+  .btn { display: inline-block; border: 2px solid #222; padding: 10px 22px; font-weight: 700; margin-top: 10px; background: #fff; }
+  .brand { font-size: 13px; letter-spacing: 3px; color: #444; margin-bottom: 26px; }
+  .proofrow { display: flex; gap: 14px; flex-wrap: wrap; }
+  .proof { flex: 1 1 240px; border: 1px solid #ccc; padding: 16px; }
+  .prices { display: flex; gap: 14px; flex-wrap: wrap; }
+  .price { flex: 1 1 180px; border: 1px solid #ccc; padding: 16px; text-align: center; }
+  .price b { font-size: 22px; display: block; margin: 6px 0; }
+  .qa { border-top: 1px solid #ddd; padding: 12px 0; }
+  .qa p:first-child { font-weight: 700; margin-bottom: 4px; }
+  .photo { width: 84px; height: 84px; border: 1px dashed #999; display: flex; align-items: center; justify-content: center; color: #999; font-size: 11px; float: left; margin: 0 16px 8px 0; }
+  footer { text-align: center; color: #888; font-size: 12px; padding: 20px 0 40px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="block">
+    <span class="tag">HERO — flagship, real numbers</span>
+    <div class="brand">VULDESK</div>
+    <h1>I build AI tools that read your records and give you answers.</h1>
+    <p>Orders, cases, claims, forms &mdash; every business has a pile that someone reads by hand.
+       I build a tool that reads yours and tells you what matters. You open it in your web
+       browser. One fixed price. No programmers needed on your side.</p>
+    <p class="small"><b>Real example:</b> one of my tools read 118 foreclosure court cases and
+       found the 57 that no longer mattered. 37 seconds per case.</p>
+    <span class="btn">Tell me about your pile &rarr;</span>
+  </div>
+
+  <div class="block">
+    <span class="tag">PROOF — named, live, checkable</span>
+    <div class="proofrow">
+      <div class="proof">
+        <h2>Still running after 20 months</h2>
+        <p>I built a booking system for an IVF clinic in 2024. It runs today.
+           <u>See it live</u>.</p>
+      </div>
+      <div class="proof">
+        <h2>The foreclosure tool</h2>
+        <p>Read 118 court cases. Found the 57 that no longer mattered. 37 seconds each.
+           <u>See a sample report</u>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <span class="tag">PRICES — published, fixed</span>
+    <h2>What it costs</h2>
+    <div class="prices">
+      <div class="price"><p>One small tool</p><b>$7,500</b><p class="small">Reads one kind of record. Ready in weeks.</p></div>
+      <div class="price"><p>A bigger tool</p><b>from $15,000</b><p class="small">More sources, more steps. Quoted before we start.</p></div>
+      <div class="price"><p>Keep it healthy</p><b>$500 / month</b><p class="small">Optional. I watch it, fix it, tune it.</p></div>
+    </div>
+    <p class="small">The price I quote is the price you pay. No hourly billing. No surprises.</p>
+  </div>
+
+  <div class="block">
+    <span class="tag">TRUST — the questions a careful buyer asks</span>
+    <h2>Questions a careful buyer asks</h2>
+    <div class="photo">[PHOTO]</div>
+    <p>I am Himal. I run Vuldesk from Kathmandu, and I build every tool myself.</p>
+    <div style="clear:both"></div>
+    <div class="qa"><p>Who owns the tool?</p><p>You do. When you pay the final bill, the tool, the code, and every password are yours.</p></div>
+    <div class="qa"><p>What if you disappear?</p><p>Everything lives in your accounts, not mine. Any programmer can pick up where I left off.</p></div>
+    <div class="qa"><p>What happens to my data?</p><p>Your records stay yours. I never use them to train anything. We sign a short agreement that says so.</p></div>
+    <div class="qa"><p>How do we talk?</p><p>Email, plus one call a week if you want it. I overlap with US business hours every day.</p></div>
+  </div>
+
+  <div class="block">
+    <span class="tag">CLOSE — one action</span>
+    <h2>Have a pile of records that eats your team's time?</h2>
+    <p>Tell me about it in plain words. I will reply within one business day, with a price.</p>
+    <span class="btn">Email me</span>
+  </div>
+
+  <footer>Vuldesk Technologies Private Limited &middot; Kathmandu &middot; Terms &middot; Privacy</footer>
+</div>
+</body>
+</html>
