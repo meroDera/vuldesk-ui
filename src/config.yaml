@@ -9,7 +9,7 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Vuldesk — AI tools that read your records and give you answers
+    default: Vuldesk — AI tools that read your records for you
     template: '%s — Vuldesk'
   description: "Every business has a pile of records that someone reads by hand. We build a tool that reads yours and tells you what matters. A price fixed before we start."
   robots:
@@ -21,7 +21,7 @@ metadata:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
-        alt: 'Vuldesk — we build AI tools that read your records and give you answers'
+        alt: 'Vuldesk — we build AI tools that read your records and find what you need'
     type: website
   twitter:
     handle: '@vuldesk_tech'
