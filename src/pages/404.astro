@@ -1,5 +1,6 @@
 ---
-// 404 — singular voice (design review D11, 2026-08-20). This page receives
+// 404 — company voice (company-story design, 2026-10-31; it replaces the singular
+// voice of design review D11, 2026-08-20). This page receives
 // real traffic by design: the drafted blog posts' old URLs land here.
 import Layout from '~/layouts/PageLayout.astro';
 import { getHomePermalink } from '~/utils/permalinks';
@@ -10,7 +11,7 @@ const title = 'Page not found';
 <Layout metadata={{ title }}>
   <section class="letter">
     <div class="measure">
-      <h1>I could not find that page.</h1>
+      <h1>We could not find that page.</h1>
       <p>It may have moved, or the link may be old. The one page that exists is the homepage.</p>
       <a class="btn" href={getHomePermalink()}>Go to the homepage &rarr;</a>
     </div>

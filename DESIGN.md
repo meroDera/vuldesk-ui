@@ -7,10 +7,13 @@ sites, plainness is the differentiated composition.
 
 ## Voice
 
-Person voice, company wrapper: copy speaks as "I" (Kushal); Vuldesk Technologies
-Private Limited appears in the footer, legal pages, and contracts. Grade 5-7
-plain English; zero terms from docs/designs/assets/jargon-inventory.md
-(mechanically enforced by CHECK 5 in scripts/check-integrity.mjs).
+Company voice, named founder: copy speaks as "we". Kushal is named as founder in
+the trust block. Vuldesk Technologies Private Limited appears in the footer, legal
+pages, and contracts. No one-person claims (CHECK 3 in scripts/check-integrity.mjs).
+Grade 5-7 plain English; zero terms from docs/designs/assets/jargon-inventory.md
+(mechanically enforced by CHECK 5 in scripts/check-integrity.mjs). Decided in
+docs/designs/company-story-we-voice.md (2026-10-31); it replaces the August "I"
+voice, which fit a solo operator.
 
 ## Typography
 
@@ -57,10 +60,13 @@ not by omission.
 ## Gates that keep this true
 
 - `npm test` → build + scripts/check-integrity.mjs (CHECK 1-8: links, mailto,
-  banned strings, category regression, copy budget + jargon incl. og/meta
-  strings, blog teardown, preview metadata, external proof links).
-- Comprehension: docs/designs/assets/cold-read-harness.md — 3 personas,
-  5-second protocol, pass = 3/3 at ≥7/10, desktop AND mobile renders.
+  banned strings incl. one-person phrases, category regression, copy budget +
+  jargon incl. og/meta strings, blog teardown, preview metadata incl.
+  og:image:alt, external proof links).
+- Comprehension: docs/designs/assets/cold-read-harness.md — 3 personas, the
+  ship gate: five-second runs (3 per persona on desktop 1280 x 720 and phone
+  375 x 667) scored by median against the live build, plus one whole-page run
+  per persona.
 - Copy drift checklist (any offer-line change touches all five): index.astro
   H1/sub, config.yaml metadata, the og card (src/assets/images/default.png),
   CONTACT_MAILTO in navigation.js, outbound message templates.
