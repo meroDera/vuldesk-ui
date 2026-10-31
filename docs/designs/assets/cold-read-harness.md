@@ -39,7 +39,9 @@ page itself fails in this harness: the clinic-owner persona gives 6 to every ver
    When the page is served under a path prefix (gstack-render does this), make the
    `/_astro/` URLs relative first, wait until the fonts load, and check that the H1
    computed font is Source Serif 4 Variable: without the CSS, every fold position
-   is wrong. The standalone runs get only this text, never the whole page.
+   is wrong. Then wait until the hero entrance animation ends (`document.getAnimations()`
+   all finished): until it ends, every hero element sits up to 6 px low. The standalone runs
+   get only this text, never the whole page.
 3. THEN (the two-step prompt only): the persona reads the whole page and reports:
    who is this for, exact phrases where they got lost, whether they would make
    contact, the first question they would ask, and the people answers.
@@ -114,6 +116,8 @@ lowered your trust).
 | 2026-10-31 | wireframe v4.3 (plain real-estate example) | desktop 6, 7, 7; phone 6, 8, 8 at 375 x 712; 6 of 6 "a team"; president repeats (standalone, desktop): v4.3 7, 8, 8, 8 vs live 8, 8, 8, 8 — equal medians, accepted (D16, 2026-10-31) |
 | 2026-10-31 | P6 run 1, built 705336a vs live 6793c65 (42 runs) | five-second medians equal to live in 5 of 6 groups (operations manager, phone: 8 vs 7); new 20 of 21 "a team", live 21 of 21 "one person"; clinic owner, phone: 1 of 3 "not sure": FAIL; would contact 3 of 3 vs 2 of 3 |
 | 2026-10-31 | P6 re-run (D22) on 705336a, stopped after 8 of 36 | clinic owner, phone: "not sure" again: FAIL; owner D35 = A (team line under the H1, cost line in two sentences) |
+| 2026-10-31 | P6 run 2, built d617bd6 (team line under the H1) vs live 6793c65 (42 runs) | new 21 of 21 "a team", live 21 of 21 "one person"; medians equal or higher in 5 of 6 groups; operations manager, desktop: 7 vs 8: FAIL; would contact 3 of 3 vs 3 of 3 |
+| 2026-10-31 | P6 run 2 re-run (D22) on d617bd6 (36 runs) | all 6 groups pass; new 18 of 18 "a team": PASS; owner D36 = A (keep the cost line, merge) |
 
 IDs from the company-story session carry their date, for example "D14 (2026-10-31)",
 because this file already uses D14 for the August mobile render. Raw answers:

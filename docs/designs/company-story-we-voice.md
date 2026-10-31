@@ -265,7 +265,10 @@ replaces an existing line, except two new lines: the team line and the AI cost l
      672 px, 5 px below the fold; with the short line it sits at 646 px. On the spike build of the
      v4.4 copy (fonts loaded), the button ends at 630 px and the email line at 670 px, 3 px below
      the fold (eng review E7). With the team line directly under the H1 (D35, v4.7), the button
-     ends at 624 px and the email line at 664 px, inside the fold.
+     ends at 618 px and the email line at 658 px, inside the fold. Those two values are at rest,
+     after the hero entrance animation ends. The earlier values in this item were measured when the
+     fonts loaded, while the animation still held each hero element 6 px low, so they are likely
+     6 px low as well.
    - Proof: "I built a booking system" becomes "We built a booking system".
    - Prices: "We watch it and fix it. We reply within one business day." and "The price we
      quote is the price you pay us." ("us" is new: the page now names a second payee.) Then a
@@ -442,6 +445,20 @@ line moves directly under the H1, the cost line becomes two sentences, and P6 ru
 head. Open question for later: in 5 of 9 runs on the new page, the home-buying president asks what the
 example saved in hours or dollars (D31 left the 28-hours figure out).
 
+P6 run 2 on the PR head `d617bd6` (v4.7, 2026-10-31; raw answers `designs/wireframe-20261030/p6-d617bd6-results.jsonl`
+and `p6-d617bd6-rerun.jsonl`): PASS after one D22 re-run. Five-second part, first pass: 5 of 6 groups
+passed; the operations manager on desktop scored 8, 7, 7 against live 8, 8, 8 (median 7 against 8), and
+both 7s cite the booking-system proof line, which the same group scored 8, 8, 8 in run 1. The D22
+second pass passed all six groups (operations manager on desktop: 8 against 8). Team read over both
+passes: new 39 of 39 "a team", live 39 of 39 "one person"; the clinic owner now finds "We are a team of
+four." "right under the headline". Whole-page part: would contact new 3 of 3, live 3 of 3. The
+two-sentence cost line lost 3 of 3 at its first sentence, and 2 of 3 readers listed its price sentence
+as lowering trust; "Reads one kind of record." (unchanged) lost 3 of 3 and stays open. D36 (owner,
+2026-10-31) = A: keep the cost line, because every wording lost readers (likely the idea of a second
+bill, not the words) and the "No surprises" promise needs it; merge PR #11. Measurement note: at rest,
+the phone button ends at 618 px and the email line at 658 px; the harness now waits for the entrance
+animation to end before it measures.
+
 Answered on 2026-10-31: the monthly AI cost (Q8), the foreclosure example (Q9: removed; D15
 and Q10: back in plain words), the team size (Q7), who checks unsure items (Q11: the client's
 own staff), the pass bar (D14), the ownership wording (Q14), the city (D17: none) and the two
@@ -502,6 +519,8 @@ Scores are clinic owner, home-buying president, operations manager. Raw answers 
 | 2026-10-31 | built v4.4 vs v4.5 (the five copy-round rewrites), one two-step run per persona (`cold-read-v45.json`) | v4.4: 6, 8, 8; v4.5: 6, 8, 7 | not run | 0 of 6 | 6 of 6 (each guessed 4) | 6 of 6 |
 | 2026-10-31 | P6 run 1 on built `705336a` (v4.6) vs `6793c65`: 36 five-second + 6 whole-page runs | medians 6, 8, 8; live 6, 8, 8 | medians 6, 8, 8; live 6, 8, 7; clinic owner 1 of 3 "not sure": FAIL | new 0 of 21, live 21 of 21 | new 20 of 21 | new 3 of 3, live 2 of 3 |
 | 2026-10-31 | P6 re-run (D22) on `705336a`, stopped after 8 of 36 five-second runs | 6, 8, 8; live 6, 8, 8 (1 run each) | clinic owner "not sure" again: FAIL | new 0 of 5, live 3 of 3 | new 4 of 5 | not run |
+| 2026-10-31 | P6 run 2 on built `d617bd6` (v4.7) vs `6793c65`, pass 1: 36 five-second + 6 whole-page runs | medians 7, 8, 7; live 6, 8, 8; operations manager 7 vs 8: FAIL | medians 6, 8, 8; live 6, 8, 7 | new 0 of 21, live 21 of 21 | new 21 of 21 | new 3 of 3, live 3 of 3 |
+| 2026-10-31 | P6 run 2 re-run (D22) on `d617bd6`: 36 five-second runs | medians 7, 8, 8; live 6, 8, 8 | medians 6, 8, 8; live 6, 8, 7: PASS | new 0 of 18, live 18 of 18 | new 18 of 18 | not run |
 
 The control run checks the harness. In August the built page scored 8, 9, 9. With this
 harness, the same live page scores 6, 8, 7, exactly like v4 and v4.1. So the five-second
