@@ -112,6 +112,8 @@ lowered your trust).
 | 2026-10-31 | wireframe v4.1 (no products row, no team size) | desktop 6, 8, 7; 0 of 6 "a team" (all "not sure") |
 | 2026-10-31 | wireframe v4.2 ("We are a team of four") | desktop 6, 7, 7; phone same text (measured at 375 x 712); 3 of 3 "a team" (each guessed 4) |
 | 2026-10-31 | wireframe v4.3 (plain real-estate example) | desktop 6, 7, 7; phone 6, 8, 8 at 375 x 712; 6 of 6 "a team"; president repeats (standalone, desktop): v4.3 7, 8, 8, 8 vs live 8, 8, 8, 8 — equal medians, accepted (D16, 2026-10-31) |
+| 2026-10-31 | P6 run 1, built 705336a vs live 6793c65 (42 runs) | five-second medians equal to live in 5 of 6 groups (operations manager, phone: 8 vs 7); new 20 of 21 "a team", live 21 of 21 "one person"; clinic owner, phone: 1 of 3 "not sure": FAIL; would contact 3 of 3 vs 2 of 3 |
+| 2026-10-31 | P6 re-run (D22) on 705336a, stopped after 8 of 36 | clinic owner, phone: "not sure" again: FAIL; owner D35 = A (team line under the H1, cost line in two sentences) |
 
 IDs from the company-story session carry their date, for example "D14 (2026-10-31)",
 because this file already uses D14 for the August mobile render. Raw answers:

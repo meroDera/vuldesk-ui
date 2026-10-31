@@ -22,8 +22,8 @@ replaces these parts of the August doc:
 - CHECK 3's banned list (item 7), and the cold-read harness pass bar and protocol (P6, item 10).
 Everything else stays as written: the reader, the offer, the prices, the set-letter design
 system (including design-review D14: its first-screen rule stays, with the H1, the first
-sentence of the sub and the CTA on the 375 x 667 first screen; the hero keeps the live order, the
-example, then the team line, then the CTA, not the "evidence line directly after the CTA" that D14
+sentence of the sub and the CTA on the 375 x 667 first screen; the hero order is the H1, the team
+line, the sub, the example, then the CTA (D35, owner 2026-10-31, after P6 on `705336a`), not the "evidence line directly after the CTA" that D14
 also names), CHECKS 1-2 and 4-8, and the rest of the harness.
 
 ## Problem Statement
@@ -239,7 +239,7 @@ as the team story.
 ## Recommended Approach
 
 E as it stands after D10-D16. The copy of record is
-`docs/designs/assets/one-page-wireframe-v4.html` (v4.6, after the copy round). In the page copy (item 1), each change
+`docs/designs/assets/one-page-wireframe-v4.html` (v4.7, after P6 on `705336a`; D35). In the page copy (item 1), each change
 replaces an existing line, except two new lines: the team line and the AI cost line. Items 0, 6, 7,
 9, 10 and 11 add new files or new entries, and each item names them.
 
@@ -256,7 +256,7 @@ replaces an existing line, except two new lines: the team line and the AI cost l
      real estate agency. It read the records of 118 properties and filtered out the 57 they did
      not need." ("agency", not the owner's "agents": "agents" is on the jargon list. The owner
      confirmed this line as true on 2026-10-31, Q12.)
-   - Hero (D12): after the example, a plain paragraph: "**We are a team of four.**" (True on
+   - Hero (D12, D35): directly under the H1, a plain paragraph: "**We are a team of four.**" (True on
      2026-10-31 per Q7. Update this line and the founder line together when the team changes; one
      code comment above both lines says so, E4.) The roles sentence goes to the
      founder line (below), because August design-review D14 requires the H1, the first sentence
@@ -264,12 +264,14 @@ replaces an existing line, except two new lines: the team line and the AI cost l
      the v4.3 hero text: with the roles sentence in the hero, the button's bottom edge sits at
      672 px, 5 px below the fold; with the short line it sits at 646 px. On the spike build of the
      v4.4 copy (fonts loaded), the button ends at 630 px and the email line at 670 px, 3 px below
-     the fold (eng review E7).
+     the fold (eng review E7). With the team line directly under the H1 (D35, v4.7), the button
+     ends at 624 px and the email line at 664 px, inside the fold.
    - Proof: "I built a booking system" becomes "We built a booking system".
    - Prices: "We watch it and fix it. We reply within one business day." and "The price we
      quote is the price you pay us." ("us" is new: the page now names a second payee.) Then a
-     new line (Q8): "One more cost: your tool uses AI from an outside company, which bills you
-     directly: usually $20 to $100 a month for a small tool." (D33, after the copy round). Price row
+     new line (Q8): "One more cost: the AI in your tool comes from an outside company. That company
+     bills you directly, usually $20 to $100 a month for a small tool." (D35, after P6: the D33
+     one-sentence version lost 3 of 3 whole-page readers). Price row
      2 becomes "Reads several kinds of records, or does more than one job." (D32)
    - Trust block founder line: "Kushal founded Vuldesk. Three of us build the tools, and one
      works with our clients." The photo and its alt text "Kushal, founder of Vuldesk" stay. The photo file moves
@@ -353,7 +355,7 @@ replaces an existing line, except two new lines: the team line and the AI cost l
 Word budget: wireframe v4.4 has 427 visible words and zero jargon terms (CHECK 5 logic run on
 the file). The built page has a longer <title> and footer than the wireframe and a photo in
 place of the placeholder, so CHECK 5 on the build decides; expect about 435 of 450. Measured on the spike build of the v4.4 copy: 438 of 450 (eng
-review, 2026-10-31). After the copy round (v4.6): 441 of 450, zero jargon.
+review, 2026-10-31). After the copy round (v4.6): 441 of 450, zero jargon. After D35 (v4.7): 444 of 450.
 
 11. `TODOS.md` (eng review E11): TODO 4 names the new buttons ("Tell us about your pile", "Email
     us"), and TODO 1 says "a small team" in place of "a solo operator". New TODO entries follow
@@ -428,6 +430,18 @@ rewrite also lost 3 of 3, so OQ3 stays open for row 1); the cost line names "AI 
 company" (lost 0 of 3, was 3 of 3; D33); the proof line stays (the "Not AI" version lowered trust for
 3 of 3; D34). Raw answers: `designs/wireframe-20261030/cold-read-v45.json`.
 
+P6 on the PR head `705336a` (2026-10-31; raw answers `designs/wireframe-20261030/p6-705336a-results.jsonl`
+and `p6-705336a-rerun.jsonl`): FAIL. Whole-page part: would contact new 3 of 3, live 2 of 3 (pass); the
+rewritten cost line lost 3 of 3, and the unchanged "Keep it healthy (optional)" lost 3 of 3 (an open
+question). Five-second part: 5 of 6 groups passed with medians equal to live (operations manager on
+the phone: 8 against 7); the clinic owner on the phone answered "not sure" in 1 of 3 runs, because she
+read only the H1 and the start of the next line. The D22 re-run failed the same way and was stopped
+after 8 of 36 runs, because the other runs could not change the fail. Team read over both passes: new
+24 of 26 "a team" (2 "not sure"), live 24 of 24 "one person". D35 (owner, 2026-10-31) = A: the team
+line moves directly under the H1, the cost line becomes two sentences, and P6 runs again on the new
+head. Open question for later: in 5 of 9 runs on the new page, the home-buying president asks what the
+example saved in hours or dollars (D31 left the 28-hours figure out).
+
 Answered on 2026-10-31: the monthly AI cost (Q8), the foreclosure example (Q9: removed; D15
 and Q10: back in plain words), the team size (Q7), who checks unsure items (Q11: the client's
 own staff), the pass bar (D14), the ownership wording (Q14), the city (D17: none) and the two
@@ -486,6 +500,8 @@ Scores are clinic owner, home-buying president, operations manager. Raw answers 
 | 2026-10-31 | wireframe v4.3 (example back in plain words; "your staff check those"; no booking link) | 6, 7, 7: 1 point under (president); accepted, D16 | 6, 8, 8 at 375 x 712 (email line below the fold) | 0 of 6 | 6 of 6 (5 guessed 4) | 3 of 3 |
 | 2026-10-31 | wireframe v4.4 (roles moved to the founder line; ownership answers per Q14; no booking link) | not run: P6 tests the built page | not run | - | - | - |
 | 2026-10-31 | built v4.4 vs v4.5 (the five copy-round rewrites), one two-step run per persona (`cold-read-v45.json`) | v4.4: 6, 8, 8; v4.5: 6, 8, 7 | not run | 0 of 6 | 6 of 6 (each guessed 4) | 6 of 6 |
+| 2026-10-31 | P6 run 1 on built `705336a` (v4.6) vs `6793c65`: 36 five-second + 6 whole-page runs | medians 6, 8, 8; live 6, 8, 8 | medians 6, 8, 8; live 6, 8, 7; clinic owner 1 of 3 "not sure": FAIL | new 0 of 21, live 21 of 21 | new 20 of 21 | new 3 of 3, live 2 of 3 |
+| 2026-10-31 | P6 re-run (D22) on `705336a`, stopped after 8 of 36 five-second runs | 6, 8, 8; live 6, 8, 8 (1 run each) | clinic owner "not sure" again: FAIL | new 0 of 5, live 3 of 3 | new 4 of 5 | not run |
 
 The control run checks the harness. In August the built page scored 8, 9, 9. With this
 harness, the same live page scores 6, 8, 7, exactly like v4 and v4.1. So the five-second

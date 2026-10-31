@@ -1,6 +1,6 @@
 ---
 // vuldesk.com — one-page plain-English site ("set letter" direction).
-// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v4.html (v4.6)
+// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v4.html (v4.7)
 // Plan of record: docs/designs/company-story-we-voice.md (builds on
 // docs/designs/plain-english-one-page-site.md)
 //
@@ -33,6 +33,8 @@ const metadata = {
   <section class="letter">
     <div class="measure">
       <h1>We build AI tools that read your records and find what you need.</h1>
+      {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
+      <p><strong>We are a team of four.</strong></p>
       <p>
         Orders, cases, claims, forms &mdash; every business has a pile that someone reads
         by hand. We build a tool that reads yours and tells you what matters. You open it
@@ -43,8 +45,6 @@ const metadata = {
         <strong>Real example:</strong> we built a tool for a real estate agency. It read the
         records of 118 properties and filtered out the 57 they did not need.
       </p>
-      {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
-      <p><strong>We are a team of four.</strong></p>
       <div class="cta-row">
         <a class="btn" href={CONTACT_MAILTO}>Tell us about your pile &rarr;</a>
         <span class="cta-alt">or write to {CONTACT_EMAIL}</span>
@@ -93,7 +93,7 @@ const metadata = {
         </tbody>
       </table>
       <p class="after-table">The price we quote is the price you pay us. No hourly billing. No surprises.</p>
-      <p>One more cost: your tool uses AI from an outside company, which bills you directly: usually $20 to $100 a month for a small tool.</p>
+      <p>One more cost: the AI in your tool comes from an outside company. That company bills you directly, usually $20 to $100 a month for a small tool.</p>
     </div>
   </section>
 
