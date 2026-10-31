@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- og card source (eng review E12, 2026-10-31). Render at 1200 x 628 into
+     src/assets/images/default.png, from the repo root:
+       bun ~/.hermes/skills/gstack/bin/gstack-render.ts docs/designs/assets/og-card.html \
+         --serve-root . --wait-expr "document.fonts.status === 'loaded'" \
+         --screenshot src/assets/images/default.png --width 1200 --height 628
+     Spec (design doc item 6): --paper ground, 80px side margins, 24px wordmark, the H1 in
+     Source Serif 4 at about 64px, ink only, one 3px terracotta rule, no screenshots, under
+     about 200 KB. The headline must match the H1 in src/pages/index.astro (copy drift
+     checklist, DESIGN.md). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vuldesk og card</title>
+<style>
+  @font-face {
+    font-family: 'Source Serif 4 Variable';
+    src: url('../../../node_modules/@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2') format('woff2');
+    font-weight: 200 900;
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 628px; overflow: hidden;
+    background: #faf8f4; color: #211c16;
+    font-family: 'Source Serif 4 Variable', serif;
+  }
+  .card { box-sizing: border-box; width: 1200px; height: 628px; padding: 72px 80px; display: flex; flex-direction: column; }
+  .wordmark { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
+  .headline {
+    margin-top: auto; margin-bottom: auto;
+    border-left: 3px solid #b5502f; padding-left: 28px;
+    font-size: 64px; line-height: 1.15; font-weight: 700; max-width: 1000px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="wordmark">VULDESK</div>
+    <div class="headline" id="headline">We build AI tools that read your records and give you answers.</div>
+  </div>
+</body>
+</html>

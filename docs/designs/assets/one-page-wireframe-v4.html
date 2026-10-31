@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vuldesk — one-page wireframe v4.4</title>
+<!-- WIREFRAME v4 — company story (office hours 2026-10-30). Builds on v3 and on
+     the live page (index.astro at 6793c65): same five blocks, same set-letter
+     tokens, same prices. Changes, each tied to a decision of this session:
+       P2   voice "we" everywhere (replaces D9 "I" voice of 2026-08-20)
+       P3   Kushal stays, named as founder, with the real photo
+       D12  the hero states the team size (Q7, owner 2026-10-31: 4 people, 3 build
+            the tools, 1 works with clients; 2 of the 4 are part-time, which the page
+            does not state). "We" alone read as "maybe one guy" in 6 of 6 v4.1 runs.
+            No city (Q6: the team is not all in Kathmandu).
+       D7=A continuity Q&A claims ownership only, no second-person promise
+       D10  the own-products row (E) was tried and REMOVED after the cold-read of
+            2026-10-31: 3 of 3 personas called it noise and listed it as lowering trust
+       D11  three trust answers rewritten in plainer words (same promises)
+       Q8   "We set up everything in your name"; the AI company bills the client
+            directly, usually $20 to $100 a month for a small tool (owner, 2026-10-31)
+       Q9   the foreclosure example is removed (owner: "no regular people understand
+            the thing")
+       D15  ... and brought back in plain words, without "foreclosure" (Q10, owner: "we
+            helped real estate agents filter out properties using agents to make
+            judgements"); v4.2 without any reading-tool example made 2 of 3 personas ask
+            for proof first
+       Q11  "a person checks those" -> "your staff check those" (the client's own staff)
+       R1   design-doc review round 1 (2026-10-31): the roles sentence moves from the hero to
+            the founder line, so the CTA fits the 375x667 first screen (August design-review
+            D14); both ownership answers use the final payment (Q14 confirmed)
+       D17  no city on the page: the built footer names none, and the owner keeps it so
+       E    the booking link waits for the owner's URL and ships in that change (design-doc
+            review R1-5..8): no dormant link code, no placeholder
+     Production og strings:
+       og:title       = "Vuldesk — AI tools that read your records and give you answers"
+       og:description = "Every business has a pile of records that someone reads by
+                         hand. We build a tool that reads yours and tells you what
+                         matters. A price fixed before we start."
+       og:image alt   = "Vuldesk — we build AI tools that read your records and give
+                         you answers"   (the og card PNG is re-rendered with this text)
+     Mailto draft greeting: "Hi Vuldesk team," (was "Hi Kushal,").
+-->
+<style>
+  :root {
+    --paper: #faf8f4; --ink: #211c16; --muted: #5a544c;
+    --rule: #d8d2c8; --accent: #b5502f; --focus: #1a56db;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif; /* production: Source Serif 4 display / Source Sans 3 body */
+    line-height: 1.55; font-size: 17px;
+  }
+  .measure { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  header.site { border-bottom: 1px solid var(--rule); }
+  header.site .measure { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; }
+  .wordmark { font-weight: 700; letter-spacing: 2px; font-size: 17px; text-decoration: none; color: var(--ink); }
+  a.btn { display: inline-block; border: 2px solid var(--ink); color: var(--ink); padding: 12px 22px; min-height: 44px; font-weight: 700; text-decoration: none; }
+  a.btn:hover { background: var(--ink); color: var(--paper); }
+  a:focus-visible, .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  a { color: var(--ink); text-decoration: underline; }
+  section { padding: 56px 0; }
+  section + section .measure { border-top: 1px solid var(--rule); }
+  section .measure { padding-top: 56px; margin-top: -56px; }
+  h1 { font-size: 34px; line-height: 1.2; margin-bottom: 18px; font-weight: 700; }
+  h2 { font-size: 22px; margin-bottom: 14px; }
+  p { margin-bottom: 12px; }
+  .callout { border-left: 3px solid var(--accent); padding-left: 14px; margin: 18px 0; }
+  .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+  .cta-alt { color: var(--muted); font-size: 16px; }
+  .prices { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .prices td { vertical-align: top; padding: 12px 16px 12px 0; border-top: 1px solid var(--rule); font-size: 16px; }
+  .prices .amount { font-size: 21px; font-weight: 700; white-space: nowrap; }
+  .qa { border-top: 1px solid var(--rule); padding: 14px 0; }
+  .qa p:first-child { font-weight: 700; margin-bottom: 4px; }
+  .founder { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 10px; }
+  .photo { width: 112px; height: 112px; flex: 0 0 112px; border-radius: 8px; border: 1px dashed var(--muted);
+    display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
+  footer { padding: 28px 0 48px; color: var(--muted); font-size: 16px; }
+  @media (max-width: 640px) {
+    h1 { font-size: 28px; }
+    .founder { flex-direction: column; }
+    .measure { padding: 0 20px; }
+    section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="measure">
+    <a class="wordmark" href="/">VULDESK</a>
+    <a class="btn" href="mailto:contact@vuldesk.com?subject=My%20pile%20of%20records&amp;body=Hi%20Vuldesk%20team%2C">Email us</a>
+  </div>
+</header>
+
+<section>
+  <div class="measure">
+    <h1>We build AI tools that read your records and give you answers.</h1>
+    <p>Orders, cases, claims, forms &mdash; every business has a pile that someone reads
+       by hand. We build a tool that reads yours and tells you what matters. You open it
+       in your web browser. A price fixed before we start. No programmers needed on
+       your side.</p>
+    <p class="callout"><b>Real example:</b> we built a tool for a real estate agency. It read
+       the records of 118 properties and filtered out the 57 they did not need.</p>
+    <p><b>We are a team of four.</b></p>
+    <div class="cta-row">
+      <a class="btn" href="mailto:contact@vuldesk.com?subject=My%20pile%20of%20records&amp;body=Hi%20Vuldesk%20team%2C">Tell us about your pile &rarr;</a>
+      <span class="cta-alt">or write to contact@vuldesk.com</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Proof you can check</h2>
+    <p><b>Still running after 20 months.</b> We built a booking system for a fertility
+       clinic in 2024. It runs today.<br>
+       <a href="https://ivf.vuldesk.com" target="_blank" rel="noopener">See it live</a>
+       <span class="cta-alt">(the clinic&rsquo;s real booking page opens in a new tab)</span></p>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>What it costs</h2>
+    <table class="prices">
+      <tr>
+        <td><b>One small tool</b><br>Reads one kind of record. Ready in weeks.</td>
+        <td class="amount">$7,500</td>
+      </tr>
+      <tr>
+        <td><b>A bigger tool</b><br>Reads several kinds of records and does more with
+            them. Fixed quote before we start.</td>
+        <td class="amount">from $15,000</td>
+      </tr>
+      <tr>
+        <td><b>Keep it healthy</b> (optional)<br>We watch it and fix it. We reply within
+            one business day.</td>
+        <td class="amount">$500 / month</td>
+      </tr>
+    </table>
+    <p style="margin-top:12px">The price we quote is the price you pay us. No hourly
+       billing. No surprises.</p>
+    <p>One more cost: the AI company your tool uses bills you directly, usually $20 to
+       $100 a month for a small tool.</p>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Questions a careful buyer asks</h2>
+    <div class="founder">
+      <div class="photo">[founder photo]</div>
+      <p>Kushal founded Vuldesk. Three of us build the tools, and one works with our clients.</p>
+    </div>
+    <div class="qa"><p>Who owns the tool?</p>
+      <p>You do, once you make the final payment. We set up everything in your name.</p></div>
+    <div class="qa"><p>What if we stop working together?</p>
+      <p>After the final payment, you lose nothing. The tool keeps running as it is, and it belongs to you.</p></div>
+    <div class="qa"><p>What happens to my data?</p>
+      <p>Your records go into your tool and to the AI company it uses. We set up both in
+         your name, not ours. We never use your records for anything else.</p></div>
+    <div class="qa"><p>What happens when the tool is wrong?</p>
+      <p>The tool marks what it is not sure about, and your staff check those. Nothing
+         happens automatically that you cannot undo.</p></div>
+    <div class="qa"><p>How do we talk?</p>
+      <p>Email, plus one call a week if you want it. We overlap with US business hours
+         every day.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="measure">
+    <h2>Have a pile of records that eats your team&rsquo;s time?</h2>
+    <p>Tell us about it in plain words. We reply within one business day, with a
+       price &mdash; or the questions we need answered first.</p>
+    <div class="cta-row">
+      <a class="btn" href="mailto:contact@vuldesk.com?subject=My%20pile%20of%20records&amp;body=Hi%20Vuldesk%20team%2C">Email us</a>
+      <span class="cta-alt">contact@vuldesk.com</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="measure">
+    Vuldesk Technologies Private Limited &middot;
+    <a href="/terms">Terms</a> &middot; <a href="/privacy">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

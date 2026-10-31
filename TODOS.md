@@ -3,7 +3,8 @@
 Deferred items. Items 1-3 come from the engineering review on 2026-08-09 —
 everything actionable in code from that review has been done, and those three
 cannot be closed by editing files. Item 4 comes from the plan review on
-2026-08-20 and was deferred as a real tradeoff, not forgotten.
+2026-08-20 and was deferred as a real tradeoff, not forgotten. Items 5-6 come from
+the engineering review on 2026-10-31 (docs/designs/company-story-we-voice.md).
 
 ---
 
@@ -20,8 +21,8 @@ it does not catch a bad decision.
 
 **Pros:** Forces a diff to be looked at before it is live. Makes the integrity check a
 pre-merge gate rather than a post-merge one.
-**Cons:** Adds a PR step for a solo operator making one-line copy edits. Genuinely
-annoying if you are the only committer.
+**Cons:** Adds a PR step for a small team making one-line copy edits. Genuinely
+annoying for the one person who commits most site changes.
 
 **Context:** Settings → Branches → Add rule for `main`. Enable "Require a pull request
 before merging" and "Require status checks to pass", selecting `verify` as required.
@@ -84,7 +85,7 @@ restore and pin `tar` via an `overrides` block instead.
 
 ## 4. Measure CTA and proof-link clicks
 
-**What:** Count clicks on "Tell me about your pile", "Email me", and the proof
+**What:** Count clicks on "Tell us about your pile", "Email us", and the proof
 link on the rewritten homepage (a second proof link joins when the sample
 report ships — design doc OQ4).
 
@@ -104,3 +105,49 @@ if a form ever replaces mailto, measurement comes free with the form handler and
 this item should be reconsidered in that shape.
 
 **Depends on:** the one-page rewrite being shipped.
+
+---
+
+## 5. Add a booking link beside the email button
+
+**What:** A booking link (for example Cal.com or Calendly) beside the hero and close
+email buttons: plain underlined text, the email address on the line below, a 44px hit
+area (`display: inline-block; padding: 10px 0; margin: -10px 0`), never in the header.
+The link text must match the booking page's call length.
+
+**Why:** 16 of 34 small service sites in the October 2026 market scan lead with a
+booked call, and the company-story office hours chose a booking link (D6). The design
+defers it until the owner gives a booking URL (P5), so no dormant code ships.
+
+**Pros:** A second way to make contact, for buyers who want to talk first.
+**Cons:** Needs the owner's booking page, a check that the URL is an absolute https
+URL, and one more cold-read gate run (P6) on a build that shows the link. The link
+colour is still open (`--ink` or `--muted`; Cross-Model Perspective in the design doc).
+
+**Context:** docs/designs/company-story-we-voice.md: P5, "Owner inputs and stand-ins"
+and the Cross-Model Perspective hold the placement spec. Decided in the engineering
+review on 2026-10-31 (T1, D26).
+
+**Depends on:** the owner's booking URL; the company-story change shipped.
+
+---
+
+## 6. Answer clinic buyers about patient records
+
+**What:** Decide what the page tells a clinic that asks whether patient records may go
+to an AI company. First collect the facts: which AI companies the tools use, and what
+agreement each one offers for medical records. Then write one plain answer, or decide
+to say nothing on the page.
+
+**Why:** In the cold-read tests of October 2026, the clinic-owner persona asked this
+first, in the control run and in several versions. The page does not answer it. A
+wrong answer is a legal risk, so the page must not guess.
+
+**Pros:** Answers the first question of a target buyer.
+**Cons:** Needs facts from the owner, and maybe legal advice.
+
+**Context:** design doc OQ7. Decided in the engineering review on 2026-10-31 (T3, D28).
+
+**Depends on:** the owner's facts about the AI companies the tools use; possibly a
+lawyer (TODO 2).
+
