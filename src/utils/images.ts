@@ -75,6 +75,8 @@ export const adaptOpenGraphImages = async (
           alt: 'Placeholder alt',
           width: image?.width || defaultWidth,
           height: image?.height || defaultHeight,
+          // PNG, not the WebP default: link-preview tools read PNG reliably (eng review D24).
+          format: 'png',
         });
 
         if (typeof _image === 'object') {
@@ -82,6 +84,8 @@ export const adaptOpenGraphImages = async (
             url: 'src' in _image && typeof _image.src === 'string' ? String(new URL(_image.src, astroSite)) : 'pepe',
             width: 'width' in _image && typeof _image.width === 'number' ? _image.width : undefined,
             height: 'height' in _image && typeof _image.height === 'number' ? _image.height : undefined,
+            // og:image:alt (eng review E8): the config's alt text, scanned by CHECK 5.
+            ...(image.alt ? { alt: image.alt } : {}),
           };
         }
         return {

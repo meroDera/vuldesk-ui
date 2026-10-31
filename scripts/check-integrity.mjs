@@ -15,7 +15,7 @@
  *   dist/**.html
  *     ├── every internal href resolves to a real file .......... CHECK 1
  *     ├── every mailto: has a plausible address ................ CHECK 2
- *     ├── no banned template / placeholder strings ............. CHECK 3
+ *     ├── no banned template / placeholder / one-person strings  CHECK 3
  *     └── category renders as text while config disables it .... CHECK 4 (regression)
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
@@ -105,12 +105,29 @@ const BANNED = [
   ['AstroWind LLC', 'template company name'],
 ];
 
+// One-person phrases from the old "I" voice (company-story design, 2026-10-31).
+// Whole-phrase match on whitespace-collapsed HTML (the CHECK 5 boundary rule), so
+// "Let AI build a tool" and "email messages" stay legal while a reflowed old line
+// is still caught. The greeting is banned in its URL-encoded mailto form.
+const ONE_PERSON = [
+  'i build ai tools', 'i build a tool', 'build every tool myself', 'i am kushal', 'i run vuldesk',
+  'one of my tools', 'i built a booking system', 'the price i quote', 'not mine. i never use',
+  'email me', 'tell me about', 'i will reply', 'questions i need answered', 'i overlap', 'i watch it',
+  'what if you disappear', 'i could not find that page', 'hi%20kushal',
+];
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const ONE_PERSON_RE = ONE_PERSON.map((p) => [p, new RegExp(`(^|[^a-z])${escapeRe(p)}($|[^a-z])`)]);
+
 for (const page of pages) {
   const html = readFileSync(page, 'utf8').toLowerCase();
   for (const [needle, why] of BANNED) {
     if (html.includes(needle.toLowerCase())) {
       failures.push(`[banned] ${rel(page)} contains "${needle}" (${why})`);
     }
+  }
+  const collapsed = html.replace(/\s+/g, ' ');
+  for (const [phrase, re] of ONE_PERSON_RE) {
+    if (re.test(collapsed)) failures.push(`[banned] ${rel(page)} contains one-person phrase "${phrase}"`);
   }
 }
 
@@ -281,6 +298,14 @@ if (existsSync(indexPath)) {
     if (imgUrl && imgUrl.hostname === 'www.vuldesk.com' && !existsSync(join(DIST, imgUrl.pathname))) {
       failures.push(`[meta] og:image points at ${imgUrl.pathname} which is not in the build`);
     }
+  }
+  // The preview image needs its alt text (eng review E8): CHECK 5 scans it, so a
+  // silently dropped alt would also drop it from the jargon gate.
+  if (
+    !/<meta[^>]+property="og:image:alt"[^>]+content="[^"]+"/i.test(indexHtml) &&
+    !/<meta[^>]+content="[^"]+"[^>]+property="og:image:alt"/i.test(indexHtml)
+  ) {
+    failures.push('[meta] index.html has no og:image:alt');
   }
   if (
     !/<meta[^>]+name="description"[^>]+content="[^"]+"/i.test(indexHtml) &&

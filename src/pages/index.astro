@@ -1,12 +1,13 @@
 ---
 // vuldesk.com — one-page plain-English site ("set letter" direction).
-// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v3.html
-// Plan of record: docs/designs/plain-english-one-page-site.md
+// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v4.html (v4.4)
+// Plan of record: docs/designs/company-story-we-voice.md (builds on
+// docs/designs/plain-english-one-page-site.md)
 //
 // Page structure (design doc, five blocks, one action):
 //
-//   HEADER  wordmark + "Email me"            (SiteHeader.astro, D3)
-//   HERO    H1 offer → sub → evidence line → CTA + visible email
+//   HEADER  wordmark + "Email us"            (SiteHeader.astro, D3)
+//   HERO    H1 offer → sub → evidence line → team line → CTA + visible email
 //   PROOF   single durability band           (D6 removed-element state:
 //            the sample-report entry joins it when OQ4 resolves)
 //   PRICES  ruled typographic table          (amounts = ship-floor item, OQ3)
@@ -16,10 +17,10 @@
 // Gates that police this file: scripts/check-integrity.mjs CHECK 5 (<=450
 // visible words, zero jargon-inventory terms, incl. og/meta strings), CHECK 6
 // (blog teardown), CHECK 7 (metadata present). Cold-read harness:
-// docs/designs/assets/cold-read-harness.md (3/3 at >=7 on desktop AND mobile).
+// docs/designs/assets/cold-read-harness.md (the P6 ship gate in the plan of record).
 import Layout from '~/layouts/PageLayout.astro';
 import { CONTACT_MAILTO, CONTACT_EMAIL } from '~/navigation';
-import founderPhoto from '~/assets/images/himal.jpg';
+import founderPhoto from '~/assets/images/founder.jpg';
 
 const metadata = {
   title: 'Vuldesk — AI tools that read your records and give you answers',
@@ -31,19 +32,21 @@ const metadata = {
   <!-- HERO -->
   <section class="letter">
     <div class="measure">
-      <h1>I build AI tools that read your records and give you answers.</h1>
+      <h1>We build AI tools that read your records and give you answers.</h1>
       <p>
         Orders, cases, claims, forms &mdash; every business has a pile that someone reads
-        by hand. I build a tool that reads yours and tells you what matters. You open it
+        by hand. We build a tool that reads yours and tells you what matters. You open it
         in your web browser. A price fixed before we start. No programmers needed on
         your side.
       </p>
       <p class="example">
-        <strong>Real example:</strong> one of my tools read 118 foreclosure court cases
-        and found the 57 that no longer mattered. 37 seconds per case.
+        <strong>Real example:</strong> we built a tool for a real estate agency. It read the
+        records of 118 properties and filtered out the 57 they did not need.
       </p>
+      {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
+      <p><strong>We are a team of four.</strong></p>
       <div class="cta-row">
-        <a class="btn" href={CONTACT_MAILTO}>Tell me about your pile &rarr;</a>
+        <a class="btn" href={CONTACT_MAILTO}>Tell us about your pile &rarr;</a>
         <span class="cta-alt">or write to {CONTACT_EMAIL}</span>
       </div>
     </div>
@@ -55,7 +58,7 @@ const metadata = {
     <div class="measure">
       <h2>Proof you can check</h2>
       <p>
-        <strong>Still running after 20 months.</strong> I built a booking system for a
+        <strong>Still running after 20 months.</strong> We built a booking system for a
         fertility clinic in 2024. It runs today.<br />
         <a href="https://ivf.vuldesk.com" target="_blank" rel="noopener">See it live</a>
         <span class="cta-alt">(the clinic&rsquo;s real booking page opens in a new tab)</span>
@@ -82,14 +85,15 @@ const metadata = {
           </tr>
           <tr>
             <td>
-              <strong>Keep it healthy</strong> (optional)<br />I watch it and fix it. I
+              <strong>Keep it healthy</strong> (optional)<br />We watch it and fix it. We
               reply within one business day.
             </td>
             <td class="amount">$500 / month</td>
           </tr>
         </tbody>
       </table>
-      <p class="after-table">The price I quote is the price you pay. No hourly billing. No surprises.</p>
+      <p class="after-table">The price we quote is the price you pay us. No hourly billing. No surprises.</p>
+      <p>One more cost: the AI company your tool uses bills you directly, usually $20 to $100 a month for a small tool.</p>
     </div>
   </section>
 
@@ -102,36 +106,37 @@ const metadata = {
              source, EXIF stripped. CHECK 3 bans "[PHOTO]" so a placeholder
              can never reach production again. -->
         <img class="photo" src={founderPhoto.src} alt="Kushal, founder of Vuldesk" width="112" height="112" />
-        <p>I am Kushal. I run Vuldesk from Kathmandu, and I build every tool myself.</p>
+        {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
+        <p>Kushal founded Vuldesk. Three of us build the tools, and one works with our clients.</p>
       </div>
       <div class="qa">
         <p>Who owns the tool?</p>
-        <p>You do. When you pay the final bill, the tool and its accounts move to your name.</p>
+        <p>You do, once you make the final payment. We set up everything in your name.</p>
       </div>
       <div class="qa">
-        <p>What if you disappear?</p>
+        <p>What if we stop working together?</p>
         <p>
-          You lose nothing. The tool keeps running as it is, and everything it is
-          built from is already yours.
+          After the final payment, you lose nothing. The tool keeps running as it is, and it
+          belongs to you.
         </p>
       </div>
       <div class="qa">
         <p>What happens to my data?</p>
         <p>
-          Your records go into your tool and the AI service it runs on &mdash; under your
-          account, not mine. I never use them for anything else.
+          Your records go into your tool and to the AI company it uses. We set up both in your
+          name, not ours. We never use your records for anything else.
         </p>
       </div>
       <div class="qa">
         <p>What happens when the tool is wrong?</p>
         <p>
-          The tool marks what it is not sure about, and a person checks those. Nothing
+          The tool marks what it is not sure about, and your staff check those. Nothing
           happens automatically that you cannot undo.
         </p>
       </div>
       <div class="qa">
         <p>How do we talk?</p>
-        <p>Email, plus one call a week if you want it. I overlap with US business hours every day.</p>
+        <p>Email, plus one call a week if you want it. We overlap with US business hours every day.</p>
       </div>
     </div>
   </section>
@@ -141,11 +146,11 @@ const metadata = {
     <div class="measure">
       <h2>Have a pile of records that eats your team&rsquo;s time?</h2>
       <p>
-        Tell me about it in plain words. I will reply within one business day, with a
-        price &mdash; or the questions I need answered first.
+        Tell us about it in plain words. We reply within one business day, with a
+        price &mdash; or the questions we need answered first.
       </p>
       <div class="cta-row">
-        <a class="btn" href={CONTACT_MAILTO}>Email me</a>
+        <a class="btn" href={CONTACT_MAILTO}>Email us</a>
         <span class="cta-alt">{CONTACT_EMAIL}</span>
       </div>
     </div>
@@ -278,7 +283,8 @@ const metadata = {
     margin-bottom: 4px;
   }
 
-  /* One quiet entrance (design review D12): hero children fade/rise once. */
+  /* One quiet entrance (design review D12): hero children fade/rise once. Child 5 is the
+     CTA row since the team line joined the hero (eng review E3, 2026-10-31). */
   @media (prefers-reduced-motion: no-preference) {
     .letter:first-of-type .measure > * {
       animation: rise 0.2s ease-out both;
@@ -291,6 +297,9 @@ const metadata = {
     }
     .letter:first-of-type .measure > *:nth-child(4) {
       animation-delay: 180ms;
+    }
+    .letter:first-of-type .measure > *:nth-child(5) {
+      animation-delay: 240ms;
     }
     @keyframes rise {
       from {
