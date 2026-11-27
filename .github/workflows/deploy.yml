@@ -22,7 +22,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  # PR updates cancel only their own checks; production runs share one group.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || 'production' }}
   cancel-in-progress: true
 
 jobs:
