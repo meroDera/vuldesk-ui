@@ -134,7 +134,9 @@ only with posts that match the positioning.
 
 - **deploy.yml** — every push to `main` runs `verify` (lint, build,
   integrity check) and deploys to GitHub Pages only if it passes. PRs run
-  `verify` without deploying.
+  `verify` without deploying. Each PR has its own concurrency group, so its
+  checks cannot cancel publishing. Main pushes and manual deployments share
+  one production group; newer runs cancel older runs within that group.
 - **proof-links.yml** — Mondays 06:00 UTC (and on manual dispatch), rebuilds
   the site and runs the integrity check with `EXTERNAL_LINKS=fail`, so a dead
   proof link gets caught between deploys and fails loud. External link checks
