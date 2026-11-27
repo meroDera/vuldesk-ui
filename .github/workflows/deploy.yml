@@ -40,6 +40,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Type check
+        run: npm run check
+
       - name: Lint
         run: npm run lint:eslint
 
@@ -57,7 +60,7 @@ jobs:
 
   deploy:
     name: Deploy
-    # Blocked by verify. A failing lint, build or integrity check stops the deploy.
+    # Blocked by verify. A failing type, lint, build or integrity check stops the deploy.
     needs: verify
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest

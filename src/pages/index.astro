@@ -34,7 +34,7 @@ const structuredData = {
 ---
 
 <Layout metadata={{ ignoreTitleTemplate: true }}>
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   <header slot="header" class="masthead wrap">
     <a class="wordmark" href={home} aria-label="Vuldesk — home">Vuldesk</a>
     <nav aria-label="Main">
