@@ -63,7 +63,7 @@ only with posts that match the positioning.
 ```
 /
 ├── .github/workflows/
-│   ├── deploy.yml          # push to main → verify (lint, build, integrity) → GitHub Pages
+│   ├── deploy.yml          # push to main → verify (types, lint, build, integrity) → GitHub Pages
 │   └── proof-links.yml     # weekly cron: external proof links must respond
 ├── docs/designs/           # historical plans + assets (jargon inventory, cold-read harness)
 ├── scripts/
@@ -91,16 +91,19 @@ only with posts that match the positioning.
 | `npm install`             | Install dependencies                          |
 | `npm run dev`             | Start the dev server at `localhost:4321`      |
 | `npm run build`           | Build the production site to `./dist/`        |
+| `npm run check`           | Check Astro templates and TypeScript          |
 | `npm run check:integrity` | Run CHECK 1-9 against `./dist/` (build first) |
-| `npm test`                | `build` then `check:integrity`                |
+| `npm test`                | `check`, `build`, then `check:integrity`      |
 | `npm run preview`         | Preview the build locally                     |
 | `npm run format`          | Format with Prettier                          |
 | `npm run lint:eslint`     | Run ESLint                                    |
 
+The Astro checker and its language server are pinned to preserve Node 18 compatibility.
+
 ## Integrity checks
 
 `scripts/check-integrity.mjs` runs against the built `./dist/` — locally via
-`npm test` (which builds first), and in CI before any deploy. A plain
+`npm test` (which checks types and builds first), and in CI before any deploy. A plain
 `npm run build` does not run it. The checks:
 
 1. **Internal links** resolve to built pages.
@@ -132,7 +135,7 @@ only with posts that match the positioning.
 
 ## CI
 
-- **deploy.yml** — every push to `main` runs `verify` (lint, build,
+- **deploy.yml** — every push to `main` runs `verify` (Astro/TypeScript checks, lint, build,
   integrity check) and deploys to GitHub Pages only if it passes. PRs run
   `verify` without deploying. Each PR has its own concurrency group, so its
   checks cannot cancel publishing. Main pushes and manual deployments share

@@ -125,7 +125,8 @@ Do not use these shared tokens as the homepage palette specification.
 
 ## Verification and copy drift
 
-- `npm test` runs the production build and `scripts/check-integrity.mjs`.
+- `npm test` runs full Astro/TypeScript checks, the production build, and
+  `scripts/check-integrity.mjs`.
   CHECK 1-9 cover internal links, mailto addresses, banned strings, category
   regression, the 450-word reading-state budget and jargon, blog teardown,
   search/preview metadata, external proof links, and the homepage review path.
