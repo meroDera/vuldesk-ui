@@ -155,3 +155,5 @@ only with posts that match the positioning.
 MIT — see [LICENSE.md](./LICENSE.md). Based on the
 [AstroWind](https://github.com/onwidget/astrowind) template by
 [onWidget](https://onwidget.com).
+
+<!-- Temporary CI concurrency verification; this PR will be closed without merging. -->
