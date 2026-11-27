@@ -183,9 +183,9 @@ const JARGON_ALLOW = new Set([
 function visibleText(html) {
   return (
     html
-      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<!--[\s\S]*?-->/g, ' ')
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, ' ')
+      .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, ' ')
+      .replace(/<!--[\s\S]*?--!?>/g, ' ')
       .replace(/<[^>]+>/g, ' ')
       // Separator entities become spaces; in-word entities (rsquo, amp) vanish
       // so "team&rsquo;s" counts as one word, not two. Hex entities included.
@@ -194,6 +194,14 @@ function visibleText(html) {
       .replace(/\s+/g, ' ')
       .trim()
   );
+}
+
+if (
+  visibleText(
+    '<p>Visible</p><SCRIPT>hidden</SCRIPT ><script>hidden</script data-test><style>hidden</style ><!--hidden--!><scripture>kept</scripture>'
+  ) !== 'Visible kept'
+) {
+  failures.push('[copy] visible-text extraction failed its HTML end-tag regression check');
 }
 
 function countWords(text) {
