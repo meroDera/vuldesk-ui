@@ -1,5 +1,6 @@
 ---
 title: 'Privacy Policy'
+description: 'How Vuldesk collects, uses, retains, and protects personal data when you use its website, including your privacy rights and contact details.'
 layout: '~/layouts/MarkdownLayout.astro'
 ---
 

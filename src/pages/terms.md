@@ -1,5 +1,6 @@
 ---
 title: 'Terms and Conditions'
+description: 'Terms for using the Vuldesk website, including third-party links, liability, governing law, and how to contact us.'
 layout: '~/layouts/MarkdownLayout.astro'
 ---
 

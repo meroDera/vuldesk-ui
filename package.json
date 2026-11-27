@@ -1,7 +1,7 @@
 {
   "name": "vuldesk-ui",
   "version": "1.0.0",
-  "description": "Vuldesk — AI tools that read your records and give you answers.",
+  "description": "Vuldesk — Your outside CTO for releases, performance, and cloud costs.",
   "type": "module",
   "private": true,
   "engines": {

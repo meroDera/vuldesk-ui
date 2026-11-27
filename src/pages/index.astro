@@ -1,334 +1,517 @@
 ---
-// vuldesk.com — one-page plain-English site ("set letter" direction).
-// Copy and layout source of record: docs/designs/assets/one-page-wireframe-v4.html (v4.7)
-// Plan of record: docs/designs/company-story-we-voice.md (builds on
-// docs/designs/plain-english-one-page-site.md)
-//
-// Page structure (design doc, five blocks, one action):
-//
-//   HEADER  wordmark + "Email us"            (SiteHeader.astro, D3)
-//   HERO    H1 offer → sub → evidence line → team line → CTA + visible email
-//   PROOF   single durability band           (D6 removed-element state:
-//            the sample-report entry joins it when OQ4 resolves)
-//   PRICES  ruled typographic table          (amounts = ship-floor item, OQ3)
-//   TRUST   photo + five plain Q&As          (photo = ship-floor item, D7)
-//   CLOSE   one question, one button
-//
-// Gates that police this file: scripts/check-integrity.mjs CHECK 5 (<=450
-// visible words, zero jargon-inventory terms, incl. og/meta strings), CHECK 6
-// (blog teardown), CHECK 7 (metadata present). Cold-read harness:
-// docs/designs/assets/cold-read-harness.md (the P6 ship gate in the plan of record).
-import Layout from '~/layouts/PageLayout.astro';
-import { CONTACT_MAILTO, CONTACT_EMAIL } from '~/navigation';
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/source-serif-4/wght-italic.css';
 import founderPhoto from '~/assets/images/founder.jpg';
+import Worktable from '~/components/widgets/Worktable.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import { CONTACT_EMAIL, CONTACT_MAILTO, TECHNICAL_REVIEW_CTA, footerData } from '~/navigation';
+import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 
-const metadata = {
-  title: 'Vuldesk — AI tools that read your records for you',
-  ignoreTitleTemplate: true,
+const home = getHomePermalink();
+const canonical = String(getCanonical(home));
+const organizationId = `${canonical}#organization`;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': organizationId,
+      name: 'Vuldesk',
+      legalName: 'Vuldesk Technologies Private Limited',
+      url: canonical,
+      email: CONTACT_EMAIL,
+      sameAs: footerData.socialLinks.map(({ href }) => href),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${canonical}#website`,
+      name: 'Vuldesk',
+      url: canonical,
+      publisher: { '@id': organizationId },
+    },
+  ],
 };
 ---
 
-<Layout metadata={metadata}>
-  <!-- HERO -->
-  <section class="letter">
-    <div class="measure">
-      <h1>We build AI tools that read your records and find what you need.</h1>
-      {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
-      <p><strong>We are a team of four.</strong></p>
-      <p>
-        Orders, cases, claims, forms &mdash; every business has a pile that someone reads
-        by hand. We build a tool that reads yours and tells you what matters. You open it
-        in your web browser. A price fixed before we start. No programmers needed on
-        your side.
-      </p>
-      <p class="example">
-        <strong>Real example:</strong> we built a tool for a real estate agency. It read the
-        records of 118 properties and filtered out the 57 they did not need.
-      </p>
-      <div class="cta-row">
-        <a class="btn" href={CONTACT_MAILTO}>Tell us about your pile &rarr;</a>
-        <span class="cta-alt">or write to {CONTACT_EMAIL}</span>
-      </div>
-    </div>
+<Layout metadata={{ ignoreTitleTemplate: true }}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <header slot="header" class="masthead wrap">
+    <a class="wordmark" href={home} aria-label="Vuldesk — home">Vuldesk</a>
+    <nav aria-label="Main">
+      <a href="#how-we-work">How we work</a>
+      <a href="#review">Get a free review</a>
+    </nav>
+  </header>
+
+  <section class="intro wrap" id="home-intro" aria-labelledby="main-title">
+    <h1 id="main-title">Your outside CTO. <em>We handle releases, performance, and cloud costs.</em></h1>
+    <p>
+      We work with owners of live websites, apps, and internal tools, including ones built with AI. We take improvements
+      from planning to rollout so you can focus on running your business without coordinating the work or chasing
+      updates.
+    </p>
+    <a class="cta" href="#review">{TECHNICAL_REVIEW_CTA} <span class="arrow" aria-hidden="true">↘</span></a>
   </section>
 
-  <!-- PROOF — single-band state (D6). When the sample report exists and passes
-       the jargon gate (OQ4/D10), it returns as the primary entry beside this. -->
-  <section class="letter ruled">
-    <div class="measure">
-      <h2>Proof you can check</h2>
-      <p>
-        <strong>Still running after 20 months.</strong> We built a booking system for a
-        fertility clinic in 2024. It runs today.<br />
-        <a href="https://ivf.vuldesk.com" target="_blank" rel="noopener">See it live</a>
-        <span class="cta-alt">(the clinic&rsquo;s real booking page opens in a new tab)</span>
-      </p>
-    </div>
-  </section>
+  <Worktable />
 
-  <!-- PRICES — amounts are the founder's ship-floor item (OQ3). -->
-  <section class="letter ruled">
-    <div class="measure">
-      <h2>What it costs</h2>
-      <table class="prices">
-        <tbody>
-          <tr>
-            <td><strong>One small tool</strong><br />Reads one kind of record. Ready in weeks.</td>
-            <td class="amount">$7,500</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>A bigger tool</strong><br />Reads several kinds of records, or does
-              more than one job. Fixed quote before we start.
-            </td>
-            <td class="amount">from $15,000</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Keep it healthy</strong> (optional)<br />We watch it and fix it. We
-              reply within one business day.
-            </td>
-            <td class="amount">$500 / month</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="after-table">The price we quote is the price you pay us. No hourly billing. No surprises.</p>
-      <p>One more cost: the AI in your tool comes from an outside company. That company bills you directly, usually $20 to $100 a month for a small tool.</p>
-    </div>
-  </section>
-
-  <!-- TRUST -->
-  <section class="letter ruled">
-    <div class="measure">
-      <h2>Questions a careful buyer asks</h2>
-      <div class="founder">
-        <!-- Ship-floor item D7, closed 2026-08-20: real photograph, 640px
-             source, EXIF stripped. CHECK 3 bans "[PHOTO]" so a placeholder
-             can never reach production again. -->
-        <img class="photo" src={founderPhoto.src} alt="Kushal, founder of Vuldesk" width="112" height="112" />
-        {/* Team facts (Q7, 2026-10-31): update this line and the founder line together when the team changes. */}
-        <p>Kushal founded Vuldesk. Three of us build the tools, and one works with our clients.</p>
-      </div>
-      <div class="qa">
-        <p>Who owns the tool?</p>
-        <p>You do, once you make the final payment. We set up everything in your name.</p>
-      </div>
-      <div class="qa">
-        <p>What if we stop working together?</p>
+  <section class="work wrap" aria-labelledby="work-title" id="how-we-work">
+    <h2 id="work-title">Start with a free review. Choose the next step.</h2>
+    <ol>
+      <li>
+        <div>
+          <h3>Free technical review</h3>
+          <p class="service-price">$0 <span>USD</span></p>
+        </div>
         <p>
-          After the final payment, you lose nothing. The tool keeps running as it is, and it
-          belongs to you.
+          You’ll get a short written recommendation on what to improve first, why it matters, and how we’d check the
+          result.
         </p>
-      </div>
-      <div class="qa">
-        <p>What happens to my data?</p>
+      </li>
+      <li>
+        <div>
+          <h3>Fixed-price sprint</h3>
+          <p class="service-price">From $999.50 <span>USD per sprint</span></p>
+        </div>
         <p>
-          Your records go into your tool and to the AI company it uses. We set up both in your
-          name, not ours. We never use your records for anything else.
+          We agree on the full scope, price, and timeline before starting. Then we implement one improvement in your
+          code and accounts, send updates, and handle rollout. You get before-and-after results and rollback notes.
         </p>
-      </div>
-      <div class="qa">
-        <p>What happens when the tool is wrong?</p>
+      </li>
+      <li>
+        <div>
+          <h3>Optional monthly support</h3>
+          <p class="service-price">From $1,450 <span>USD per month</span></p>
+        </div>
         <p>
-          The tool marks what it is not sure about, and your staff check those. Nothing
-          happens automatically that you cannot undo.
+          Keep the same team month to month for planning and hands-on work. We agree on monthly scope and availability
+          before you start. You get a shared priority list and progress updates. We aim for same-day replies,
+          Monday–Friday.
         </p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="team wrap" aria-labelledby="team-title">
+    <img
+      src={founderPhoto.src}
+      alt="Kushal, founder of Vuldesk"
+      width="96"
+      height="96"
+      loading="lazy"
+      decoding="async"
+    />
+    <div>
+      <h2 id="team-title">Who you’ll work with</h2>
+      <p>Kushal founded Vuldesk. We’re a team of four.</p>
+    </div>
+  </section>
+
+  <section class="review" id="review" aria-labelledby="start-title" tabindex="-1">
+    <div class="wrap">
+      <div>
+        <h2 id="start-title">Start with a free technical review.</h2>
+        <div class="review-details">
+          <div>
+            <h3>What to send</h3>
+            <p>Send a public link or a short description of what you run, plus one thing you’d like to improve.</p>
+          </div>
+          <div>
+            <h3>What happens next</h3>
+            <p>
+              We’ll reply within one business day with any questions, then send a short written recommendation. No paid
+              work starts until you approve the scope and price.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="qa">
-        <p>How do we talk?</p>
-        <p>Email, plus one call a week if you want it. We overlap with US business hours every day.</p>
+      <div class="review-action">
+        <a class="cta" href={CONTACT_MAILTO} aria-describedby="review-email-hint"
+          >Email us for a free review <span aria-hidden="true" class="arrow">↗</span></a
+        >
+        <p id="review-email-hint">Opens a draft in your email app.</p>
+        <div class="review-email">
+          <span id="review-email-address">{CONTACT_EMAIL}</span>
+          <button type="button" id="copy-review-email" hidden>Copy address</button>
+        </div>
+        <p id="review-copy-status" role="status"></p>
       </div>
     </div>
   </section>
 
-  <!-- CLOSE -->
-  <section class="letter ruled">
-    <div class="measure">
-      <h2>Have a pile of records that eats your team&rsquo;s time?</h2>
-      <p>
-        Tell us about it in plain words. We reply within one business day, with a
-        price &mdash; or the questions we need answered first.
-      </p>
-      <div class="cta-row">
-        <a class="btn" href={CONTACT_MAILTO}>Email us</a>
-        <span class="cta-alt">{CONTACT_EMAIL}</span>
-      </div>
+  <footer slot="footer" class="home-footer wrap">
+    <div class="footer-contact">
+      <a class="wordmark" href={home} aria-label="Vuldesk — home">Vuldesk</a>
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
     </div>
-  </section>
+    <div class="footer-info">
+      <p>{footerData.footNote.trim()}</p>
+      <nav aria-label="Footer">
+        {footerData.secondaryLinks.map(({ text, href }) => <a href={href}>{text}</a>)}
+        {footerData.socialLinks.map(({ ariaLabel, href }) => <a href={href}>{ariaLabel}</a>)}
+      </nav>
+    </div>
+  </footer>
 </Layout>
 
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const address = document.getElementById('review-email-address')?.textContent?.trim();
+    const button = document.querySelector<HTMLButtonElement>('#copy-review-email');
+    const status = document.getElementById('review-copy-status');
+    if (!address || !button?.hidden || !status || !navigator.clipboard?.writeText) return;
+
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(address);
+        status.textContent = 'Email address copied.';
+      } catch {
+        status.textContent = 'Select the email address to copy it.';
+      }
+    });
+  });
+</script>
+
 <style>
-  /* Set-letter system (DESIGN.md). Tokens from CustomStyles.astro. */
-  .letter {
-    background: var(--paper);
+  :global(html:has(#home-intro)) {
+    font-size: 100%;
+  }
+
+  :global(body:has(#home-intro)) {
+    --home-paper: #faf2e4;
+    --ink: #332016;
+    --muted: #665044;
+    --red: #a02d24;
+    --rule: #d6c1ac;
+    --white: #fff8e9;
+    --serif: var(--aw-font-heading), Georgia, serif;
+    --gutter: clamp(1rem, 4.8vw, 4.5rem);
+    --home-width: min(100% - var(--gutter) * 2, 1296px);
+
+    background: var(--home-paper);
     color: var(--ink);
-    font-family: var(--aw-font-sans), sans-serif;
-    font-size: 1.0625rem; /* 17px */
-    line-height: 1.55;
-    padding: 56px 0;
+    font:
+      400 1rem/1.55 'Inter Variable',
+      sans-serif;
+    letter-spacing: normal;
   }
-  .measure {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .ruled .measure {
-    border-top: 1px solid var(--rule);
-    padding-top: 56px;
-  }
-  .ruled {
-    padding-top: 0;
-  }
-  h1,
-  h2,
-  .amount,
-  .example {
-    font-family: var(--aw-font-heading), serif; /* .example per DESIGN.md: the evidence line is display type */
-  }
-  h1 {
-    font-size: 2.125rem; /* 34px */
-    line-height: 1.2;
-    font-weight: 700;
-    margin-bottom: 18px;
-  }
-  h2 {
-    font-size: 1.375rem; /* 22px */
-    font-weight: 700;
-    margin-bottom: 14px;
-  }
-  p {
-    margin-bottom: 12px;
-  }
-  .example {
-    border-left: 3px solid var(--accent);
-    padding-left: 14px;
-    margin: 18px 0;
-  }
-  .cta-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-  .btn {
-    border-radius: 0;
-    background: transparent;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px; /* touch target (D15) */
-    border: 2px solid var(--ink);
-    color: var(--ink);
-    padding: 10px 22px;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .btn:hover {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .cta-alt {
-    color: var(--muted);
-    font-size: 1rem;
+  .wrap {
+    width: var(--home-width);
+    margin-inline: auto;
   }
   a {
-    color: var(--ink);
+    color: inherit;
+  }
+  a:focus-visible,
+  .review-email button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 5px;
+  }
+
+  .masthead {
+    min-height: 66px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 1.55rem;
+    text-decoration: none;
+    font-weight: 820;
+    letter-spacing: -0.08em;
+    line-height: 1;
+  }
+  .masthead nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    padding-block: 0.5rem;
+  }
+  .masthead nav a {
+    text-decoration: underline;
+    font-size: 0.83rem;
+    font-weight: 650;
+    text-decoration-color: #a38676;
+    text-underline-offset: 0.22em;
+    padding-block: 0.5rem;
+    min-height: 44px;
+    display: grid;
+    align-items: center;
+  }
+
+  .intro {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    padding-block: clamp(2rem, 3.1vw, 2.75rem) clamp(1.65rem, 2.5vw, 2.25rem);
+  }
+  h1 {
+    font: 490 clamp(3rem, 5.85vw, 5.25rem) / 0.94 var(--serif);
+    letter-spacing: -0.068em;
+    text-wrap: balance;
+  }
+  h1 em {
+    display: block;
+    color: var(--red);
+    font-size: 0.7em;
+    font-weight: 480;
+    line-height: 1.08;
+    letter-spacing: -0.041em;
+  }
+  .intro p {
+    max-width: 78ch;
+    margin: 1.1rem auto 1rem;
+    font-size: clamp(0.95rem, 1.35vw, 1.125rem);
+    color: var(--muted);
+    text-wrap: balance;
+  }
+  .cta {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 0.72rem 1rem;
+    border: 1px solid var(--red);
+    background: var(--red);
+    color: var(--white);
+    font-size: 0.87rem;
+    text-decoration: none;
+    font-weight: 710;
+  }
+  .cta:hover {
+    background: #82231c;
+  }
+  .cta:focus-visible {
+    outline-color: var(--ink);
+  }
+  .arrow {
+    font-size: 1.15em;
+    line-height: 1;
+  }
+
+  .work {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(3.3rem, 8vw, 7rem) min(4vw, 3rem);
+  }
+  .work h2,
+  .review h2 {
+    font: 500 clamp(2.6rem, 4.2vw, 4rem) / 0.99 var(--serif);
+    letter-spacing: -0.059em;
+  }
+  .work h2 {
+    max-width: 13ch;
+  }
+  .work ol {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .work li {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.83fr) minmax(0, 1.5fr);
+    gap: 0.4rem 1.2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .work h3 {
+    font-size: 0.97rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .work li p,
+  .review p {
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+  .work li .service-price {
+    margin-top: 0.4rem;
+    color: var(--red);
+    font-size: 1.15rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+  .service-price span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+  .team {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem min(4vw, 3rem);
+  }
+  .team img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    content-visibility: visible;
+  }
+  .team h2 {
+    font: 500 clamp(1.8rem, 3vw, 2.5rem) / 1.1 var(--serif);
+    letter-spacing: -0.045em;
+  }
+  .team p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .review {
+    background: #f3dfc8;
+    border-block: 1px solid var(--rule);
+  }
+  .review .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem 3rem;
+    padding: 2.5rem min(4vw, 3rem);
+  }
+  .review h2 {
+    font-size: clamp(2.18rem, 4vw, 3.1rem);
+  }
+  .review-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2rem;
+    max-width: 760px;
+    margin-top: 1.15rem;
+  }
+  .review-details h3 {
+    font-size: 0.94rem;
+    font-weight: 700;
+  }
+  .review-details p {
+    margin-top: 0.25rem;
+  }
+  .review-action p {
+    margin-top: 0.55rem;
+    font-size: 0.8rem;
+  }
+  .review-email {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 0.65rem;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+  }
+  #review-email-address {
+    user-select: all;
+  }
+  .review-email button {
+    min-height: 44px;
+    color: var(--red);
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  #review-copy-status:empty {
+    margin: 0;
+  }
+
+  .home-footer {
+    padding-block: 1.25rem;
+  }
+  .footer-contact,
+  .footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem 1.25rem;
+  }
+  .footer-contact .wordmark {
+    font-size: 1.15rem;
+  }
+  .footer-contact > a:last-child,
+  .footer-info {
+    font-size: 0.82rem;
+    text-underline-offset: 0.23em;
+  }
+  .footer-info {
+    margin-top: 0.9rem;
+    color: var(--muted);
+  }
+  .footer-info nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+  }
+  .footer-info a,
+  .footer-contact > a:last-child {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     text-decoration: underline;
   }
-  a:visited:not(.btn) {
-    color: #5b3a29;
-  }
-  a:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 2px;
-  }
-  .prices {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-  }
-  .prices td {
-    vertical-align: top;
-    padding: 12px 16px 12px 0;
-    border-top: 1px solid var(--rule);
-    font-size: 1rem;
-  }
-  .prices .amount {
-    font-size: 1.3125rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .after-table {
-    margin-top: 12px;
-  }
-  .founder {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .photo {
-    width: 112px;
-    height: 112px;
-    flex: 0 0 112px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  .qa {
-    border-top: 1px solid var(--rule);
-    padding: 14px 0;
-  }
-  .qa p:first-child {
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
 
-  /* One quiet entrance (design review D12): hero children fade/rise once. Child 5 is the
-     CTA row since the team line joined the hero (eng review E3, 2026-10-31). */
-  @media (prefers-reduced-motion: no-preference) {
-    .letter:first-of-type .measure > * {
-      animation: rise 0.2s ease-out both;
+  @media (max-width: 1000px) {
+    .work {
+      grid-template-columns: 0.8fr 1.4fr;
+      padding-inline: 0;
     }
-    .letter:first-of-type .measure > *:nth-child(2) {
-      animation-delay: 60ms;
-    }
-    .letter:first-of-type .measure > *:nth-child(3) {
-      animation-delay: 120ms;
-    }
-    .letter:first-of-type .measure > *:nth-child(4) {
-      animation-delay: 180ms;
-    }
-    .letter:first-of-type .measure > *:nth-child(5) {
-      animation-delay: 240ms;
-    }
-    @keyframes rise {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
+    .review-details {
+      grid-template-columns: 1fr;
     }
   }
-
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
+    .masthead {
+      min-height: 62px;
+    }
+    .masthead nav {
+      gap: 0.1rem 0.9rem;
+    }
+    .masthead nav a {
+      font-size: 0.75rem;
+    }
+    .intro {
+      padding-block: 2.15rem 1.7rem;
+    }
     h1 {
-      font-size: 1.75rem; /* 28px (D14) */
+      max-width: 17ch;
+      font-size: clamp(2.35rem, 8.3vw, 4rem);
+      line-height: 1;
     }
-    .letter {
-      padding: 40px 0;
+    .intro p {
+      max-width: 43ch;
+      margin-block: 1rem;
     }
-    .ruled .measure {
-      padding-top: 40px;
+    .work {
+      display: block;
     }
-    .measure {
-      padding-left: 20px;
-      padding-right: 20px;
+    .work h2 {
+      max-width: 16ch;
+      margin-bottom: 1.25rem;
     }
-    .founder {
-      flex-direction: column;
+    .review .wrap {
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+    }
+    .team {
+      grid-template-columns: 64px minmax(0, 1fr);
+      gap: 1rem;
+      padding-inline: 0;
+    }
+    .team img {
+      width: 64px;
+      height: 64px;
+    }
+  }
+  @media (max-width: 400px) {
+    .work li {
+      grid-template-columns: 1fr;
     }
   }
 </style>

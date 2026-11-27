@@ -1,0 +1,389 @@
+---
+import photo from '~/assets/images/worktable.webp';
+---
+
+<figure
+  class="worktable"
+  id="worktable"
+  aria-labelledby="thread-title"
+  style={{ '--worktable-photo': `url("${photo.src}")` }}
+>
+  <figcaption>
+    <p id="thread-title">An illustrative example of working together</p>
+    <p class="caption-stage" id="stage" tabindex="-1">The free review</p>
+    <p class="mobile-cue" hidden>Sprint and rollout updates follow.</p>
+  </figcaption>
+
+  <article
+    class="letters worktable-note"
+    data-follow-up="Read the sprint update"
+    id="free-review"
+    aria-labelledby="review-exchange"
+  >
+    <h2 class="sr-only" id="review-exchange">The free review</h2>
+    <div class="note note-opening">
+      <p class="sender">From the business owner</p>
+      <blockquote class="message">
+        <p>“We’re planning a campaign next month. What should we improve before sending more people to the site?”</p>
+      </blockquote>
+    </div>
+    <div class="note note-detail">
+      <p class="sender">From Vuldesk, your outside CTO</p>
+      <blockquote class="message">
+        <p>
+          “Start with the quote page your campaign links to. A slow page or missed inquiry could waste that traffic.
+          We’d check mobile load time and inquiry delivery, then propose a sprint for you to approve.”
+        </p>
+      </blockquote>
+      <p class="decision">Next · Preview after you approve the sprint scope and price</p>
+    </div>
+  </article>
+
+  <article
+    class="letters worktable-note"
+    data-follow-up="Read the rollout update"
+    id="paid-sprint"
+    aria-labelledby="sprint-exchange"
+    hidden
+  >
+    <h2 class="sr-only" id="sprint-exchange">During the fixed-price sprint</h2>
+    <div class="note note-opening">
+      <p class="sender">From Vuldesk, your outside CTO</p>
+      <blockquote class="message"><p>“A quick update. The faster quote page is ready in preview.”</p></blockquote>
+    </div>
+    <div class="note note-detail">
+      <p class="sender">What we checked in preview</p>
+      <blockquote class="message">
+        <p>
+          “We removed unnecessary downloads, checked the improvement in the same mobile test, and confirmed a test
+          inquiry reached your team. We’ll handle Tuesday’s release with rollback steps ready.”
+        </p>
+      </blockquote>
+      <p class="decision">Next update · After Tuesday’s rollout</p>
+    </div>
+  </article>
+
+  <article
+    class="letters worktable-note"
+    data-follow-up="Read the monthly check-in"
+    id="rollout"
+    aria-labelledby="rollout-exchange"
+    hidden
+  >
+    <h2 class="sr-only" id="rollout-exchange">After rollout</h2>
+    <div class="note note-opening">
+      <p class="sender">From Vuldesk, your outside CTO</p>
+      <blockquote class="message"><p>“Tuesday update. The quote page is live and verified.”</p></blockquote>
+    </div>
+    <div class="note note-detail">
+      <p class="sender">What we checked on the live site</p>
+      <blockquote class="message">
+        <p>
+          “We repeated the same mobile test on the live page and confirmed it loads faster. We also checked that a test
+          inquiry from the live form reached your team.”
+        </p>
+      </blockquote>
+      <p class="decision">Handoff · Before-and-after results and rollback steps</p>
+    </div>
+  </article>
+
+  <article class="letters worktable-note" id="monthly-support" aria-labelledby="monthly-exchange" hidden>
+    <h2 class="sr-only" id="monthly-exchange">A month into ongoing support</h2>
+    <div class="note note-opening">
+      <p class="sender">From the business owner</p>
+      <blockquote class="message">
+        <p>
+          “We want to run that campaign again. Can we handle more traffic without the hosting bill getting away from
+          us?”
+        </p>
+      </blockquote>
+    </div>
+    <div class="note note-detail">
+      <p class="sender">From Vuldesk, your outside CTO</p>
+      <blockquote class="message">
+        <p>
+          “We can use the last campaign as a baseline. We’ll work out what it cost to serve that traffic, look for spend
+          we can cut, and agree on what the site should handle before you commit.”
+        </p>
+      </blockquote>
+      <p class="decision">Next decision · What to spend ahead of the campaign</p>
+    </div>
+  </article>
+
+  <div class="worktable-controls" id="thread-controls" hidden>
+    <button type="button" class="previous" hidden><span aria-hidden="true">←</span> Previous note</button>
+    <button type="button" class="next"
+      ><span data-next-label>Read the sprint update</span> <span aria-hidden="true">→</span></button
+    >
+    <a href="#how-we-work" class="after-thread" hidden>See how we work <span aria-hidden="true">↓</span></a>
+  </div>
+</figure>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const worktable = document.getElementById('worktable');
+    if (!worktable) return;
+
+    const notes = [...worktable.querySelectorAll<HTMLElement>('.worktable-note')];
+    const caption = worktable.querySelector('figcaption');
+    const stage = worktable.querySelector<HTMLElement>('#stage');
+    const mobileCue = worktable.querySelector<HTMLElement>('.mobile-cue');
+    const controls = worktable.querySelector<HTMLElement>('#thread-controls');
+    const previous = worktable.querySelector<HTMLButtonElement>('.previous');
+    const next = worktable.querySelector<HTMLButtonElement>('.next');
+    const nextLabel = next?.querySelector('[data-next-label]');
+    const afterThread = worktable.querySelector<HTMLElement>('.after-thread');
+
+    if (!caption || !stage || !mobileCue || !controls?.hidden || !previous || !next || !nextLabel || !afterThread)
+      return;
+
+    let current = 0;
+
+    const showNote = (index: number) => {
+      const note = notes[index];
+      const title = note?.querySelector('h2');
+      if (!title) return;
+
+      notes[current].hidden = true;
+      current = index;
+      note.hidden = false;
+      stage.textContent = title.textContent;
+      mobileCue.hidden = index !== 0;
+      previous.hidden = index === 0;
+      next.hidden = index === notes.length - 1;
+      afterThread.hidden = !next.hidden;
+      nextLabel.textContent = note.dataset.followUp ?? '';
+
+      stage.focus({ preventScroll: true });
+      caption.scrollIntoView({ block: 'start' });
+    };
+
+    controls.hidden = false;
+    mobileCue.hidden = false;
+    previous.addEventListener('click', () => showNote(current - 1));
+    next.addEventListener('click', () => showNote(current + 1));
+  });
+</script>
+
+<style>
+  [hidden] {
+    display: none !important;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  .caption-stage:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 5px;
+  }
+
+  .worktable {
+    position: relative;
+    isolation: isolate;
+    width: var(--home-width);
+    margin-inline: auto;
+    background: #873827;
+    color: var(--white);
+    border: 1px solid #68241b;
+    box-shadow: 0 4px 0 #502319;
+  }
+  .worktable::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg, #3c120dc4, transparent 23%, transparent 77%, #3c120d70),
+      var(--worktable-photo) center / cover no-repeat;
+    z-index: -1;
+  }
+  .worktable figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem 1rem;
+    flex-wrap: wrap;
+    padding: 0.8rem clamp(1rem, 2.5vw, 2.2rem);
+    background: #452018;
+    color: var(--white);
+  }
+  .worktable figcaption p {
+    font-size: 0.8rem;
+    font-weight: 620;
+  }
+  .caption-stage {
+    color: #ffccb1;
+  }
+  .caption-stage:focus-visible {
+    outline-offset: 1px;
+  }
+  .mobile-cue {
+    display: none;
+  }
+  .letters {
+    width: min(76%, 990px);
+    min-height: 388px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: center;
+    padding-block: 2.5rem 3.4rem;
+  }
+  .note {
+    padding: clamp(1.25rem, 2.7vw, 2.3rem);
+    color: var(--ink);
+    box-shadow:
+      0 0.4rem 0.65rem #37140866,
+      0 1.4rem 2rem #3714083d;
+    transform-origin: center;
+  }
+  .note-opening {
+    background: #fff1d2;
+    transform: translate(-1rem, -1.05rem) rotate(-3deg);
+  }
+  .note-detail {
+    z-index: 1;
+    background: #fffaf0;
+    transform: translate(-0.25rem, 1.65rem) rotate(2deg);
+  }
+  .sender {
+    color: #874131;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .note .message {
+    border-top: 1px solid #dfc7ab;
+    margin-top: 0.6rem;
+    padding-top: 0.8rem;
+  }
+  .note-opening .message {
+    font: 510 clamp(1.65rem, 2.8vw, 2.5rem) / 1.06 var(--serif);
+    letter-spacing: -0.043em;
+  }
+  .note-opening .message p {
+    max-width: 22ch;
+  }
+  .note-detail .message {
+    font: 450 clamp(1.1rem, 1.75vw, 1.52rem) / 1.33 var(--serif);
+    letter-spacing: -0.016em;
+  }
+  .decision {
+    width: fit-content;
+    color: #86271e;
+    border-top: 1px solid #c1816d;
+    margin-top: 1.05rem;
+    padding-top: 0.55rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .worktable-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem clamp(1rem, 2.5vw, 2.2rem);
+    border-top: 1px solid #ffe0bb66;
+    background: #452018;
+  }
+  .worktable-controls button,
+  .worktable-controls a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+    min-height: 44px;
+    padding: 0.4rem 0;
+    border: 0;
+    color: var(--white);
+    background: transparent;
+    font:
+      650 0.82rem/1.25 'Inter Variable',
+      sans-serif;
+    text-decoration: underline;
+    text-decoration-color: #ecad93;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+  }
+  .worktable-controls .next,
+  .worktable-controls a {
+    grid-column: 2;
+    justify-self: end;
+    text-align: right;
+  }
+  .worktable-controls:has(.previous[hidden]) .next {
+    grid-column: 1 / -1;
+  }
+  .worktable-controls button:hover,
+  .worktable-controls a:hover {
+    color: #ffccb1;
+  }
+  .next:focus-visible,
+  .worktable-controls a:focus-visible {
+    outline-offset: 3px;
+  }
+  @media (max-width: 1000px) {
+    .letters {
+      width: min(86%, 990px);
+      min-height: 360px;
+    }
+  }
+  @media (max-width: 720px) {
+    .worktable {
+      width: 100%;
+      border-inline: 0;
+    }
+    .worktable::before {
+      background-position: center;
+    }
+    .worktable figcaption {
+      padding-block: 0.85rem;
+    }
+    .worktable figcaption p {
+      font-size: 0.72rem;
+    }
+    .worktable figcaption .mobile-cue {
+      display: block;
+      flex-basis: 100%;
+      font-size: 1rem;
+      font-weight: 450;
+      color: #ffdec9;
+    }
+    .letters {
+      width: min(100% - 3rem, 500px);
+      grid-template-columns: 1fr;
+      padding-block: 2rem 2.5rem;
+    }
+    .note {
+      padding: 1.15rem;
+    }
+    .note-opening {
+      transform: rotate(-2deg);
+      margin-right: 0.8rem;
+    }
+    .note-detail {
+      transform: rotate(1.5deg);
+      margin: -0.15rem 0 0 0.8rem;
+    }
+    .note-opening .message {
+      font-size: clamp(1.7rem, 5.75vw, 2.55rem);
+    }
+    .note-detail .message {
+      font-size: 1.23rem;
+    }
+    .sender,
+    .decision {
+      font-size: 0.73rem;
+    }
+    .worktable-controls {
+      gap: 0.75rem;
+    }
+    .worktable-controls button,
+    .worktable-controls a {
+      font-size: 0.75rem;
+    }
+  }
+  @media (max-width: 400px) {
+    .worktable figcaption {
+      gap: 0.1rem 0.7rem;
+    }
+  }
+</style>

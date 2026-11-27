@@ -4,13 +4,15 @@
 // Replaces the AstroWind Header, whose actions render inside a hamburger on
 // mobile — an empty menu when links=[] (eng review 7A / outside voice P10).
 import { getHomePermalink } from '~/utils/permalinks';
-import { CONTACT_MAILTO } from '~/navigation';
+import { TECHNICAL_REVIEW_CTA } from '~/navigation';
+
+const home = getHomePermalink();
 ---
 
 <header class="site-header">
   <div class="site-header-inner">
-    <a class="wordmark" href={getHomePermalink()} aria-label="Vuldesk — home">VULDESK</a>
-    <a class="header-action" href={CONTACT_MAILTO}>Email us</a>
+    <a class="wordmark" href={home} aria-label="Vuldesk — home">VULDESK</a>
+    <a class="header-action" href={`${home}#review`}>{TECHNICAL_REVIEW_CTA}</a>
   </div>
 </header>
 
@@ -57,6 +59,9 @@ import { CONTACT_MAILTO } from '~/navigation';
   @media (max-width: 640px) {
     .site-header-inner {
       padding: 14px 20px;
+    }
+    .header-action {
+      padding-inline: 0.75rem;
     }
   }
 </style>

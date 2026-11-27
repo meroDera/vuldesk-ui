@@ -64,8 +64,8 @@ for (const page of pages) {
     const resolves =
       bare === '/'
         ? existsSync(join(DIST, 'index.html'))
-        : existsSync(join(DIST, href)) && !statSafeIsDir(join(DIST, href)) ||
-          existsSync(join(DIST, bare)) && !statSafeIsDir(join(DIST, bare)) ||
+        : (existsSync(join(DIST, href)) && !statSafeIsDir(join(DIST, href))) ||
+          (existsSync(join(DIST, bare)) && !statSafeIsDir(join(DIST, bare))) ||
           existsSync(join(DIST, bare, 'index.html'));
     if (!resolves) failures.push(`[link] ${rel(page)} -> ${href} does not resolve`);
   }
@@ -110,10 +110,24 @@ const BANNED = [
 // "Let AI build a tool" and "email messages" stay legal while a reflowed old line
 // is still caught. The greeting is banned in its URL-encoded mailto form.
 const ONE_PERSON = [
-  'i build ai tools', 'i build a tool', 'build every tool myself', 'i am kushal', 'i run vuldesk',
-  'one of my tools', 'i built a booking system', 'the price i quote', 'not mine. i never use',
-  'email me', 'tell me about', 'i will reply', 'questions i need answered', 'i overlap', 'i watch it',
-  'what if you disappear', 'i could not find that page', 'hi%20kushal',
+  'i build ai tools',
+  'i build a tool',
+  'build every tool myself',
+  'i am kushal',
+  'i run vuldesk',
+  'one of my tools',
+  'i built a booking system',
+  'the price i quote',
+  'not mine. i never use',
+  'email me',
+  'tell me about',
+  'i will reply',
+  'questions i need answered',
+  'i overlap',
+  'i watch it',
+  'what if you disappear',
+  'i could not find that page',
+  'hi%20kushal',
 ];
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const ONE_PERSON_RE = ONE_PERSON.map((p) => [p, new RegExp(`(^|[^a-z])${escapeRe(p)}($|[^a-z])`)]);
@@ -161,21 +175,32 @@ const WORD_BUDGET = 450;
 const JARGON_ALLOW = new Set([
   'live', // "See it live" — plain verb use, not "serving traffic"
   'fields', // rejected-terms list marks general form use as fine
+  'hosting', // the business owner asks about the hosting bill
+  'scope', // the sprint note says what work Vuldesk would agree to do
+  'shipped', // monthly support updates cover work that reached users
 ]);
 
 function visibleText(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<!--[\s\S]*?-->/g, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    // Separator entities become spaces; in-word entities (rsquo, amp) vanish
-    // so "team&rsquo;s" counts as one word, not two. Hex entities included.
-    .replace(/&(?:nbsp|mdash|ndash|middot|bull);/gi, ' ')
-    .replace(/&[a-z]+\d*;|&#x[0-9a-f]+;|&#\d+;/gi, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return (
+    html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<!--[\s\S]*?-->/g, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      // Separator entities become spaces; in-word entities (rsquo, amp) vanish
+      // so "team&rsquo;s" counts as one word, not two. Hex entities included.
+      .replace(/&(?:nbsp|mdash|ndash|middot|bull);/gi, ' ')
+      .replace(/&[a-z]+\d*;|&#x[0-9a-f]+;|&#\d+;/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 }
+
+function countWords(text) {
+  return text.split(' ').filter((word) => word && !['—', '·'].includes(word)).length;
+}
+
+const WORKTABLE_NOTES = /<article\b(?=[^>]*\sclass="[^"]*\bworktable-note\b[^"]*")[^>]*>[\s\S]*?<\/article>/gi;
 
 const indexPath = join(DIST, 'index.html');
 // Missing inputs FAIL — a gate that silently skips is not a gate.
@@ -185,7 +210,8 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
   const indexHtml = readFileSync(indexPath, 'utf8');
   const metaBits = [];
   for (const attr of ['og:title', 'og:description', 'og:image:alt', 'twitter:title', 'twitter:description']) {
-    const m = indexHtml.match(new RegExp(`<meta[^>]+property="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
+    const m =
+      indexHtml.match(new RegExp(`<meta[^>]+property="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+property="${attr}"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+name="${attr}"[^>]+content="([^"]*)"`, 'i')) ||
       indexHtml.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+name="${attr}"`, 'i'));
@@ -210,9 +236,12 @@ if (existsSync(indexPath) && existsSync(INVENTORY)) {
   }
 
   const text = visibleText(indexHtml);
-  const words = text.split(' ').filter((w) => w && !['—', '·'].includes(w));
-  if (words.length > WORD_BUDGET) {
-    failures.push(`[copy] index.html has ${words.length} visible words (budget ${WORD_BUDGET})`);
+  // Only one worktable note is shown at a time. Count the longest reading
+  // state for the budget, and keep every note in the jargon check below.
+  const noteCounts = [...indexHtml.matchAll(WORKTABLE_NOTES)].map(([note]) => countWords(visibleText(note)));
+  const words = countWords(visibleText(indexHtml.replace(WORKTABLE_NOTES, ' '))) + Math.max(0, ...noteCounts);
+  if (words > WORD_BUDGET) {
+    failures.push(`[copy] index.html has ${words} visible words (budget ${WORD_BUDGET})`);
   }
 
   // Parse inventory terms from the markdown table: "| term | where | alt |".
@@ -271,11 +300,12 @@ if (!blogEnabled) {
   }
   for (const page of pages) {
     const html = readFileSync(page, 'utf8');
-    if (/href="[^"]*rss\.xml"/.test(html)) failures.push(`[teardown] ${rel(page)} links rss.xml while blog is disabled`);
+    if (/href="[^"]*rss\.xml"/.test(html))
+      failures.push(`[teardown] ${rel(page)} links rss.xml while blog is disabled`);
   }
 }
 
-// ── CHECK 7: preview metadata present ───────────────────────────────────────
+// ── CHECK 7: search and preview metadata ───────────────────────────────────
 // The chat-link preview is the buyer's step zero (design review D8).
 if (existsSync(indexPath)) {
   const indexHtml = readFileSync(indexPath, 'utf8');
@@ -313,6 +343,25 @@ if (existsSync(indexPath)) {
   ) {
     failures.push('[meta] index.html has no meta description');
   }
+  try {
+    const json = indexHtml.match(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i)?.[1];
+    const graph = JSON.parse(json ?? '')['@graph'];
+    const organization = graph.find((item) => item['@type'] === 'Organization');
+    const website = graph.find((item) => item['@type'] === 'WebSite');
+    if (
+      organization?.name !== 'Vuldesk' ||
+      new URL(organization?.url).href !== 'https://www.vuldesk.com/' ||
+      organization?.email !== 'contact@vuldesk.com' ||
+      !organization?.['@id'] ||
+      website?.name !== 'Vuldesk' ||
+      website?.url !== organization.url ||
+      website?.publisher?.['@id'] !== organization['@id']
+    ) {
+      failures.push('[meta] homepage Organization/WebSite structured data does not match the business');
+    }
+  } catch {
+    failures.push('[meta] homepage Organization/WebSite structured data is missing or invalid');
+  }
 }
 
 // ── CHECK 8: external proof links (warn on push, fail on schedule) ──────────
@@ -333,7 +382,7 @@ function externalLinks() {
     try {
       const u = new URL(href);
       // Scope: our own non-www subdomains — the proof links whose health the
-      // page stakes claims on (ivf.vuldesk.com today). Third-party socials are
+      // page stakes claims on. Third-party socials are
       // deliberately excluded: twitter/linkedin 403 bot-blocks from CI would
       // make the weekly cron cry wolf.
       if (u.hostname.endsWith('.vuldesk.com') && u.hostname !== 'www.vuldesk.com') {
@@ -348,7 +397,8 @@ function externalLinks() {
 
 // Known content fingerprints: a 200 from a parked page, expired hosting, or a
 // dangling-CNAME takeover must not certify the proof link (adversarial F4).
-// Marker observed live 2026-08-20; update if the client rebrands their page.
+// Historical fingerprint retained for the checker. The clinic is retired as
+// homepage proof; CHECK 9 below prevents its link from being republished.
 const PROOF_MARKERS = {
   'ivf.vuldesk.com': 'Gamma IVF',
 };
@@ -373,7 +423,10 @@ async function linkOk(url) {
           if (marker && method === 'GET') {
             const body = await res.text();
             if (!body.includes(marker)) {
-              return { ok: false, why: `responded 200 but expected content marker "${marker}" is missing (parked/hijacked?)` };
+              return {
+                ok: false,
+                why: `responded 200 but expected content marker "${marker}" is missing (parked/hijacked?)`,
+              };
             }
           } else {
             res.body?.cancel?.().catch(() => {});
@@ -399,6 +452,41 @@ if (EXTERNAL_MODE !== 'skip') {
       if (EXTERNAL_MODE === 'fail') failures.push(msg);
       else console.warn(`  WARN ${msg} (push mode: not blocking the deploy)`);
     }
+  }
+}
+
+// ── CHECK 9: homepage review path ───────────────────────────────────────────
+if (existsSync(indexPath)) {
+  const html = readFileSync(indexPath, 'utf8');
+  if (/\bhref="https?:\/\/ivf\.vuldesk\.com(?:[/?#][^"]*)?"/i.test(html)) {
+    failures.push('[review] index.html links the retired clinic site');
+  }
+  for (const section of ['how-we-work', 'review']) {
+    if (!html.includes(`href="#${section}"`) || !html.includes(`id="${section}"`)) {
+      failures.push(`[review] index.html cannot navigate to #${section}`);
+    }
+  }
+
+  for (const route of ['terms', 'privacy']) {
+    const path = join(DIST, route, 'index.html');
+    if (!existsSync(path) || !readFileSync(path, 'utf8').includes('href="/#review"')) {
+      failures.push(`[review] /${route} cannot return to the homepage review section`);
+    }
+  }
+
+  const section = html.match(/<section\b[^>]*\sid="review"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+  if (!visibleText(section).includes('contact@vuldesk.com')) {
+    failures.push('[review] index.html does not show the contact address in the review section');
+  }
+  const href = section.match(/\shref="(mailto:contact@vuldesk\.com\?[^"]+)"/)?.[1];
+  const draft = href && new URL(href.replace(/&(?:amp|#38|#x26);/gi, '&'));
+  const lines = draft?.searchParams.get('body')?.split('\r\n') ?? [];
+  const prompts = ['[Public link or short description]', '[One thing I want to change]'];
+  if (
+    draft?.searchParams.get('subject') !== 'Free technical review' ||
+    !prompts.every((prompt) => lines.includes(prompt))
+  ) {
+    failures.push('[review] index.html is missing the prefilled technical review email');
   }
 }
 
