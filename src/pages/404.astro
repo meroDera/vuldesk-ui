@@ -8,7 +8,7 @@ import { getHomePermalink } from '~/utils/permalinks';
 const title = 'Page not found';
 ---
 
-<Layout metadata={{ title }}>
+<Layout metadata={{ title, robots: { index: false } }}>
   <section class="letter">
     <div class="measure">
       <h1>We could not find that page.</h1>

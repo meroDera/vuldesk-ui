@@ -9,9 +9,9 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Vuldesk — AI tools that read your records for you
+    default: Outside CTO & Engineering Support | Vuldesk
     template: '%s — Vuldesk'
-  description: "Every business has a pile of records that someone reads by hand. We build a tool that reads yours and tells you what matters. A price fixed before we start."
+  description: 'Vuldesk handles releases, performance, and cloud costs for live websites, apps, and internal tools, including ones built with AI. Get a free technical review.'
   robots:
     index: true
     follow: true
@@ -21,7 +21,7 @@ metadata:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
-        alt: 'Vuldesk — we build AI tools that read your records and find what you need'
+        alt: 'Vuldesk. Your outside CTO. We handle releases, performance, and cloud costs.'
     type: website
   twitter:
     handle: '@vuldesk_tech'

@@ -4,21 +4,27 @@ import { getPermalink } from './utils/permalinks';
 // It was previously hardcoded in 7 files; a find-and-replace across them ate the
 // `@` and shipped `mailto:contact.com` to three pages, so it lives here now.
 export const CONTACT_EMAIL = 'contact@vuldesk.com';
+export const TECHNICAL_REVIEW_CTA = 'Get a free technical review';
 
 // Plain-English draft (design doc D8/9A): the buyer meets this text one click
 // after the hero, so it obeys the same jargon gate as the page copy.
 // Fully RFC 6068-encoded (raw spaces truncate the subject in some clients).
 export const CONTACT_MAILTO =
   `mailto:${CONTACT_EMAIL}` +
-  `?subject=${encodeURIComponent('My pile of records')}` +
+  `?subject=${encodeURIComponent('Free technical review')}` +
   `&body=${encodeURIComponent(
-    'Hi Vuldesk team,\r\n\r\nWhat the pile is: \r\nWhat I want to know from it: \r\nRoughly how many per week: \r\n\r\nThanks'
+    [
+      'Hi Vuldesk,',
+      '',
+      'What I run',
+      '[Public link or short description]',
+      '',
+      'What I’d like to improve',
+      '[One thing I want to change]',
+      '',
+      'Thanks!',
+    ].join('\r\n')
   )}`;
-
-// The header is SiteHeader.astro (wordmark + one action, design review D3) —
-// it imports CONTACT_MAILTO directly. There is deliberately no headerData
-// export any more: the old AstroWind Header widget is unused, and a config
-// object nothing consumes is a drift trap.
 
 export const footerData = {
   secondaryLinks: [
