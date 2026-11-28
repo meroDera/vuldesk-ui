@@ -57,29 +57,30 @@ contradict that. Governing law is currently implied as Nepal via the Country fie
 
 ---
 
-## 3. Close the last critical dependency finding
+## 3. Review the remaining moderate and low dependency findings
 
-**What:** `npm audit` reports 15 findings, 1 critical (`tar`, transitive).
+**Current result (2026-11-28):** The security update removes affected versions for all
+33 critical/high Dependabot alert records from the reviewed lockfile. `npm audit`
+reports zero critical/high, seven moderate, and one low finding. GitHub's main-branch
+alerts are reassessed after the updated lockfile is merged.
 
-**Why:** Non-breaking fixes took this from 36 findings / 2 critical down to 15 / 1 on
-2026-08-09. The remainder needs `npm audit fix --force`, which pulls breaking major
-versions into the build chain.
+**Remaining:** The reviewed advisory records still match `minimatch`,
+`postcss-selector-parser`, and `fast-xml-parser`. Npm also counts affected parent
+packages, so its finding count differs from the advisory count.
 
-**Framing that matters, because it was got wrong twice during the review:** GitHub
-Dependabot reports 112. `npm audit` reports 15. Neither number describes visitor risk.
-This is a **static** site — nothing in `dependencies` executes in a browser. Every one
-of these is a build-time dependency, so the threat model is compromise of the CI build
-chain producing poisoned HTML, not a visitor being attacked. That is a real risk and a
-much narrower one than "112 vulnerabilities on a security company's site" implies.
+**What:** Review compatible parent updates for these lower-severity findings in a
+separate maintenance change. Do not force a typography downgrade or override a
+parser across incompatible major versions just to change the audit count.
 
-**Pros:** Removes the last critical. Makes the Dependabot badge honest.
-**Cons:** `--force` can break the Astro build. Needs the full verify loop
-(`npm run lint:eslint && npm run build && npm run check:integrity`) and a rollback plan.
+**Context:** Production serves static files, but development and build tools still
+process images, Markdown, YAML, and other inputs. A compromised build can produce
+unsafe output; static hosting alone does not resolve those dependency findings.
 
-**Context:** `cp package-lock.json /tmp/lock-backup.json` first. If the build breaks,
-restore and pin `tar` via an `overrides` block instead.
+**Verify:** Use Node 24 (the minimum supported runtime is 22.23.4), then run
+`npm audit --audit-level=high`, `npm test`, and `npm run lint:eslint`. Review desktop,
+mobile, metadata, and navigation when changing the build chain.
 
-**Depends on:** nothing, but do it on a branch now that `verify` runs on PRs.
+**Depends on:** compatible fixes for the remaining dependency paths.
 
 ---
 
@@ -150,4 +151,3 @@ wrong answer is a legal risk, so the page must not guess.
 
 **Depends on:** the owner's facts about the AI companies the tools use; possibly a
 lawyer (TODO 2).
-
