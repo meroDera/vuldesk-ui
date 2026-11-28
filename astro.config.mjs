@@ -4,11 +4,10 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from 'astro/config';
 
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
-import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
+import { unified } from '@astrojs/markdown-remark';
+import autoprefixer from 'autoprefixer';
 import icon from 'astro-icon';
-import compress from '@playform/compress';
+import tailwindcss from 'tailwindcss';
 
 import astrowind from './vendor/integration';
 
@@ -20,13 +19,10 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const hasExternalScripts = false;
-const whenExternalScripts = (items = []) =>
-  hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
-
 export default defineConfig({
   output: 'static',
   site: 'https://www.vuldesk.com',
+  compressHTML: true,
 
   redirects: {
     // Pentest-era lead magnet, retired. Nothing replaces it yet.
@@ -40,11 +36,7 @@ export default defineConfig({
   },
 
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     sitemap(),
-    mdx(),
     icon({
       include: {
         tabler: ['*'],
@@ -63,25 +55,6 @@ export default defineConfig({
       },
     }),
 
-    ...whenExternalScripts(() =>
-      partytown({
-        config: { forward: ['dataLayer.push'] },
-      })
-    ),
-
-    compress({
-      CSS: true,
-      HTML: {
-        'html-minifier-terser': {
-          removeAttributeQuotes: false,
-        },
-      },
-      Image: false,
-      JavaScript: true,
-      SVG: false,
-      Logger: 1,
-    }),
-
     astrowind({
       config: './src/config.yaml',
     }),
@@ -92,11 +65,18 @@ export default defineConfig({
   },
 
   markdown: {
-    remarkPlugins: [readingTimeRemarkPlugin],
-    rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
+    processor: unified({
+      remarkPlugins: [readingTimeRemarkPlugin],
+      rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
+    }),
   },
 
   vite: {
+    css: {
+      postcss: {
+        plugins: [tailwindcss(), autoprefixer()],
+      },
+    },
     resolve: {
       alias: {
         '~': path.resolve(__dirname, './src'),

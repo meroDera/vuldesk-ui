@@ -5,7 +5,7 @@ site for Vuldesk: an outside CTO for owners of live websites, apps, and internal
 tools, including ones built with AI. The offer covers releases, performance,
 and cloud costs, from planning through rollout.
 
-The site is a static Astro 4 + Tailwind CSS build, derived from the
+The site is a static Astro 7 + Tailwind CSS 3 build, derived from the
 [AstroWind](https://github.com/onwidget/astrowind) template. Almost all template
 surface has been removed or rewritten; what remains is the build machinery, the
 MIT license, and the legal-page clause text (unreviewed template inheritance —
@@ -86,24 +86,27 @@ only with posts that match the positioning.
 
 ## Commands
 
-| Command                   | Action                                        |
-| :------------------------ | :-------------------------------------------- |
-| `npm install`             | Install dependencies                          |
-| `npm run dev`             | Start the dev server at `localhost:4321`      |
-| `npm run build`           | Build the production site to `./dist/`        |
-| `npm run check`           | Check Astro templates and TypeScript          |
-| `npm run check:integrity` | Run CHECK 1-9 against `./dist/` (build first) |
-| `npm test`                | `check`, `build`, then `check:integrity`      |
-| `npm run preview`         | Preview the build locally                     |
-| `npm run format`          | Format with Prettier                          |
-| `npm run lint:eslint`     | Run ESLint                                    |
+| Command                   | Action                                                |
+| :------------------------ | :---------------------------------------------------- |
+| `npm install`             | Install dependencies                                  |
+| `npm run dev`             | Start the dev server at `localhost:4321`              |
+| `npm run build`           | Build the production site to `./dist/`                |
+| `npm run check`           | Check Astro templates and TypeScript                  |
+| `npm run check:seo`       | Check metadata rendering and HTML escaping            |
+| `npm run check:integrity` | Run CHECK 1-9 against `./dist/` (build first)         |
+| `npm test`                | `check`, `check:seo`, `build`, then `check:integrity` |
+| `npm run preview`         | Preview the build locally                             |
+| `npm run format`          | Format with Prettier                                  |
+| `npm run lint:eslint`     | Run ESLint                                            |
 
-The Astro checker and its language server are pinned to preserve Node 18 compatibility.
+Use Node 24 (`nvm use`, matching CI). The minimum supported Node version is 22.23.4.
+The Astro security upgrade requires this newer runtime; the Node 18 checker override is no longer needed.
+Metadata rendering is maintained locally under `vendor/astrolib/seo/` with its upstream MIT attribution.
 
 ## Integrity checks
 
 `scripts/check-integrity.mjs` runs against the built `./dist/` — locally via
-`npm test` (which checks types and builds first), and in CI before any deploy. A plain
+`npm test` (which checks types, metadata rendering, and builds first), and in CI before any deploy. A plain
 `npm run build` does not run it. The checks:
 
 1. **Internal links** resolve to built pages.
@@ -135,7 +138,7 @@ The Astro checker and its language server are pinned to preserve Node 18 compati
 
 ## CI
 
-- **deploy.yml** — every push to `main` runs `verify` (Astro/TypeScript checks, lint, build,
+- **deploy.yml** — every push to `main` runs `verify` (Astro/TypeScript checks, metadata rendering, lint, build,
   integrity check) and deploys to GitHub Pages only if it passes. PRs run
   `verify` without deploying. Each PR has its own concurrency group, so its
   checks cannot cancel publishing. Main pushes and manual deployments share
